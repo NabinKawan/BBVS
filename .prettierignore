@@ -1,0 +1,7 @@
+node_modules
+build
+.gitlab-ci.yml
+.github
+README.md
+.next
+static

@@ -15,6 +15,17 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/admin/Admin.jsx",
+    "src/context/AdminContext.js",
+    "src/pages/_app.jsx",
+    "src/pages/_app.jsx",
+    "src/pages/_app.jsx",
+    "src/context/AdminContext.js",
+    "src/pages/voting_beta.jsx"
+  ],
   "exclude": ["node_modules"]
 }
