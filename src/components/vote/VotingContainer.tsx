@@ -29,8 +29,8 @@ export default function VotingContainer() {
                 // @ts-ignore
                 candidates[`${post}`].map((e) => (
                   <VotingCard
-                    name={e.name}
-                    crn={e.crn}
+                    name={e.first_name + ' ' + e.last_name}
+                    crn={e.id}
                     image={e.image}
                     isSelected={Object.values(votingProvider.votes).includes(e.crn)}
                     onClick={() => {

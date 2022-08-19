@@ -13,7 +13,15 @@ import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
 import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
 import TextInputField from './TextInputField';
 
-export default function CandidateCard() {
+interface CandidateCardProps {
+  fName: string;
+  lName: string;
+  id: string;
+  post: string;
+  image: string;
+}
+
+export default function CandidateCard({ fName, lName, id, post, image }: CandidateCardProps) {
   const [showDialog, setShowDialog] = useState(false);
   const handleEdit = () => {
     setShowDialog(!showDialog);
@@ -24,13 +32,15 @@ export default function CandidateCard() {
       {/* profile details */}
       <div className="flex  space-x-4">
         <div className="flex flex-col items-center">
-          <img src="images/profile_img.png" />
-          <p className="font-medium text-sm text-green-500">CR</p>
+          <img className="rounded-full" height={60} width={60} src={image} />
+          <p className="font-medium text-sm text-green-500">{post}</p>
         </div>
 
         <div className="flex flex-col space-y-1 pt-2">
-          <p className="font-bold text-lg">Nabin Kawan</p>
-          <p className="font-medium text-sm text-[#686868]">KCE075BCT020</p>
+          <p className="font-medium text-lg">
+            {fName} {lName}
+          </p>
+          <p className="font-medium text-sm text-[#686868]">{id}</p>
         </div>
       </div>
 
@@ -51,29 +61,25 @@ export default function CandidateCard() {
             <div className="flex flex-col items-start space-y-8">
               {/* upload profile */}
               <div className="flex flex-col items-center space-y-2">
-                <img
-                  className="rounded-full"
-                  width={100}
-                  height={100}
-                  src="images/profile_img.png"
-                />
+                <img className="rounded-full" width={100} height={100} src={image} />
                 <p className="font-medium text-[#424040] text-sm">Edit photo</p>
               </div>
 
               {/* textfields */}
               <div className="flex flex-col items-start space-y-8">
                 <div className="flex space-x-10">
-                  <TextInputField title={'First Name'} isRequired={true} placeHolder={'Nabin'} />
-                  <TextInputField title={'Last Name'} isRequired={true} placeHolder={'Kawan'} />
+                  <TextInputField title={'First Name'} isRequired={true} placeHolder={fName} />
+                  <TextInputField title={'Last Name'} isRequired={true} placeHolder={lName} />
                 </div>
 
                 <div className="flex space-x-10">
-                  <TextInputField title={'CRN'} isRequired={true} placeHolder={'KCE075BCT020'} />
-                  <TextInputField title={'POST'} isRequired={true} placeHolder={'CR'} />
+                  <TextInputField title={'CRN'} isRequired={true} placeHolder={id} />
+                  <TextInputField title={'POST'} isRequired={true} placeHolder={post} />
                 </div>
               </div>
-
-              <RoundedTextBtn text={'DONE'} bgColor={'bg-primary'} />
+              <div className="w-full h-11">
+                <RoundedTextBtn text={'DONE'} bgColor={'bg-primary'} />
+              </div>
             </div>
           </DialogContent>
         </Dialog>

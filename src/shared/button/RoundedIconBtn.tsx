@@ -14,7 +14,7 @@ export default function RoundedIconBtn({ icon, bgColor, text, onClick }: Rounded
       onClick={() => {
         onClick();
       }}
-      className={`flex space-x-2 cursor-pointer text-white font-bold text-base items-center rounded-xl py-2 px-6 ${bgColor}`}
+      className={`flex space-x-2 cursor-pointer text-white font-bold text-base items-center rounded-xl py-2 pl-6 pr-4 ${bgColor}`}
     >
       <p>{text}</p>
       <div>{icon}</div>

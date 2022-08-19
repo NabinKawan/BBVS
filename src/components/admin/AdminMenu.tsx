@@ -12,7 +12,7 @@ export default function AdminMenu() {
   const containerProvider = useContext(AdminContext) as AdminContextDto;
 
   return (
-    <div className="flex flex-col bg-white shadow-2xl shadow-blue-900 h-screen w-1/4 p-8">
+    <div className="flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-1/4 p-8">
       {/* logo details*/}
       <div className="flex items-center space-x-1">
         <img src="logos/logo.png" />
@@ -43,7 +43,7 @@ export default function AdminMenu() {
               : 'text-menuItemTextColor bg-white'
           }  px-4 py-3 space-x-4 mt-10`}
         >
-          <AiFillInfoCircle size={25} />
+          <AiFillInfoCircle size={22} />
           <p className="font-medium text-lg">Candidate Details</p>
         </div>
 
@@ -57,7 +57,7 @@ export default function AdminMenu() {
               : 'text-menuItemTextColor bg-white'
           }  px-4 py-3 space-x-4 mt-10`}
         >
-          <BsFillPersonPlusFill size={25} />
+          <BsFillPersonPlusFill size={22} />
           <p className="font-medium text-lg">Add Candidates</p>
         </div>
 
@@ -71,7 +71,7 @@ export default function AdminMenu() {
               : 'text-menuItemTextColor bg-white'
           }  px-4 py-3 space-x-4 mt-10`}
         >
-          <MdPublishedWithChanges size={25} />
+          <MdPublishedWithChanges size={22} />
           <p className="font-medium text-lg">Election</p>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { candidates, posts } from '../../../dummy/data';
 import CandidateCard from '../CandidateCard';
 
 export default function CandidateDetails() {
@@ -23,9 +24,19 @@ export default function CandidateDetails() {
         </div>
 
         {/* candidate list */}
-        <div className="flex flex-col divide-y-2 px-12">
+        <div className="flex flex-col divide-y-2 divide-gray-50  px-12">
           {/* candidate card */}
-          <CandidateCard />
+          {Object.values(candidates)
+            .flat()
+            .map((e) => (
+              <CandidateCard
+                image={e.image}
+                fName={e.first_name}
+                lName={e.last_name}
+                id={e.id}
+                post={e.post}
+              />
+            ))}
         </div>
       </div>
     </div>

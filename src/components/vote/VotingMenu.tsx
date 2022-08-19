@@ -59,7 +59,7 @@ export default function VotingMenu() {
   };
 
   return (
-    <div className="flex flex-col bg-white shadow-2xl shadow-blue-900 h-screen w-1/4 p-8">
+    <div className="flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-1/4 p-8">
       {/* logo details*/}
       <div className="flex items-center space-x-1">
         <img src="logos/logo.png" />

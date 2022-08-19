@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { candidates } from '../../../dummy/data';
 import RoundedTextBtn from '../../../shared/button/RoundedTextBtn';
 import CandidateCard from '../CandidateCard';
 import TextInputField from '../TextInputField';
 
 export default function AddCandidates() {
+  const [image, setImage] = useState(null);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const uploadFileHandler = (event: any) => {
+    console.log(event.target.files);
+    // @ts-ignore
+    // getting file
+    fileInput.current.click();
+    const img = fileInput.current?.files![0];
+
+    if (img) {
+      // @ts-ignore
+      setImage(window.URL.createObjectURL(img!));
+      console.log(window.URL.createObjectURL(img!));
+    }
+  };
+
   return (
     <div className="flex flex-col">
       {/* title */}
@@ -30,18 +48,48 @@ export default function AddCandidates() {
             </div>
 
             {/* upload profile */}
-            <div className="flex flex-col items-center space-y-2">
-              <img width={100} height={100} src="images/noprofile.png" />
-              <p className="font-medium text-[#424040] text-base">Upload photo</p>
+            <div className="flex flex-col items-center space-y-4">
+              <img
+                className="rounded-full"
+                width={100}
+                height={100}
+                src={image ? image : '/images/noprofile.png'}
+                style={{ objectFit: 'cover' }}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={uploadFileHandler}
+                ref={fileInput}
+                className="hidden rounded-xl outline-none  font-medium text-[#424040] text-base"
+              />
+              <p
+                onClick={uploadFileHandler}
+                className="cursor-pointer font-medium text-[#424040] text-base"
+              >
+                Upload a file
+              </p>
             </div>
           </div>
-          <RoundedTextBtn text={'ADD'} bgColor={'bg-primary'} />
+          <div className="flex">
+            <RoundedTextBtn text={'ADD'} bgColor={'bg-primary'} />
+          </div>
         </div>
 
         {/* candidate list */}
-        <div className="flex flex-col divide-y-2 mt-4">
+        <div className="flex flex-col divide-y-2 divide-gray-50 mt-4">
           {/* candidate card */}
-          <CandidateCard />
+          {Object.values(candidates)
+            .flat()
+            .map((e) => (
+              <CandidateCard
+                image={e.image}
+                fName={e.first_name}
+                lName={e.last_name}
+                id={e.id}
+                post={e.post}
+              />
+            ))}
         </div>
       </div>
     </div>
