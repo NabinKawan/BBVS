@@ -1,5 +1,7 @@
 export enum AdminContainerEnum {
-  CandidateDetails = 'Candidate Details',
+  CandidateDetails = 'Candidates Details',
+  VoterDetails = 'Voters Details',
   AddCandidates = 'Add Candidates',
+  AddVoters = 'Add Voters',
   Election = 'Election',
 }

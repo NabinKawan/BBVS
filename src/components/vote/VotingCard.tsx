@@ -2,22 +2,21 @@ import React, { useContext, useState } from 'react';
 import VotingContext from '../../context/voting/VotingContext';
 import { VotingContextDto } from '../../models/dto/ContextDtos';
 import { MdCheckCircle } from 'react-icons/md';
+import { CandidateDto } from '../../models/dto/ServerOpDtos';
 
 interface VotingCardProps {
-  image?: string;
-  name: string;
-  crn: string;
+  candidate: CandidateDto;
   isSelected: boolean;
   onClick: any;
 }
 
-export default function VotingCard({
-  image = 'images/profile_img.png',
-  name,
-  crn,
-  isSelected,
-  onClick,
-}: VotingCardProps) {
+export default function VotingCard({ candidate, isSelected, onClick }: VotingCardProps) {
+  candidate.image =
+    candidate.image !== ''
+      ? candidate.image.includes('http://')
+        ? candidate.image
+        : `http://${candidate.image}`
+      : '';
   return (
     <div
       onClick={onClick}
@@ -26,10 +25,16 @@ export default function VotingCard({
       }`}
     >
       <div className={`flex flex-col items-center justify-center space-y-7`}>
-        <img className="rounded-full w-20 h-20" src={image} style={{ objectFit: 'cover' }} />
+        <img
+          className="rounded-full w-20 h-20"
+          src={candidate.image === '' ? 'images/noprofile.png' : candidate.image}
+          style={{ objectFit: 'cover' }}
+        />
         <div className="flex w-[150px]  overflow-x-clip flex-col items-center space-y-1">
-          <p className="flex text-center font-medium text-lg leading-tight">{name}</p>
-          <p className="font-normal text-sm text-[#686868]">{crn}</p>
+          <p className="flex text-center font-medium text-lg leading-tight">
+            {`${candidate.first_name} ${candidate.middle_name} ${candidate.last_name}`}
+          </p>
+          <p className="font-normal text-sm text-[#686868]">{candidate.candidate_id}</p>
         </div>
       </div>
       {isSelected && (

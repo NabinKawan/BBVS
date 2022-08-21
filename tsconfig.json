@@ -20,11 +20,11 @@
     "**/*.ts",
     "**/*.tsx",
     "src/components/admin/Admin.jsx",
-    "src/context/AdminContext.js",
+    "src/context/candidate/CandidateContext.js",
     "src/pages/_app.jsx",
     "src/pages/_app.jsx",
     "src/pages/_app.jsx",
-    "src/context/AdminContext.js",
+    "src/context/candidate/CandidateContext.js",
     "src/pages/voting_beta.jsx"
   ],
   "exclude": ["node_modules"]

@@ -3,20 +3,28 @@ import AdminContext from '../../context/admin/AdminContext';
 import { AdminContextDto } from '../../models/dto/ContextDtos';
 import { AdminContainerEnum } from '../../models/enums/ContainerEnums';
 import AddCandidates from './containers/AddCandidates';
-import CandidateDetails from './containers/CandidateDetails';
+import AddVoters from './containers/AddVoters';
+import CandidateDetails from './containers/CandidatesDetails';
+import VoterDetails from './containers/VotersDetails';
 
 export default function AdminContainer() {
   // @ts-ignore: Unreachable code error
-  const containerProvider = useContext(AdminContext) as AdminContextDto;
+  const adminProvider = useContext(AdminContext) as AdminContextDto;
 
   let container = <CandidateDetails />;
 
-  switch (containerProvider.currentContainer) {
+  switch (adminProvider.currentContainer) {
     case AdminContainerEnum.CandidateDetails:
       container = <CandidateDetails />;
       break;
+    case AdminContainerEnum.VoterDetails:
+      container = <VoterDetails />;
+      break;
     case AdminContainerEnum.AddCandidates:
       container = <AddCandidates />;
+      break;
+    case AdminContainerEnum.AddVoters:
+      container = <AddVoters />;
       break;
     default:
     // default

@@ -11,7 +11,8 @@ const Home: NextPage = () => {
     if (pathname === '/') {
       Router.push('/login');
     }
-  });
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>

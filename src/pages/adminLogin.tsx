@@ -1,31 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 import { IoLockClosed } from 'react-icons/io5';
 import Router from 'next/router';
 import { CircularProgress } from '@mui/material';
 import { MdErrorOutline } from 'react-icons/md';
-import ServerOp from '../services/ServerOp';
 import CachService from '../services/CacheService';
+import ServerOp from '../services/ServerOp';
 import { CachNamesEnum } from '../models/enums/CacheEnums';
-import VotingContext from '../context/voting/VotingContext';
-import { VotingContextDto } from '../models/dto/ContextDtos';
+import AdminContext from '../context/admin/AdminContext';
+import { AdminContextDto } from '../models/dto/ContextDtos';
 import { CacheDto } from '../models/dto/CacheDtos';
 
-export default function Login() {
+export default function AdminLogin() {
   console.log('login');
   const [loading, setLoading] = useState(false);
-  const [formValues, setFormValues] = useState({ voter_id: '', password: '' });
+  const [formValues, setFormValues] = useState({ admin_id: '', password: '' });
   const [error, setError] = useState(false);
-
-  //@ts-ignore
-  const votingProvider = useContext(VotingContext) as VotingContextDto;
-
+  // @ts-ignore
+  const adminProvider = useContext(AdminContext) as AdminContextDto;
   useEffect(() => {
     // checking cache for admin
-    CachService.getCacheData(CachNamesEnum.Voter).then((value) => {
+    CachService.getCacheData(CachNamesEnum.Admin).then((value) => {
       if (value) {
-        votingProvider.setAccessToken(value.access_token);
-        Router.push('/voting');
+        adminProvider.setAccessToken(value.access_token);
+        Router.push('/admin');
       }
     });
   }, []);
@@ -33,21 +31,19 @@ export default function Login() {
   const onLogin = () => {
     setLoading(true);
     if (validate(formValues)) {
-      // setTimeout(() => {
-      //   router.push('/voting_beta');
-      // }, 2000);
-      ServerOp.login(formValues).then((value) => {
+      console.log(formValues);
+      ServerOp.adminLogin(formValues).then((value) => {
         if (value) {
           const cacheData: CacheDto = {
-            user_id: formValues.voter_id,
+            user_id: 'admin',
             access_token: value,
           };
-          CachService.addDataIntoCache(CachNamesEnum.Voter, cacheData);
+          CachService.addDataIntoCache(CachNamesEnum.Admin, cacheData);
           setTimeout(() => {
-            Router.push('/voting');
-            setLoading(false);
+            Router.push('/admin');
           }, 2000);
         }
+        setLoading(false);
       });
     } else {
       setError(true);
@@ -55,10 +51,10 @@ export default function Login() {
     }
   };
 
-  const validate = (values: { voter_id: string; password: string }) => {
+  const validate = (values: { admin_id: string; password: string }) => {
     if (
-      values['voter_id'] !== null &&
-      values['voter_id'] !== '' &&
+      values['admin_id'] !== null &&
+      values['admin_id'] !== '' &&
       values.password !== null &&
       values.password !== ''
     ) {
@@ -82,9 +78,9 @@ export default function Login() {
           <BsFillPersonCheckFill className="text-primary" size={18} />
           <input
             className="w-full border border-none outline-none "
-            placeholder="Enter your voter id"
+            placeholder="Enter your admin id"
             onChange={(event) => {
-              setFormValues({ voter_id: event.target.value, password: formValues.password });
+              setFormValues({ admin_id: event.target.value, password: formValues.password });
               setError(false);
             }}
             type="text"
@@ -96,7 +92,7 @@ export default function Login() {
             className="w-full border border-none outline-none"
             placeholder="Enter your password"
             onChange={(event) => {
-              setFormValues({ voter_id: formValues.voter_id, password: event.target.value });
+              setFormValues({ admin_id: formValues.admin_id, password: event.target.value });
               setError(false);
             }}
             type="password"
@@ -112,6 +108,7 @@ export default function Login() {
           onClick={onLogin}
           className="flex cursor-pointer   p-3 text-base font-medium justify-center bg-primary text-white rounded-lg w-[350px]"
         >
+          {' '}
           {loading ? <CircularProgress size={24} color="inherit" /> : <p>Login In</p>}
         </div>
       </div>

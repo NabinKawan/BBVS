@@ -1,22 +1,27 @@
 import React, { useState, useContext } from 'react';
-import { VotingContextDto } from '../../models/dto/ContextDtos';
+import { CandidateContextDto, VotingContextDto } from '../../models/dto/ContextDtos';
 import 'react-circular-progressbar/dist/styles.css';
 import RoundedProgressBar from '../../shared/progressBar/RoundedProgressBar';
 import ProgressStepCard from './ProgressStepCard';
 import { posts } from '../../dummy/data';
 import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
 import VotingContext from '../../context/voting/VotingContext';
+import CandidateContext from '../../context/candidate/CandidateContext';
 import Swal from 'sweetalert2';
 import 'animate.css';
-import router from 'next/router';
+import Router from 'next/router';
+import { CachNamesEnum } from '../../models/enums/CacheEnums';
+import CachService from '../../services/CacheService';
 
 export default function VotingMenu() {
   const [loading, setLoading] = useState(false);
   // @ts-ignore
   const votingProvider = useContext(VotingContext) as VotingContextDto;
+  // @ts-ignore
+  const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
 
   const onVote = () => {
-    if (votingProvider.completedSteps.length === posts.length) {
+    if (votingProvider.completedSteps.length === candidateProvider.posts.length) {
       // router.push('/congratulations');
       Swal.fire({
         title: 'Please wait',
@@ -50,8 +55,12 @@ export default function VotingMenu() {
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.dismiss === Swal.DismissReason.timer) {
-            router.push('/login');
-            votingProvider.clearVotes();
+            CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+              if (value) {
+                Router.push('/login');
+                votingProvider.clearVotes();
+              }
+            });
           }
         });
       });
@@ -71,10 +80,23 @@ export default function VotingMenu() {
 
       {/* profile details */}
       <div className="flex rounded-xl items-center bg-[#F1F1F1] p-4 space-x-4 my-8">
-        <img src="images/profile_img.png" />
+        <img
+          className="rounded-full"
+          height={60}
+          width={60}
+          src={
+            votingProvider.voter.image !== ''
+              ? `http://${votingProvider.voter.image}`
+              : 'images/profile_img.png'
+          }
+        />
         <div className="flex flex-col space-y-1">
-          <p className="font-medium text-lg">Nabin Kawan</p>
-          <p className="font-medium text-sm text-[#838383]">Voter_id: 1256</p>
+          <p className="font-medium text-lg">
+            {`${votingProvider.voter.first_name} ${votingProvider.voter.middle_name} ${votingProvider.voter.last_name}`}
+          </p>
+          <p className="font-medium text-sm text-[#838383] bg-red">
+            {`Voter_ID: ${votingProvider.voter.voter_id}`}
+          </p>
         </div>
       </div>
 
@@ -83,14 +105,17 @@ export default function VotingMenu() {
         <p className="font-medium text-sm text-[#717171] mb-2">2 steps to complete the vote.</p>
         <RoundedProgressBar
           barColor={'bg-primary'}
-          fillPercentage={(votingProvider.completedSteps.length / posts.length) * 100}
+          fillPercentage={
+            (votingProvider.completedSteps.length / candidateProvider.posts.length) * 100
+          }
           height={15}
         />
 
         {/* progress steps */}
         <div className="flex flex-col space-y-4 w-full">
-          {posts.map((e, index) => (
+          {candidateProvider.posts.map((e, index) => (
             <ProgressStepCard
+              key={e}
               text={`${index + 1}. ${e}`}
               isCompleted={votingProvider.completedSteps.includes(e)}
             />
@@ -102,7 +127,7 @@ export default function VotingMenu() {
       <div
         onClick={onVote}
         className={`flex w-28 ${
-          votingProvider.completedSteps.length === posts.length
+          votingProvider.completedSteps.length === candidateProvider.posts.length
             ? 'cursor-pointer '
             : 'cursor-not-allowed'
         }`}
@@ -111,7 +136,9 @@ export default function VotingMenu() {
           text={'Submit'}
           loading={loading}
           bgColor={
-            votingProvider.completedSteps.length === posts.length ? 'bg-primary ' : 'bg-[#C6C6C6]'
+            votingProvider.completedSteps.length === candidateProvider.posts.length
+              ? 'bg-primary '
+              : 'bg-[#C6C6C6]'
           }
         />
       </div>

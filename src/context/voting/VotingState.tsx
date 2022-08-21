@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
+import { VoterDto } from '../../models/dto/ServerOpDtos';
 import VotingContext from './VotingContext';
 
 export default function VotingState({ children }: { children: any }) {
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
   const [votes, setVotes] = useState({});
   const [state, setState] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
+  const [voter, setVoter] = useState<VoterDto>({
+    voter_id: '',
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    image: '',
+  });
 
   const addStep = (step: string) => {
     let completedStepsCopy = completedSteps;
@@ -30,7 +39,20 @@ export default function VotingState({ children }: { children: any }) {
 
   return (
     // @ts-ignore
-    <VotingContext.Provider value={{ completedSteps, votes, addVote, addStep, clearVotes }}>
+    <VotingContext.Provider
+      // @ts-ignore
+      value={{
+        completedSteps,
+        accessToken,
+        votes,
+        voter,
+        setVoter,
+        setAccessToken,
+        addVote,
+        addStep,
+        clearVotes,
+      }}
+    >
       {children}
     </VotingContext.Provider>
   );

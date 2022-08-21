@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
-import AdminContext from './AdminContext';
+import React, { useState, useRef } from 'react';
+import { AdminDto } from '../../models/dto/ServerOpDtos';
 import { AdminContainerEnum } from '../../models/enums/ContainerEnums';
+import AdminContext from './AdminContext';
 
-interface AdminStateProps {
-  children: any;
-}
-
-export default function AdminState({ children }: AdminStateProps) {
+export default function AdminState({ children }: { children: any }) {
   const [currentContainer, setCurrentContainer] = useState(AdminContainerEnum.CandidateDetails);
+  const [accessToken, setAccessToken] = useState('');
+  const [admin, setAdmin] = useState<AdminDto>({
+    admin_id: '',
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    image: '',
+  });
 
   return (
-    // @ts-ignore: Unreachable code error
-    <AdminContext.Provider value={{ currentContainer, setCurrentContainer }}>
+    // @ts-ignore
+    <AdminContext.Provider
+      // @ts-ignore
+      value={{
+        currentContainer,
+        accessToken,
+        admin,
+        setAdmin,
+        setAccessToken,
+        setCurrentContainer,
+      }}
+    >
       {children}
     </AdminContext.Provider>
   );

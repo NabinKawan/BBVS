@@ -16,6 +16,7 @@ export default function ProgressBarController({ children }) {
     () => {
       // Your custom logic here
       setCount(count + 10);
+      setReload(!reload)
     },
     [reload],
     // @ts-ignore
