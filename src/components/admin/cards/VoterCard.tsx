@@ -8,9 +8,14 @@ import EditCandidateForm from '../forms/EditCandidateForm';
 import { CandidateDto, VoterDto } from '../../../models/dto/ServerOpDtos';
 import ServerOp from '../../../services/ServerOp';
 import CandidateContext from '../../../context/candidate/CandidateContext';
-import { CandidateContextDto, VoterContextDto } from '../../../models/dto/ContextDtos';
+import {
+  AdminContextDto,
+  CandidateContextDto,
+  VoterContextDto,
+} from '../../../models/dto/ContextDtos';
 import VoterContext from '../../../context/voter/VoterContext';
 import EditvoterForm from '../forms/EditVoterForm';
+import AdminContext from '../../../context/admin/AdminContext';
 
 interface VoterCardProps {
   voter: VoterDto;
@@ -29,13 +34,15 @@ export default function VoterCard({ voter }: VoterCardProps) {
 
   // @ts-ignore managed by using dto
   const voterProvider = useContext(VoterContext) as VoterContextDto;
+  //@ts-ignore
+  const adminProvider = useContext(AdminContext) as AdminContextDto;
   const handleEdit = () => {
     setShowDialog(!showDialog);
   };
 
   const handleDelete = () => {
     setLoading(true);
-    ServerOp.deleteCandidate(voter.voter_id).then((value) => {
+    ServerOp.deleteCandidate(voter.voter_id, adminProvider.accessToken).then((value) => {
       if (value) {
         const voters = voterProvider.voters;
 
@@ -64,7 +71,7 @@ export default function VoterCard({ voter }: VoterCardProps) {
         </div>
 
         <div className="flex flex-col space-y-1 pt-2">
-          <p className="font-medium text-lg">
+          <p className="font-medium text-base text-black">
             {voter.first_name} {voter.middle_name} {voter.last_name}
           </p>
           <p className="font-medium text-sm text-[#686868]">{voter.voter_id}</p>

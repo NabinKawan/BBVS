@@ -29,5 +29,5 @@ export default function AdminContainer() {
     default:
     // default
   }
-  return <div className="w-3/4 h-screen overflow-y-auto bg-AdminBg p-8">{container}</div>;
+  return <div className="w-4/5 h-screen overflow-y-auto bg-AdminBg p-8">{container}</div>;
 }

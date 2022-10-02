@@ -2,6 +2,7 @@ import { CircularProgress } from '@mui/material';
 import Router from 'next/router';
 import React, { useState, useContext } from 'react';
 import { AiFillInfoCircle } from 'react-icons/ai';
+import { FiLogOut } from 'react-icons/fi';
 import { BsFillPersonPlusFill } from 'react-icons/bs';
 import { MdPublishedWithChanges } from 'react-icons/md';
 import AdminContext from '../../context/admin/AdminContext';
@@ -17,6 +18,8 @@ export default function AdminMenu() {
   // @ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
 
+  console.log(adminProvider.admin.image);
+
   const handleLogout = () => {
     setLoading(true);
     setTimeout(() => {
@@ -30,7 +33,7 @@ export default function AdminMenu() {
   };
 
   return (
-    <div className="flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-1/4 p-8">
+    <div className="flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-1/5 p-8">
       {/* logo details*/}
       <div className="flex items-center space-x-1">
         <img src="logos/logo.png" />
@@ -41,7 +44,7 @@ export default function AdminMenu() {
       </div>
 
       {/* profile details */}
-      <div className="flex rounded-xl items-center bg-[#F1F1F1] justify-between p-4  my-8">
+      <div className="flex rounded-xl items-center bg-[#1c4e80] justify-between p-4  my-8">
         <div className="flex space-x-4">
           <img
             className="rounded-full"
@@ -53,23 +56,33 @@ export default function AdminMenu() {
                 : 'images/profile_img.png'
             }
           />
-          <div className="flex flex-col space-y-1">
-            <p className="font-medium text-lg">
+          <div className="flex justify-center flex-col space-y-1">
+            <p className="font-medium text-base text-white">
               {`${adminProvider.admin.first_name} ${adminProvider.admin.middle_name} ${adminProvider.admin.last_name}`}
             </p>
-            <p className="font-medium text-sm text-[#838383] bg-red">
-              {`Admin: ${adminProvider.admin.admin_id}`}
+            <p className="font-medium text-xs text-gray-400 bg-red">
+              {`Admin_ID: ${adminProvider.admin.admin_id}`}
             </p>
           </div>
-        </div>
-        <div
-          onClick={handleLogout}
-          className={`flex w-28 h-full cursor-pointer items-center justify-center text-white font-bold text-base rounded-xl py-2 px-6 bg-[#C6C6C6] hover:bg-red-400`}
-        >
-          {loading ? <CircularProgress color="inherit" size={24} /> : 'Log Out'}
-        </div>
-      </div>
 
+          {/* <div
+              onClick={handleLogout}
+              className={`flex w-28 h-12 cursor-pointer items-center justify-center text-white font-bold text-sm rounded-xl py-2 px-6 bg-red-400 hover:bg-red-400`}
+            >
+              {loading ? <CircularProgress color="inherit" size={24} /> : 'Log Out'}
+            </div> */}
+        </div>
+
+        {loading ? (
+          <CircularProgress color="inherit" size={22} />
+        ) : (
+          <FiLogOut
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-white cursor-pointer "
+            size={22}
+          />
+        )}
+      </div>
       {/* <div className="flex">
         <RoundedTextBtn
           text={'Log Out'}
@@ -79,7 +92,7 @@ export default function AdminMenu() {
       </div> */}
 
       {/* menus */}
-      <div className="flex flex-col space-y-4 text-base">
+      <div className="flex flex-col space-y-4 ">
         <div
           onClick={() => {
             adminProvider.setCurrentContainer(AdminContainerEnum.CandidateDetails);
@@ -91,7 +104,7 @@ export default function AdminMenu() {
           }  px-4 py-3 space-x-4 mt-10`}
         >
           <AiFillInfoCircle size={22} />
-          <p className="font-medium text-lg">Candidates Details</p>
+          <p className="font-medium text-base">Candidates Details</p>
         </div>
         <div
           onClick={() => {
@@ -104,7 +117,7 @@ export default function AdminMenu() {
           }  px-4 py-3 space-x-4 mt-10`}
         >
           <AiFillInfoCircle size={22} />
-          <p className="font-medium text-lg">Voters Details</p>
+          <p className="font-medium text-base">Voters Details</p>
         </div>
         <div
           onClick={() => {
@@ -117,7 +130,7 @@ export default function AdminMenu() {
           }  px-4 py-3 space-x-4 mt-10`}
         >
           <BsFillPersonPlusFill size={22} />
-          <p className="font-medium text-lg">Add Candidates</p>
+          <p className="font-medium text-base">Add Candidates</p>
         </div>
         <div
           onClick={() => {
@@ -130,7 +143,7 @@ export default function AdminMenu() {
           }  px-4 py-3 space-x-4 mt-10`}
         >
           <BsFillPersonPlusFill size={22} />
-          <p className="font-medium text-lg">Add Voters</p>
+          <p className="font-medium text-base">Add Voters</p>
         </div>
 
         <div
@@ -144,7 +157,7 @@ export default function AdminMenu() {
           }  px-4 py-3 space-x-4 mt-10`}
         >
           <MdPublishedWithChanges size={22} />
-          <p className="font-medium text-lg">Election</p>
+          <p className="font-medium text-base">Election</p>
         </div>
       </div>
     </div>

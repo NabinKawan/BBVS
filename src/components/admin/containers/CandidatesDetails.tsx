@@ -19,11 +19,11 @@ export default function CandidatesDetails() {
   return (
     <div className="flex flex-col">
       {/* title */}
-      <p className="font-medium text-[#575353] text-xl ">Candidate Details</p>
+      <p className="font-medium text-[#575353] text-lg ">Candidate Details</p>
 
       {/* container card*/}
       <div className="flex flex-col bg-white rounded-xl shadow-md mt-20">
-        <p className="font-bold text-xl py-7 px-11">Candidate Details</p>
+        <p className="font-bold text-lg py-7 px-11 text-black">Candidate Details</p>
 
         {/* filters */}
         {/* <div className="flex space-x-6 bg-[#F6F6F6] py-3 px-12">

@@ -18,16 +18,16 @@ export default function VotingContainer() {
   console.log('voting container');
 
   return (
-    <div className="w-3/4 h-screen bg-AdminBg py-8 px-20  overflow-y-scroll">
+    <div className="w-4/5 h-screen bg-AdminBg py-8 px-20  overflow-y-scroll">
       {/* title */}
-      <div className="font-medium text-[#575353] text-xl ">Class Election</div>
+      <div className=" font-medium text-[#575353] text-lg ">Class Election</div>
 
       <div className="flex flex-col mb-20 divide-y-2 divide-gray-200">
         {candidateProvider.posts.map((post) => (
-          <div key={post} className="flex flex-col py-20">
+          <div key={post} className="flex flex-col h-screen py-20">
             <div className="flex flex-col space-y-2">
-              <p className="font-bold text-2xl">{`Vote for ${post}`}</p>
-              <p className="font-medium text-base text-[#717171]">{`Choose your ${post}?`}</p>
+              <p className="font-bold text-xl text-black">{`Vote for ${post}`}</p>
+              <p className="font-medium text-sm text-[#717171]">{`Choose your ${post}?`}</p>
             </div>
 
             <div className="flex flex-wrap space-x-14 mt-20">

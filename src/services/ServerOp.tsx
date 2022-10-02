@@ -43,7 +43,7 @@ export default class ServerOp {
     }
   }
 
-  static async uploadImage(file: any) {
+  static async uploadImage(file: any, accessToken: string) {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
@@ -66,6 +66,7 @@ export default class ServerOp {
             headers: {
               'content-type': 'multipart/form-data',
               accept: 'application/json',
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         );

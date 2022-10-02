@@ -41,9 +41,9 @@ export default function AdminLogin() {
           CachService.addDataIntoCache(CachNamesEnum.Admin, cacheData);
           setTimeout(() => {
             Router.push('/admin');
+            setLoading(false);
           }, 2000);
         }
-        setLoading(false);
       });
     } else {
       setError(true);
@@ -77,7 +77,7 @@ export default function AdminLogin() {
         <div className="flex items-center py-3 px-4 space-x-4 rounded-lg border border-gray-200 text-base text-gray-600 w-[350px]">
           <BsFillPersonCheckFill className="text-primary" size={18} />
           <input
-            className="w-full border border-none outline-none "
+            className="w-full border border-none outline-none bg-transparent"
             placeholder="Enter your admin id"
             onChange={(event) => {
               setFormValues({ admin_id: event.target.value, password: formValues.password });
@@ -89,7 +89,7 @@ export default function AdminLogin() {
         <div className="flex items-center  py-3 px-4  space-x-4 rounded-lg border border-gray-200 text-base text-gray-600 w-[350px] ">
           <IoLockClosed className="text-primary" size={18} />
           <input
-            className="w-full border border-none outline-none"
+            className="w-full border border-none outline-none bg-transparent"
             placeholder="Enter your password"
             onChange={(event) => {
               setFormValues({ admin_id: formValues.admin_id, password: event.target.value });

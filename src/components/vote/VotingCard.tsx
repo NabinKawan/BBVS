@@ -26,12 +26,12 @@ export default function VotingCard({ candidate, isSelected, onClick }: VotingCar
     >
       <div className={`flex flex-col items-center justify-center space-y-7`}>
         <img
-          className="rounded-full w-20 h-20"
+          className="rounded-full w-24 h-24"
           src={candidate.image === '' ? 'images/noprofile.png' : candidate.image}
           style={{ objectFit: 'cover' }}
         />
         <div className="flex w-[150px]  overflow-x-clip flex-col items-center space-y-1">
-          <p className="flex text-center font-medium text-lg leading-tight">
+          <p className="flex text-center font-medium text-base leading-tight text-black">
             {`${candidate.first_name} ${candidate.middle_name} ${candidate.last_name}`}
           </p>
           <p className="font-normal text-sm text-[#686868]">{candidate.candidate_id}</p>
