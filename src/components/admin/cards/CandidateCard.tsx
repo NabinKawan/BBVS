@@ -52,15 +52,14 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
         <div className="flex flex-col items-center">
           <img
             className="rounded-full"
-            height={60}
-            width={60}
+            style={{ objectFit: 'cover', height: 60, width: 60 }}
             src={candidate.image === '' ? 'images/noprofile.png' : `http://${candidate.image}`}
           />
           <p className="font-medium text-sm text-green-500">{candidate.post}</p>
         </div>
 
         <div className="flex flex-col space-y-1 pt-2">
-          <p className="font-medium text-lg">
+          <p className="font-medium text-base text-black">
             {candidate.first_name} {candidate.middle_name} {candidate.last_name}
           </p>
           <p className="font-medium text-sm text-[#686868]">{candidate.candidate_id}</p>

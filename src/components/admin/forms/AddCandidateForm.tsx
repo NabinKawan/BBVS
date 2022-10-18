@@ -106,7 +106,7 @@ export default function AddCandidateForm() {
       setLoading(true);
 
       // upload image and set the url to addCandidateInfo
-      ServerOp.uploadImage(image.img_file).then((value) => {
+      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
         candidateProvider.addCandidateInfo(TextFieldIdEnum.Image, value);
 
         // changing saved post and id values to uppercase

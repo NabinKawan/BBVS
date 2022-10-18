@@ -16,11 +16,11 @@ export default function VotersDetails() {
   return (
     <div className="flex flex-col">
       {/* title */}
-      <p className="font-medium text-[#575353] text-xl ">Voter Details</p>
+      <p className="font-medium text-[#575353] text-lg ">Voter Details</p>
 
       {/* container card*/}
       <div className="flex flex-col bg-white rounded-xl shadow-md mt-20">
-        <p className="font-bold text-xl py-7 px-11">Voter Details</p>
+        <p className="font-bold text-lg py-7 px-11 text-black">Voter Details</p>
 
         {/* candidate list */}
         <div className="flex flex-col divide-y-2 divide-gray-50  px-12">

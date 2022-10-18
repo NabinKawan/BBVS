@@ -19,11 +19,11 @@ export default function AddVoters() {
   return (
     <div className="flex flex-col">
       {/* title */}
-      <p className="font-medium text-[#575353] text-xl ">Add Voters</p>
+      <p className="font-medium text-[#575353] text-lg ">Add Voters</p>
 
       {/* container card */}
       <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-11 py-7">
-        <p className="font-bold text-xl">Add Voters Information</p>
+        <p className="font-bold text-lg text-black">Add Voters Information</p>
 
         {/* form */}
         <AddVoterForm />

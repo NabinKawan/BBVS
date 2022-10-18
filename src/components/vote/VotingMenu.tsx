@@ -68,7 +68,7 @@ export default function VotingMenu() {
   };
 
   return (
-    <div className="flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-1/4 p-8">
+    <div className="flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-1/5 p-8">
       {/* logo details*/}
       <div className="flex items-center space-x-1">
         <img src="logos/logo.png" />
@@ -79,7 +79,7 @@ export default function VotingMenu() {
       </div>
 
       {/* profile details */}
-      <div className="flex rounded-xl items-center bg-[#F1F1F1] p-4 space-x-4 my-8">
+      <div className="flex rounded-xl items-center bg-primary p-4 space-x-4 my-8">
         <img
           className="rounded-full"
           height={60}
@@ -87,14 +87,14 @@ export default function VotingMenu() {
           src={
             votingProvider.voter.image !== ''
               ? `http://${votingProvider.voter.image}`
-              : 'images/profile_img.png'
+              : 'images/noprofile.png'
           }
         />
         <div className="flex flex-col space-y-1">
-          <p className="font-medium text-lg">
+          <p className="font-medium text-base text-white">
             {`${votingProvider.voter.first_name} ${votingProvider.voter.middle_name} ${votingProvider.voter.last_name}`}
           </p>
-          <p className="font-medium text-sm text-[#838383] bg-red">
+          <p className="font-medium text-xs text-gray-400 bg-red">
             {`Voter_ID: ${votingProvider.voter.voter_id}`}
           </p>
         </div>

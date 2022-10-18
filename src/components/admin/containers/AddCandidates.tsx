@@ -14,11 +14,11 @@ export default function AddCandidates() {
   return (
     <div className="flex flex-col">
       {/* title */}
-      <p className="font-medium text-[#575353] text-xl ">Add Candidates</p>
+      <p className="font-medium text-[#575353] text-lg ">Add Candidates</p>
 
       {/* container card */}
       <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-11 py-7">
-        <p className="font-bold text-xl">Add Candidates Information</p>
+        <p className="font-bold text-lg text-black">Add Candidates Information</p>
 
         {/* form */}
         <AddCandidateForm />

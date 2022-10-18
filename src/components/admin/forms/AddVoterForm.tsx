@@ -105,7 +105,7 @@ export default function AddVoterForm() {
       setLoading(true);
 
       // upload image and set the url to addVoterInfo
-      ServerOp.uploadImage(image.img_file).then((value) => {
+      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
         voterProvider.addVoterInfo(TextFieldIdEnum.Image, value);
 
         // changing saved post and id values to uppercase

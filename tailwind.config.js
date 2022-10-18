@@ -9,12 +9,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#3661EB',
+        primary: '#1c4e80',
         loginBg: '#F2F5FF',
         AdminBg: '#F4F6F8',
 
         // menu item
-        menuItemHighlight: '#E3E9FC',
+        menuItemHighlight: '#EFEFEF',
         menuItemTextColor: '#717171',
 
         // buttons
