@@ -10,6 +10,7 @@ import { CachNamesEnum } from '../models/enums/CacheEnums';
 import VotingContext from '../context/voting/VotingContext';
 import { VotingContextDto } from '../models/dto/ContextDtos';
 import { CacheDto } from '../models/dto/CacheDtos';
+import ContractService from '../services/ContractService';
 
 export default function Login() {
   console.log('login');
@@ -28,6 +29,7 @@ export default function Login() {
         Router.push('/voting');
       }
     });
+    ContractService.getOwner();
   }, []);
 
   const onLogin = () => {
