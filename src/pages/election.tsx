@@ -4,13 +4,38 @@ import CountUp from 'react-countup';
 import { totalVoted, totalVoters } from '../dummy/data';
 import ElectionCDetails from '../shared/ElectionDetails';
 import ElectionDetails from '../shared/ElectionDetails';
+import ContractService from '../services/ContractService';
 
 export default function Election() {
   const [votersPercent, setVotePercent] = useState(0);
   const [votersCount, setVotersCount] = useState(0);
   const [reload, setReload] = useState(false);
+  const [endTime, setEndTime] = useState(0);
+  const [isElectionStarted, setElectionStatus] = useState(false);
+
+  const getElectionResult = () => {
+    setElectionStatus(false);
+    ContractService.getResults().then((val) => {
+      console.log(val);
+    });
+  };
+
   const votersRef = useRef({ votersPercent: 0, incVoters: 0 });
   useEffect(() => {
+    ContractService.getVotingEndTime().then((val) => {
+      if (val) {
+        if (val !== endTime) {
+          console.log({ end_time: val });
+          const date = new Date();
+          const nowTime = date.getTime() / 1000;
+          if (val - nowTime > 0) {
+            setElectionStatus(true);
+            setEndTime(val);
+          }
+        }
+      }
+    });
+
     if (votersPercent === 0) {
       const votePercent = (totalVoted / totalVoters) * 100;
       const incVoters = totalVoters / totalVoted / 10;
@@ -25,9 +50,13 @@ export default function Election() {
     }
   }, [reload]);
 
-  return false ? (
+  return isElectionStarted ? (
     <div className="flex flex-col w-screen h-screen justify-center font-sans">
-      <ElectionDetails message="Class Election is going on. You can see the results after the election session is ended." />
+      <ElectionDetails
+        onElectionEnd={getElectionResult}
+        endTime={endTime}
+        message="Class Election is going on. You can see the results after the election session is ended."
+      />
     </div>
   ) : (
     <div className="flex flex-col items-start py-20 font-sans  bg-gray-50  px-64">

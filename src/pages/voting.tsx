@@ -12,7 +12,9 @@ import { CandidateContextDto, VoterContextDto, VotingContextDto } from '../model
 import VoterContext from '../context/voter/VoterContext';
 import ServerOp from '../services/ServerOp';
 import CandidateContext from '../context/candidate/CandidateContext';
-import { VoterDto } from '../models/dto/ServerOpDtos';
+import { CandidateDto, VoterDto } from '../models/dto/ServerOpDtos';
+import ContractService from '../services/ContractService';
+import { ContractCandidateDto } from '../models/dto/ContractDtos';
 
 export default function Voting() {
   // @ts-ignore
@@ -26,21 +28,21 @@ export default function Voting() {
         votingProvider.setAccessToken(value.access_token);
 
         // fetching candidates datas
-        ServerOp.getAllCandidates(value.access_token).then((value) => {
-          if (value) {
-            if (value !== 'unauthorized') {
-              candidateProvider.setPosts([...value.posts]);
-              candidateProvider.setCandidates([...value.content]);
-              console.log(value.content);
-            } else {
-              CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
-                if (value) {
-                  Router.push('/login');
-                }
-              });
-            }
-          }
-        });
+        // ServerOp.getAllCandidates(value.access_token).then((value) => {
+        //   if (value) {
+        //     if (value !== 'unauthorized') {
+        //       candidateProvider.setPosts([...value.posts]);
+        //       candidateProvider.setCandidates([...value.content]);
+        //       console.log(value.content);
+        //     } else {
+        //       CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+        //         if (value) {
+        //           Router.push('/login');
+        //         }
+        //       });
+        //     }
+        //   }
+        // });
 
         // fetching voter profile
         ServerOp.getVoter(value.user_id, value.access_token).then((value: VoterDto | any) => {
@@ -48,6 +50,19 @@ export default function Voting() {
             if (value !== 'unauthorized') {
               console.log({ value });
               votingProvider.setVoter({ ...value[0] });
+              ContractService.getCandidateList().then((candidates: ContractCandidateDto[]) => {
+                if (candidates) {
+                  const posts: string[] = [];
+                  const formatedCandidates: CandidateDto[] = [];
+                  candidates.forEach((candidate) => {
+                    posts.push(candidate.post);
+
+                    formatedCandidates;
+                  });
+                  candidateProvider.setPosts([...posts]);
+                  candidateProvider.setCandidates([...value.content]);
+                }
+              });
             } else {
               CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
                 if (value) {

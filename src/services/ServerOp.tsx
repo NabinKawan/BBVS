@@ -416,15 +416,9 @@ export default class ServerOp {
       if (response.status === 200) {
         const jwtToken = await response.json();
         console.log(jwtToken);
-        // throw Error(`Unexpected response: code [${response.status}]`);
         return jwtToken.access_token;
       } else if (response.status === 401) {
-        Swal.fire({
-          icon: 'warning',
-          text: 'id or password incorrect',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        throw new Error('Incorrect credentials (id or password incorrect)');
       }
     } catch (e) {
       throw e;

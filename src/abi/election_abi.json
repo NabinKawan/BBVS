@@ -126,25 +126,6 @@
     "type": "event"
   },
   {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "voterId",
-        "type": "string"
-      }
-    ],
-    "name": "didCurrentVoterVoted",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "userVoted_",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "electionName",
     "outputs": [
@@ -301,6 +282,25 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "voterId",
+        "type": "string"
+      }
+    ],
+    "name": "getVoterStatus",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "userVoted_",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
