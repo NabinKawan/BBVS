@@ -24,7 +24,7 @@ export default function VotingContainer() {
 
       <div className="flex flex-col mb-20 divide-y-2 divide-gray-200">
         {candidateProvider.posts.map((post) => (
-          <div key={post} className="flex flex-col h-screen py-20">
+          <div key={post} className="flex flex-col py-32">
             <div className="flex flex-col space-y-2">
               <p className="font-bold text-xl text-black">{`Vote for ${post}`}</p>
               <p className="font-medium text-sm text-[#717171]">{`Choose your ${post}?`}</p>

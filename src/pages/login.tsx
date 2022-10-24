@@ -23,7 +23,6 @@ export default function Login() {
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
   useEffect(() => {
-    ContractService.getCandidateList();
     // checking cache for admin
     CachService.getCacheData(CachNamesEnum.Voter).then((value) => {
       if (value) {
@@ -46,8 +45,10 @@ export default function Login() {
               user_id: formValues.voter_id,
               access_token: value,
             };
-            ContractService.didCurrentVoterVoted(formValues.voter_id)
+            const voterId = formValues.voter_id.toUpperCase();
+            ContractService.getVoterStatus(voterId)
               .then((val) => {
+                console.log({ val });
                 if (val === false) {
                   CachService.addDataIntoCache(CachNamesEnum.Voter, cacheData);
                   setTimeout(() => {
@@ -58,6 +59,7 @@ export default function Login() {
               })
               .catch((e) => {
                 toast.error(e.message, {});
+                setLoading(false);
               });
           }
         })

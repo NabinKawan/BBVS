@@ -29,83 +29,147 @@ export default class ContractService {
   }
 
   static async getCandidateList() {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    console.log(contract);
-    const candidateList = await contract.getCandidateList();
-    console.log(candidateList);
-    return candidateList;
-  }
-
-  static async getCandidatesCount() {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    console.log(contract);
-    const candidateCount: BigNumber = await contract.getCandidatesCount();
-    console.log(candidateCount.toNumber());
-    return candidateCount.toNumber();
-  }
-
-  static async getResults() {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    console.log(contract);
-    const result: ElectionResultDto = await contract.getResults();
-    console.log(result);
-    return result;
-  }
-
-  static async getVotersCount() {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    console.log(contract);
-    const voterCount: BigNumber = await contract.getVotersCount();
-    console.log(voterCount.toNumber());
-    return voterCount.toNumber();
-  }
-
-  static async getVotingEndTime() {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    console.log(contract);
-    const votingEndTime: BigNumber = await contract.getVotingEndTime();
-    console.log(votingEndTime.toNumber());
-    return votingEndTime.toNumber();
-  }
-
-  static async getTotalVotes(): Promise<number> {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    const totalVotes: BigNumber = await contract.totalVotes();
-    return totalVotes.toNumber();
-  }
-
-  static async getElectionName(): Promise<string> {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    const electionName: string = await contract.electionName();
-    console.log(electionName);
-    return electionName;
-  }
-
-  static async didCurrentVoterVoted(voterId: string): Promise<boolean> {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-      const res: boolean = await contract.didCurrentVoterVoted(voterId);
+      console.log(contract);
+      const candidateList = await contract.getCandidateList();
+      console.log(candidateList);
+      return candidateList;
+    } catch (e: any) {
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(errorMessage.indexOf('reason='), errorMessage.length);
+      errorMessage = errorMessage.slice(8, errorMessage.indexOf('",'));
+      throw new Error(errorMessage);
+    }
+  }
+
+  static async getCandidatesCount() {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      console.log(contract);
+      const candidateCount: BigNumber = await contract.getCandidatesCount();
+      console.log(candidateCount.toNumber());
+      return candidateCount.toNumber();
+    } catch (e: any) {
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+      throw new Error(errorMessage);
+    }
+  }
+
+  static async getResults() {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      console.log(contract);
+      const result = await contract.getResults();
+      console.log(result);
+      return result;
+    } catch (e: any) {
+      //@ts-ignore
+      let errorMessage: string = e.message;
+      if (errorMessage.indexOf('reason=') > 0) {
+        console.log('yeah');
+        errorMessage = errorMessage.slice(errorMessage.indexOf('reason='), errorMessage.length);
+        errorMessage = errorMessage.slice(8, errorMessage.indexOf('",'));
+        throw new Error(errorMessage);
+      } else {
+        //@ts-ignore
+        let errorMessage = e.message;
+        errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+        throw new Error(errorMessage[0].toUpperCase() + errorMessage.slice(1));
+      }
+    }
+  }
+
+  static async getVotersCount() {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      console.log(contract);
+      const voterCount: BigNumber = await contract.getVotersCount();
+      console.log(voterCount.toNumber());
+      return voterCount.toNumber();
+    } catch (e: any) {
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+      throw new Error(errorMessage);
+    }
+  }
+
+  static async getVotingEndTime() {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      console.log(contract);
+      const votingEndTime: BigNumber = await contract.getVotingEndTime();
+      console.log(votingEndTime.toNumber());
+      return votingEndTime.toNumber();
+    } catch (e: any) {
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+      throw new Error(errorMessage);
+    }
+  }
+
+  static async getTotalVotes(): Promise<number> {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      const totalVotes: BigNumber = await contract.totalVotes();
+      return totalVotes.toNumber();
+    } catch (e: any) {
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+      throw new Error(errorMessage);
+    }
+  }
+
+  static async getElectionName(): Promise<string> {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      const electionName: string = await contract.electionName();
+      console.log(electionName);
+      return electionName;
+    } catch (e: any) {
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+      throw new Error(errorMessage);
+    }
+  }
+
+  static async getVoterStatus(voterId: string): Promise<boolean> {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      const res: boolean = await contract.getVoterStatus(voterId);
       return res;
     } catch (e) {
-      throw new Error('Provider error');
+      console.log(e);
+      //@ts-ignore
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(errorMessage.indexOf('reason='), errorMessage.length);
+      errorMessage = errorMessage.slice(8, errorMessage.indexOf('",'));
+      throw new Error(errorMessage);
     }
   }
 
   static async getVotingStartTime() {
-    const provider = this.getProvider();
-    const contract = this.getContract(provider);
-    console.log(contract);
-    const votingStartTime: BigNumber = await contract.getVotingEndTime();
-    console.log(votingStartTime.toNumber());
-    return votingStartTime.toNumber();
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      console.log(contract);
+      const votingStartTime: BigNumber = await contract.getVotingEndTime();
+      console.log(votingStartTime.toNumber());
+      return votingStartTime.toNumber();
+    } catch (e: any) {
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+      throw new Error(errorMessage);
+    }
   }
 
   generateTuple(members: ContractCandidateDto[] | ContractVoterDto[]) {
@@ -125,37 +189,64 @@ export default class ContractService {
     try {
       const contractService = new ContractService();
       const provider = this.getProvider();
-      console.log(provider);
       if (!provider) throw Error('No Provider selected');
       await provider.send('eth_requestAccounts', []);
       const signer = await provider.getSigner();
       const contract = this.getContract(signer);
+
       const candidateTuple = contractService.generateTuple(candidates);
       const voterTuple = contractService.generateTuple(voters);
-      console.log({ candidateTuple });
-      console.log({ voterTuple });
+      console.log(candidateTuple);
+      console.log(voterTuple);
       const res = await contract.startElection(
         electionName,
         endTimeSec,
         candidateTuple,
         voterTuple,
       );
+      console.log(res);
       if (res) {
-        toast.info('Transaction submitted', { autoClose: 2000 });
+        toast.info('Transaction in progress', { autoClose: 2000 });
       }
       const miningResult = provider.waitForTransaction(res.hash);
       return miningResult;
     } catch (e) {
-      throw new Error('Failed to start election');
+      //@ts-ignore
+      let errorMessage = e.message;
+      errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+      throw new Error(errorMessage);
     }
   }
 
   static async vote(voterId: string, candidateIds: string[]) {
-    const provider = this.getProvider();
-    await provider.send('eth_requestAccounts', []);
-    const signer = await provider.getSigner();
-    const signerAddress = await signer.getAddress();
-    const contract = this.getContract(signer);
-    await contract.vote(voterId, candidateIds);
+    try {
+      const provider = this.getProvider();
+      await provider.send('eth_requestAccounts', []);
+      const signer = await provider.getSigner();
+      const signerAddress = await signer.getAddress();
+      const contract = this.getContract(signer);
+      const res = await contract.vote(voterId, candidateIds);
+      console.log(res);
+      if (res) {
+        toast.info('Transaction in progress', { autoClose: 2000 });
+      }
+      const miningResult = provider.waitForTransaction(res.hash);
+      return miningResult;
+    } catch (e: any) {
+      console.log(e);
+      //@ts-ignore
+      let errorMessage: string = e.message;
+      if (errorMessage.indexOf('reason=') > 0) {
+        console.log('yeah');
+        errorMessage = errorMessage.slice(errorMessage.indexOf('reason='), errorMessage.length);
+        errorMessage = errorMessage.slice(8, errorMessage.indexOf('",'));
+        throw new Error(errorMessage);
+      } else {
+        //@ts-ignore
+        let errorMessage = e.message;
+        errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+        throw new Error(errorMessage[0].toUpperCase() + errorMessage.slice(1));
+      }
+    }
   }
 }

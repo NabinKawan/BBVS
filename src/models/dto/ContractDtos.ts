@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers';
+
 export type ContractCandidateDto = {
   candidateId: string;
   name: string;
@@ -15,6 +17,7 @@ export type ContractVoterDto = {
 export type ElectionResultDto = {
   name: string;
   imageUrl: string;
-  voteCount: number;
+  voteCount: BigNumber;
   candidateId: string;
+  post: string;
 };

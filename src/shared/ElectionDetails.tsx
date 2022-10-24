@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import ContractService from '../services/ContractService';
 
 interface ElectionDetailsProps {
   message: string;
   endTime: number;
   onElectionEnd: any;
+  isElectionPage?: boolean;
 }
 
-export default function ElectionDetails({ message, endTime, onElectionEnd }: ElectionDetailsProps) {
+export default function ElectionDetails({
+  message,
+  endTime,
+  onElectionEnd,
+  isElectionPage = false,
+}: ElectionDetailsProps) {
   const [totalVoters, setTotalVoters] = useState(0);
   const [totalCandidates, setTotalCandidates] = useState(0);
   const [totalVotes, setTotalVotes] = useState(0);
   const [electionName, setElectionName] = useState('');
   const [timer, setTimer] = useState('00 : 00 : 00');
-
+  // @ts-ignore
+  var refreshIntervalId;
   const getTimeRemaining = () => {
     const total = endTime * 1000 - Date.now();
     const seconds = Math.floor((total / 1000) % 60);
@@ -40,45 +48,70 @@ export default function ElectionDetails({ message, endTime, onElectionEnd }: Ele
       );
       getDetails();
     } else {
+      //@ts-ignore
+      clearInterval(refreshIntervalId);
       onElectionEnd();
     }
   };
 
   const getDetails = () => {
-    ContractService.getTotalVotes().then((val) => {
-      if (val) {
-        if (totalVotes !== val) setTotalVotes(val);
-      }
-    });
+    try {
+      ContractService.getTotalVotes().then((val) => {
+        if (val) {
+          if (totalVotes !== val) setTotalVotes(val);
+        }
+      });
 
-    ContractService.getVotersCount().then((val) => {
-      if (val) {
-        if (totalVoters !== val) setTotalVoters(val);
-      }
-    });
+      ContractService.getVotersCount().then((val) => {
+        if (val) {
+          if (totalVoters !== val) setTotalVoters(val);
+        }
+      });
 
-    ContractService.getCandidatesCount().then((val) => {
-      if (val) {
-        if (totalCandidates !== val) setTotalCandidates(val);
-      }
-    });
+      ContractService.getCandidatesCount().then((val) => {
+        if (val) {
+          if (totalCandidates !== val) setTotalCandidates(val);
+        }
+      });
+    } catch (e: any) {
+      toast.error(e.message, { autoClose: 2000 });
+    }
   };
 
   useEffect(() => {
-    setInterval(() => {
+    refreshIntervalId = setInterval(() => {
       startTimer();
     }, 1000);
     getDetails();
 
-    ContractService.getElectionName().then((val) => {
-      if (val) {
-        if (electionName !== val) setElectionName(val);
-      }
-    });
+    ContractService.getElectionName()
+      .then((val) => {
+        if (val) {
+          if (electionName !== val) setElectionName(val);
+        }
+      })
+      .catch((e) => {
+        toast.error(e.message, { autoClose: 2000 });
+      });
   }, []);
   return (
-    <div className="flex flex-col w-full items-center text-gray-700">
-      <p className="font-bold text-2xl  text-gray-700">{electionName}</p>
+    <div className="flex flex-col w-full items-center justify-start text-gray-700">
+      {isElectionPage && (
+        <div className="flex w-full  items-start justify-start pb-24 px-8 pt-8">
+          <div className="flex items-center">
+            <img src="logos/logo.png" />
+            <div className="flex flex-col justify-center">
+              <p className="font-bold  text-2xl text-[#202020]">BBVS</p>
+              <p className="font-medium text-base text-[#979797]">Blockchain Based Voting System</p>
+            </div>
+          </div>
+        </div>
+      )}
+      {isElectionPage ? (
+        <p className=" text-3xl  text-gray-800 pb-8"> Voting session of {electionName}</p>
+      ) : (
+        <p className="font-bold text-2xl  text-gray-700">{electionName}</p>
+      )}
 
       <div className="flex mx-12 w-full justify-center space-x-24 my-20 ">
         <div className="flex w-44 flex-col space-y-4  border-t-4 border-green-600 shadow-lg px-8 py-4 bg-white ">

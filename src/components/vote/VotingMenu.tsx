@@ -12,6 +12,8 @@ import 'animate.css';
 import Router from 'next/router';
 import { CachNamesEnum } from '../../models/enums/CacheEnums';
 import CachService from '../../services/CacheService';
+import ContractService from '../../services/ContractService';
+import { toast } from 'react-toastify';
 
 export default function VotingMenu() {
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,6 @@ export default function VotingMenu() {
       Swal.fire({
         title: 'Please wait',
         text: 'Your vote is being submitting',
-        timer: 5000,
         allowOutsideClick: false,
         allowEnterKey: false,
         showClass: {
@@ -34,35 +35,43 @@ export default function VotingMenu() {
         },
         didOpen: () => {
           Swal.showLoading();
+          ContractService.vote(votingProvider.voter.voter_id, Object.values(votingProvider.votes))
+            .then((val) => {
+              if (val) {
+                toast.success('Voted successfully', { autoClose: 2000 });
+                Swal.close();
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Congratulations',
+                  text: 'Your vote has been submitted successfully',
+                  timer: 2000,
+                  allowOutsideClick: false,
+                  allowEnterKey: false,
+                  hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                  },
+
+                  showConfirmButton: false,
+                }).then((result) => {
+                  /* Read more about handling dismissals below */
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                    CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+                      if (value) {
+                        Router.push('/login');
+                        votingProvider.clearVotes();
+                      }
+                    });
+                  }
+                });
+              }
+            })
+            .catch((e) => {
+              toast.error(e.message, { autoClose: 2000 });
+              Swal.close();
+            });
         },
 
         showConfirmButton: false,
-      }).then((result) => {
-        /* Read more about handling dismissals below */
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Congratulations',
-          text: 'Your vote has been submitted successfully',
-          timer: 2000,
-          allowOutsideClick: false,
-          allowEnterKey: false,
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp',
-          },
-
-          showConfirmButton: false,
-        }).then((result) => {
-          /* Read more about handling dismissals below */
-          if (result.dismiss === Swal.DismissReason.timer) {
-            CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
-              if (value) {
-                Router.push('/login');
-                votingProvider.clearVotes();
-              }
-            });
-          }
-        });
       });
     }
   };

@@ -38,7 +38,13 @@ export default function Election() {
   };
 
   const endElectionSession = () => {
-    // setElectionStatus(false);
+    setElectionStatus(false);
+  };
+
+  const getEndTime = () => {
+    const date = new Date();
+    const nowTime = date.getTime() / 1000;
+    return nowTime + parseInt(electionEndTime) * 60;
   };
 
   const handleSubmit = () => {
@@ -77,43 +83,35 @@ export default function Election() {
         contractVoters,
       )
         .catch((e) => {
-          toast.error(e, { autoClose: 2000 });
+          toast.error(e.message, { autoClose: 2000 });
           setLoading(false);
         })
         .then((val) => {
           if (val) {
             toast.success('Minted', { autoClose: 2000 });
+            setElectionStatus(true);
             setLoading(false);
-            ContractService.getVotingEndTime().then((val) => {
-              if (val) {
-                console.log({ end_time: val });
-                const date = new Date();
-                const nowTime = date.getTime() / 1000;
-                if (val - nowTime > 0) {
-                  setElectionStatus(true);
-                  setEndTime(val);
-                }
-              }
-            });
-          } else {
-            toast.error('Transaction failed', { autoClose: 2000 });
           }
         });
     }
   };
 
   useEffect(() => {
-    ContractService.getVotingEndTime().then((val) => {
-      if (val) {
-        console.log({ end_time: val });
-        const date = new Date();
-        const nowTime = date.getTime() / 1000;
-        if (val - nowTime > 0) {
-          setElectionStatus(true);
-          setEndTime(val);
+    ContractService.getVotingEndTime()
+      .then((val) => {
+        if (val) {
+          console.log({ end_time: val });
+          const date = new Date();
+          const nowTime = date.getTime() / 1000;
+          if (val - nowTime > 0) {
+            setElectionStatus(true);
+            setEndTime(val);
+          }
         }
-      }
-    });
+      })
+      .catch((e) => {
+        toast.error(e.message, { autoClose: 2000 });
+      });
   }, []);
   return (
     <div className="flex flex-col">
@@ -183,7 +181,7 @@ export default function Election() {
         ) : (
           <div className="w-full h-full py-20">
             <ElectionDetails
-              endTime={endTime}
+              endTime={endTime !== 0 ? endTime : getEndTime()}
               onElectionEnd={endElectionSession}
               message="  You cannot start new election during the voting session, Once the election time is
         completed you can make a new election."

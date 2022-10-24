@@ -2,30 +2,32 @@ import { motion } from 'framer-motion';
 import React from 'react';
 
 interface ElectionCardProps {
-  votePercent: number;
-  image?: string;
+  totalVotes: number;
+  image: string;
   name: string;
-  voteAmount: number;
+  isElected?: boolean;
+  voteCount: number;
 }
 
 export default function ElectionCard({
   name,
-  voteAmount,
-  votePercent,
+  isElected = false,
+  voteCount,
+  totalVotes,
   image = '/images/noprofile.png',
 }: ElectionCardProps) {
   let pollColor = '';
-
+  const votePercent = (voteCount / totalVotes) * 100;
   if (votePercent >= 80) {
-    pollColor = 'bg-green-300 shadow-md shadow-green-200';
+    pollColor = 'bg-lime-500 shadow-md shadow-gray-100';
   }
 
   if (votePercent >= 50 && votePercent < 80) {
-    pollColor = 'bg-yellow-200 shadow-md shadow-yellow-100';
+    pollColor = 'bg-pink-500 shadow-md shadow-gray-100';
   }
 
   if (votePercent < 50) {
-    pollColor = 'bg-red-400 shadow-md shadow-red-200';
+    pollColor = 'bg-red-500 shadow-md shadow-gray-100';
   }
 
   const pollWidth = `w-[80%]`;
@@ -35,34 +37,34 @@ export default function ElectionCard({
       // initial={{ x: -200 }}
       // animate={{ x: 0 }}
       // transition={{ ease: 'easeOut', duration: 1.5 }}
-      className="flex flex-col font-sans items-start bg-white justify-center p-4 space-y-3 rounded-xl shadow-lg w-full"
+      className="flex flex-col bg- font-sans items-start bg-white justify-center p-4 space-y-3  w-full"
     >
-      <div className="flex w-full space-x-6 items-center">
-        <div className="flex flex-col items-center space-y-2">
+      <div className="flex w-full justify-between  items-start text-gray-900">
+        <div className="flex  items-center  space-x-6 ">
           <img
             className="rounded-full"
-            src={image}
-            style={{ objectFit: 'cover', height: 60, width: 60 }}
+            style={{ objectFit: 'cover', height: 50, width: 50 }}
+            src={image === '' ? 'images/noprofile.png' : `http://${image}`}
           />
-          <p className="font-medium text-sm text-green-500">CR</p>
-        </div>
-
-        <div className="flex flex-col w-full text-base">
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <p className="font-bold ">{name}</p>
-              <p className="text-xs font-medium text-gray-500">KCE075BCT020</p>
+          <div className="flex flex-col  text-base text-gray-900">
+            <div className="flex justify-between">
+              <div className="flex flex-col">
+                <p className="font-medium text-lg ">{name}</p>
+                <p className="text-sm text-gray-500">KCE075BCT020</p>
+                {isElected && (
+                  <div className="flex justify-center w-20 items-center py-1 px-1 mt-1 text-sm bg-green-600 text-white rounded-full">
+                    Elected
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
-          <div className="flex rounded-lg mt-3 bg-gray-100 w-full h-[6px] ">
-            <div
-              className={`rounded-lg ${pollColor} h-[6px]`}
-              style={{ width: `${votePercent}%` }}
-            ></div>
-          </div>
-          <p className="mt-2 text-xs font-medium">{`${voteAmount} votes`}</p>
         </div>
+
+        <p className="font-medium">{voteCount} votes</p>
+      </div>
+      <div className="flex rounded-lg mt-3 bg-gray-200 w-full h-2 ">
+        <div className={`rounded-md ${pollColor} h-2`} style={{ width: `${votePercent}%` }}></div>
       </div>
     </div>
   );
