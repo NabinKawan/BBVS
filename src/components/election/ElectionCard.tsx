@@ -31,30 +31,39 @@ export default function ElectionCard({
   const pollWidth = `w-[80%]`;
 
   return (
-    <motion.div
-      initial={{ x: -200 }}
-      animate={{ x: 0 }}
-      transition={{ ease: 'easeOut', duration: 1.5 }}
-      className="flex flex-col items-start bg-white justify-center p-4 space-y-3 rounded-xl shadow-lg w-full"
+    <div
+      // initial={{ x: -200 }}
+      // animate={{ x: 0 }}
+      // transition={{ ease: 'easeOut', duration: 1.5 }}
+      className="flex flex-col font-sans items-start bg-white justify-center p-4 space-y-3 rounded-xl shadow-lg w-full"
     >
       <div className="flex w-full space-x-6 items-center">
-        <img className="rounded-full w-14 h-14" src={image} style={{ objectFit: 'cover' }} />
+        <div className="flex flex-col items-center space-y-2">
+          <img
+            className="rounded-full"
+            src={image}
+            style={{ objectFit: 'cover', height: 60, width: 60 }}
+          />
+          <p className="font-medium text-sm text-green-500">CR</p>
+        </div>
 
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full text-base">
           <div className="flex justify-between">
-            <p className="font-bold text-lg">{name}</p>
-            <p className="font-semibold text-gray-900">{`${votePercent}%`}</p>
+            <div className="flex flex-col">
+              <p className="font-bold ">{name}</p>
+              <p className="text-xs font-medium text-gray-500">KCE075BCT020</p>
+            </div>
           </div>
 
-          <div className="flex rounded-lg mt-5 bg-gray-100 w-full h-2 ">
+          <div className="flex rounded-lg mt-3 bg-gray-100 w-full h-[6px] ">
             <div
-              className={`rounded-lg ${pollColor} h-2`}
+              className={`rounded-lg ${pollColor} h-[6px]`}
               style={{ width: `${votePercent}%` }}
             ></div>
           </div>
-          <p className="mt-2 text-sm font-medium">{`${voteAmount} votes`}</p>
+          <p className="mt-2 text-xs font-medium">{`${voteAmount} votes`}</p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import ElectionCard from '../components/election/ElectionCard';
 import CountUp from 'react-countup';
 import { totalVoted, totalVoters } from '../dummy/data';
+import ElectionCDetails from '../shared/ElectionDetails';
+import ElectionDetails from '../shared/ElectionDetails';
 
 export default function Election() {
   const [votersPercent, setVotePercent] = useState(0);
@@ -23,10 +25,14 @@ export default function Election() {
     }
   }, [reload]);
 
-  return (
-    <div className="flex flex-col items-start py-20 font-sans  bg-[#FAFAFA]  px-64">
-      <p className="font-bold text-3xl mb-24 text-gray-800"> Voting result for class election</p>
-      <div className="flex flex-row w-full h-full space-x-64 ">
+  return false ? (
+    <div className="flex flex-col w-screen h-screen justify-center font-sans">
+      <ElectionDetails message="Class Election is going on. You can see the results after the election session is ended." />
+    </div>
+  ) : (
+    <div className="flex flex-col items-start py-20 font-sans  bg-gray-50  px-64">
+      <p className="font-bold text-3xl mb-24 text-gray-800"> Voting result for Class Election</p>
+      <div className="flex flex-row w-full h-full ">
         <div className=" flex flex-col    w-1/2 space-y-10  ">
           <p className="font-bold text-xl text-gray-800"> For CR</p>
 
@@ -45,8 +51,9 @@ export default function Election() {
           />
           <ElectionCard votePercent={10} name={'Sakar Paudel'} voteAmount={4} />
 
-          <div className="w-full h-1 rounded-full bg-gray-200 my-2"></div>
-
+          {/* <div className="w-full h-1 rounded-full bg-gray-200 my-2"></div> */}
+        </div>
+        <div className="flex flex-col w-1/2 space-y-10">
           <p className="font-bold text-xl text-gray-800 mt-20"> For Vice-CR</p>
           <ElectionCard
             votePercent={80}
@@ -63,20 +70,16 @@ export default function Election() {
           />
           <ElectionCard votePercent={10} name={'Sakar Paudel'} voteAmount={4} />
         </div>
-
         {/* voting details  */}
-        <div className="flex flex-col space-y-4 w-1/3">
+        {/* <div className="flex flex-col space-y-4 w-1/3">
           <div className="w-full mb-4">
             <div className="flex flex-col space-y-4 rounded-xl shadow-lg px-8 py-4 bg-white">
               <p className="font-normal text-sm text-gray-700 ">Voters</p>
-              <p className="font-bold text-5xl">
-                {/* <CountUp startVal={0} end={255} duration={1.5} /> */}
-                {votersCount.toFixed(0)}
-              </p>
+              <p className="font-bold text-5xl">{votersCount.toFixed(0)}</p>
             </div>
-          </div>
+          </div> */}
 
-          <p className="font-semibold text-sm text-gray-500">Votes count</p>
+        {/* <p className="font-semibold text-sm text-gray-500">Votes count</p>
 
           <div className="flex  items-center justify-between">
             <div className="flex  rounded-full h-14 w-96 bg-blue-100">
@@ -90,8 +93,8 @@ export default function Election() {
               </div>
             </div>
             <p className="font-medium text-base text-gray-500">Voted</p>
-          </div>
-
+          </div> */}
+        {/* 
           <div className="flex  items-center justify-between ">
             <div className="flex  rounded-full h-14 w-96 bg-blue-100">
               <div
@@ -104,8 +107,8 @@ export default function Election() {
               </div>
             </div>
             <p className="font-medium text-base text-gray-500">CR</p>
-          </div>
-
+          </div> */}
+        {/* 
           <div className="flex  items-center justify-between">
             <div className="flex  rounded-full h-14 w-96 bg-blue-100">
               <div
@@ -119,7 +122,7 @@ export default function Election() {
             </div>
             <p className="font-medium text-base text-gray-500"> Vice CR</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

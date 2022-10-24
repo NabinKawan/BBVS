@@ -29,7 +29,6 @@ export default function Login() {
         Router.push('/voting');
       }
     });
-    ContractService.getOwner();
   }, []);
 
   const onLogin = () => {

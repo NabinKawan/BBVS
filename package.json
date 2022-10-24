@@ -22,6 +22,7 @@
     "react-countup": "^6.3.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
+    "react-toastify": "^9.0.8",
     "sweetalert2": "^11.4.24"
   },
   "devDependencies": {
