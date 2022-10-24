@@ -16,6 +16,7 @@ import {
   ContractVoterDto,
 } from '../models/dto/ContractDtos';
 import { toast } from 'react-toastify';
+import { promises } from 'stream';
 
 export default class ContractService {
   static getProvider() {
@@ -114,11 +115,11 @@ export default class ContractService {
     try {
       const contractService = new ContractService();
       const provider = this.getProvider();
-      console.log(provider);
       if (!provider) throw Error('No Provider selected');
       await provider.send('eth_requestAccounts', []);
       const signer = await provider.getSigner();
       const contract = this.getContract(signer);
+
       const candidateTuple = contractService.generateTuple(candidates);
       const voterTuple = contractService.generateTuple(voters);
       console.log(candidateTuple);
@@ -135,7 +136,10 @@ export default class ContractService {
       const miningResult = provider.waitForTransaction(res.hash);
       return miningResult;
     } catch (e) {
-      throw new Error('Failed to start election');
+      console.log(e);
+      
+      //@ts-ignore
+      throw new Error(e);
     }
   }
 

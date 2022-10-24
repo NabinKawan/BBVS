@@ -72,21 +72,22 @@ export default function Election() {
         contractVoters,
       )
         .catch((e) => {
-          toast.error(e, { autoClose: 2000 });
+          let errorMessage = e.message;
+          errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
+          toast.error(errorMessage, { autoClose: 2000 });
           setLoading(false);
         })
         .then((val) => {
+          console.log({ val });
           if (val) {
             localStorage.setItem(
               'endTime',
               (Date.now() + parseInt(electionEndTime) * 60 * 1000).toString(),
             );
             toast.success('Minted', { autoClose: 2000 });
-            setLoading(false);
             setElectionStatus(true);
-          } else {
-            toast.error('Transaction failed', { autoClose: 2000 });
           }
+          setLoading(false);
         });
     }
   };
