@@ -32,7 +32,7 @@ export default class ContractService {
     const provider = this.getProvider();
     const contract = this.getContract(provider);
     console.log(contract);
-    const candidateList: ContractCandidateDto[] = await contract.getCandidateList();
+    const candidateList = await contract.getCandidateList();
     console.log(candidateList);
     return candidateList;
   }
@@ -132,8 +132,8 @@ export default class ContractService {
       const contract = this.getContract(signer);
       const candidateTuple = contractService.generateTuple(candidates);
       const voterTuple = contractService.generateTuple(voters);
-      console.log(candidateTuple);
-      console.log(voterTuple);
+      console.log({ candidateTuple });
+      console.log({ voterTuple });
       const res = await contract.startElection(
         electionName,
         endTimeSec,

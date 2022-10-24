@@ -23,6 +23,7 @@ export default function Login() {
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
   useEffect(() => {
+    ContractService.getCandidateList();
     // checking cache for admin
     CachService.getCacheData(CachNamesEnum.Voter).then((value) => {
       if (value) {

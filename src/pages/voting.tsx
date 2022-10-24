@@ -50,17 +50,38 @@ export default function Voting() {
             if (value !== 'unauthorized') {
               console.log({ value });
               votingProvider.setVoter({ ...value[0] });
-              ContractService.getCandidateList().then((candidates: ContractCandidateDto[]) => {
+              ContractService.getCandidateList().then((candidates) => {
                 if (candidates) {
                   const posts: string[] = [];
                   const formatedCandidates: CandidateDto[] = [];
-                  candidates.forEach((candidate) => {
+                  console.log({ candidates });
+                  candidates.forEach((candidate: ContractCandidateDto) => {
+                    const names = candidate.name.split('');
+                    const candidate_: CandidateDto = {
+                      candidate_id: '',
+                      first_name: '',
+                      middle_name: '',
+                      last_name: '',
+                      post: '',
+                      image: '',
+                    };
                     posts.push(candidate.post);
 
-                    formatedCandidates;
+                    if (names.length === 2) {
+                      candidate_.first_name = names[0];
+                      candidate_.last_name = names[1];
+                    } else if (names.length > 2) {
+                      candidate_.first_name = names[0];
+                      candidate_.middle_name = names[1];
+                      candidate_.last_name = names[2];
+                    }
+                    candidate_.post = candidate.post;
+                    candidate_.candidate_id = candidate.candidateId;
+                    candidate_.image = candidate.imageUrl;
+                    formatedCandidates.push(candidate_);
                   });
                   candidateProvider.setPosts([...posts]);
-                  candidateProvider.setCandidates([...value.content]);
+                  candidateProvider.setCandidates([...formatedCandidates]);
                 }
               });
             } else {
@@ -77,6 +98,7 @@ export default function Voting() {
       }
     });
   }, []);
+
   return (
     votingProvider.accessToken !== '' && (
       <div className="flex h-screen w-screen font-sans bg-AdminBg">
