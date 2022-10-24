@@ -32,7 +32,7 @@ export default class ContractService {
     const provider = this.getProvider();
     const contract = this.getContract(provider);
     console.log(contract);
-    const candidateList: ContractCandidateDto = await contract.getCandidateList();
+    const candidateList: ContractCandidateDto[] = await contract.getCandidateList();
     console.log(candidateList);
     return candidateList;
   }
@@ -86,6 +86,17 @@ export default class ContractService {
     const electionName: string = await contract.electionName();
     console.log(electionName);
     return electionName;
+  }
+
+  static async didCurrentVoterVoted(voterId: string): Promise<boolean> {
+    try {
+      const provider = this.getProvider();
+      const contract = this.getContract(provider);
+      const res: boolean = await contract.didCurrentVoterVoted(voterId);
+      return res;
+    } catch (e) {
+      throw new Error('Provider error');
+    }
   }
 
   static async getVotingStartTime() {

@@ -28,12 +28,17 @@ export default function Election() {
   const [loading, setLoading] = useState(false);
   const [electionName, setElectionName] = useState('');
   const [electionEndTime, setElectionEndTime] = useState('');
+  const [endTime, setEndTime] = useState(0);
 
   const handleElectionNameInput = (event: any) => {
     setElectionName(event?.target.value);
   };
   const hadndleEndTimeInput = (event: any) => {
     setElectionEndTime(event?.target.value);
+  };
+
+  const endElectionSession = () => {
+    // setElectionStatus(false);
   };
 
   const handleSubmit = () => {
@@ -77,13 +82,19 @@ export default function Election() {
         })
         .then((val) => {
           if (val) {
-            localStorage.setItem(
-              'endTime',
-              (Date.now() + parseInt(electionEndTime) * 60 * 1000).toString(),
-            );
             toast.success('Minted', { autoClose: 2000 });
             setLoading(false);
-            setElectionStatus(true);
+            ContractService.getVotingEndTime().then((val) => {
+              if (val) {
+                console.log({ end_time: val });
+                const date = new Date();
+                const nowTime = date.getTime() / 1000;
+                if (val - nowTime > 0) {
+                  setElectionStatus(true);
+                  setEndTime(val);
+                }
+              }
+            });
           } else {
             toast.error('Transaction failed', { autoClose: 2000 });
           }
@@ -92,16 +103,17 @@ export default function Election() {
   };
 
   useEffect(() => {
-    const endTime = localStorage.getItem('endTime');
-    const nowTime = Date.now();
-    console.log({ endTime });
-    console.log(nowTime);
-    if (endTime) {
-      console.log(parseInt(endTime) - nowTime);
-      if (parseInt(endTime) - nowTime > 0) {
-        setElectionStatus(true);
+    ContractService.getVotingEndTime().then((val) => {
+      if (val) {
+        console.log({ end_time: val });
+        const date = new Date();
+        const nowTime = date.getTime() / 1000;
+        if (val - nowTime > 0) {
+          setElectionStatus(true);
+          setEndTime(val);
+        }
       }
-    }
+    });
   }, []);
   return (
     <div className="flex flex-col">
@@ -132,7 +144,7 @@ export default function Election() {
 
                 <input
                   className={`flex bg-[#F7F7F7] rounded-xl 
-               'text-[#242424]'
+               text-[#242424]
                text-base px-6 py-4 outline-none w-full`}
                   placeholder={'Enter the election name.'}
                   value={electionName}
@@ -149,7 +161,7 @@ export default function Election() {
                 <input
                   type="number"
                   className={`flex bg-[#F7F7F7] rounded-xl 
-               'text-[#242424]'
+               text-[#242424] 
                text-base px-6 py-4 outline-none w-full`}
                   placeholder={'30'}
                   value={electionEndTime}
@@ -171,6 +183,8 @@ export default function Election() {
         ) : (
           <div className="w-full h-full py-20">
             <ElectionDetails
+              endTime={endTime}
+              onElectionEnd={endElectionSession}
               message="  You cannot start new election during the voting session, Once the election time is
         completed you can make a new election."
             />
