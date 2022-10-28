@@ -12,15 +12,14 @@ import {
   VoterResponseDto,
 } from '../models/dto/ServerOpDtos';
 
-const { apiUrl } = getConfig().publicRuntimeConfig;
-console.log({ apiUrl: apiUrl });
+console.log({ apiUrl: process.env.NEXT_PUBLIC_API_URL });
 
 export default class ServerOp {
   static async getAllCandidates(accessToken: string) {
     console.log({ token: accessToken });
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/candidates`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/candidates`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -50,7 +49,7 @@ export default class ServerOp {
 
       // console.log(body);
       try {
-        // const response = await fetch('http://localhost:5000/api/file/uploadImage', {
+        // const response = await fetch('https://bbvs-api.herokuapp.com/api/file/uploadImage', {
         //   body,
         //   headers: {
         //     Accept: 'application/json',
@@ -60,7 +59,7 @@ export default class ServerOp {
         // });
         const response = await axios.post(
           // `${minterUrl}/policies?request=${JSON.stringify(request)}`,
-          'http://localhost:5000/api/file/uploadImage',
+          `${process.env.NEXT_PUBLIC_API_URL}/file/uploadImage`,
           formData,
           {
             headers: {
@@ -91,7 +90,7 @@ export default class ServerOp {
   static async addCandidate(candidate: CandidateDto, accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/candidates/addCandidate`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/candidates/addCandidate`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -124,15 +123,18 @@ export default class ServerOp {
   static async updateCandidate(candidate: CandidateDto, accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/candidates/updateCandidate`, {
-        method: 'PUT',
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/candidates/updateCandidate`,
+        {
+          method: 'PUT',
+          headers: {
+            'content-type': 'application/json',
+            accept: 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(candidate),
         },
-        body: JSON.stringify(candidate),
-      });
+      );
 
       console.log(response);
       if (response.status === 200) {
@@ -151,7 +153,7 @@ export default class ServerOp {
     // console.log('iden', JSON.stringify(identifiers));
     try {
       const response = await fetch(
-        `${'http://localhost:5000/api'}/candidates/deleteCandidate/${candidateId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/candidates/deleteCandidate/${candidateId}`,
         {
           method: 'DELETE',
           headers: {
@@ -177,7 +179,7 @@ export default class ServerOp {
   static async getAllVoters(accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/voters`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/voters`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -204,7 +206,7 @@ export default class ServerOp {
   static async addVoter(voter: VoterDto, accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/voters/addVoter`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/voters/addVoter`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -237,7 +239,7 @@ export default class ServerOp {
   static async getVoter(voter_id: string, accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/voters/${voter_id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/voters/${voter_id}`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -264,7 +266,7 @@ export default class ServerOp {
   static async updateVoter(voter: VoterDto, accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/voters/updateVoter`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/voters/updateVoter`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
@@ -290,14 +292,17 @@ export default class ServerOp {
   static async deleteVoter(voterId: string, accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/voters/deleteVoter/${voterId}`, {
-        method: 'DELETE',
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/voters/deleteVoter/${voterId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'content-type': 'application/json',
+            accept: 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       console.log(response);
       if (response.status === 200) {
@@ -315,7 +320,7 @@ export default class ServerOp {
   static async getAdmin(adminId: string, accessToken: string) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/admin/${adminId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/${adminId}`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -343,7 +348,7 @@ export default class ServerOp {
     // console.log('iden', JSON.stringify(identifiers));
     try {
       const response = await fetch(
-        `${'http://localhost:5000/api'}/admin/adminCredential/${adminId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/adminCredential/${adminId}`,
         {
           method: 'GET',
           headers: {
@@ -370,7 +375,7 @@ export default class ServerOp {
   static async adminLogin(adminCredential: AdminCredentialDto) {
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/login/adminLogin`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login/adminLogin`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -402,7 +407,7 @@ export default class ServerOp {
     console.log(voterCredential);
     // console.log('iden', JSON.stringify(identifiers));
     try {
-      const response = await fetch(`${'http://localhost:5000/api'}/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
         mode: 'cors',
         method: 'POST',
         headers: {
@@ -416,15 +421,9 @@ export default class ServerOp {
       if (response.status === 200) {
         const jwtToken = await response.json();
         console.log(jwtToken);
-        // throw Error(`Unexpected response: code [${response.status}]`);
         return jwtToken.access_token;
       } else if (response.status === 401) {
-        Swal.fire({
-          icon: 'warning',
-          text: 'id or password incorrect',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        throw new Error('Incorrect credentials (id or password incorrect)');
       }
     } catch (e) {
       throw e;

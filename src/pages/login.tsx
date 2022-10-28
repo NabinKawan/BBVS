@@ -10,6 +10,8 @@ import { CachNamesEnum } from '../models/enums/CacheEnums';
 import VotingContext from '../context/voting/VotingContext';
 import { VotingContextDto } from '../models/dto/ContextDtos';
 import { CacheDto } from '../models/dto/CacheDtos';
+import ContractService from '../services/ContractService';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   console.log('login');
@@ -36,19 +38,35 @@ export default function Login() {
       // setTimeout(() => {
       //   router.push('/voting_beta');
       // }, 2000);
-      ServerOp.login(formValues).then((value) => {
-        if (value) {
-          const cacheData: CacheDto = {
-            user_id: formValues.voter_id,
-            access_token: value,
-          };
-          CachService.addDataIntoCache(CachNamesEnum.Voter, cacheData);
-          setTimeout(() => {
-            Router.push('/voting');
-            setLoading(false);
-          }, 2000);
-        }
-      });
+      ServerOp.login(formValues)
+        .then((value) => {
+          if (value) {
+            const cacheData: CacheDto = {
+              user_id: formValues.voter_id,
+              access_token: value,
+            };
+            const voterId = formValues.voter_id.toUpperCase();
+            ContractService.getVoterStatus(voterId)
+              .then((val) => {
+                console.log({ val });
+                if (val === false) {
+                  CachService.addDataIntoCache(CachNamesEnum.Voter, cacheData);
+                  setTimeout(() => {
+                    Router.push('/voting');
+                    setLoading(false);
+                  }, 2000);
+                }
+              })
+              .catch((e) => {
+                toast.error(e.message, {});
+                setLoading(false);
+              });
+          }
+        })
+        .catch((e) => {
+          toast.error(e.message, { autoClose: 2000 });
+          setLoading(false);
+        });
     } else {
       setError(true);
       setLoading(false);

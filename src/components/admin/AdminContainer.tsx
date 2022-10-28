@@ -5,6 +5,7 @@ import { AdminContainerEnum } from '../../models/enums/ContainerEnums';
 import AddCandidates from './containers/AddCandidates';
 import AddVoters from './containers/AddVoters';
 import CandidateDetails from './containers/CandidatesDetails';
+import Election from './containers/Election';
 import VoterDetails from './containers/VotersDetails';
 
 export default function AdminContainer() {
@@ -26,6 +27,8 @@ export default function AdminContainer() {
     case AdminContainerEnum.AddVoters:
       container = <AddVoters />;
       break;
+    case AdminContainerEnum.Election:
+      container = <Election />;
     default:
     // default
   }

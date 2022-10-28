@@ -157,10 +157,8 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
       <div className="flex flex-col items-center justify-start space-y-4">
         <img
           className="rounded-full"
-          width={100}
-          height={100}
+          style={{ objectFit: 'cover', height: 100, width: 100 }}
           src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
-          style={{ objectFit: 'cover' }}
         />
         <input
           type="file"

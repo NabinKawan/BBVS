@@ -53,7 +53,7 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 60, width: 60 }}
-            src={candidate.image === '' ? 'images/noprofile.png' : `http://${candidate.image}`}
+            src={candidate.image === '' ? 'images/noprofile.png' : `${candidate.image}`}
           />
           <p className="font-medium text-sm text-green-500">{candidate.post}</p>
         </div>
