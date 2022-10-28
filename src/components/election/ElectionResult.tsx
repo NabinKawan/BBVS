@@ -100,7 +100,7 @@ export default function ElectionResult() {
       <div className="flex rounded-sm flex-col w-full bg-gray-100 mt-20">
         <p className="font-medium text-lg pl-2 pt-4 text-gray-800"> Class Election</p>
 
-        <div className="flex rounded-sm border-l border-gray-200 bg-white ml-2 mt-8 flex-row w-full h-full divide-x-2 py-12 ">
+        <div className="flex rounded-sm border-l border-gray-200 bg-white ml-2 mt-8 flex-row w-full h-full divide-x-2 pt-12 ">
           {posts.map((post) => (
             <div className=" flex flex-col w-1/2 px-6 ">
               <p className="font-semibold text-lg text-gray-800 pb-3"> {post}</p>

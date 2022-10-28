@@ -67,6 +67,13 @@ export default function VotingMenu() {
             })
             .catch((e) => {
               toast.error(e.message, { autoClose: 2000 });
+              CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+                if (value) {
+                  Router.push('/login');
+                  votingProvider.clearVotes();
+                }
+              });
+              votingProvider.clearVotes();
               Swal.close();
             });
         },
@@ -91,11 +98,10 @@ export default function VotingMenu() {
       <div className="flex rounded-xl items-center bg-primary p-4 space-x-4 my-8">
         <img
           className="rounded-full"
-          height={60}
-          width={60}
+          style={{ objectFit: 'cover', height: 60, width: 60 }}
           src={
             votingProvider.voter.image !== ''
-              ? `http://${votingProvider.voter.image}`
+              ? `${votingProvider.voter.image}`
               : 'images/noprofile.png'
           }
         />

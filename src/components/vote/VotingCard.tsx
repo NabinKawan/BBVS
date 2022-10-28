@@ -11,12 +11,6 @@ interface VotingCardProps {
 }
 
 export default function VotingCard({ candidate, isSelected, onClick }: VotingCardProps) {
-  candidate.image =
-    candidate.image !== ''
-      ? candidate.image.includes('http://')
-        ? candidate.image
-        : `http://${candidate.image}`
-      : '';
   return (
     <div
       onClick={onClick}
