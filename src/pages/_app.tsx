@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import VoteCount from './voteCount';
 import CandidateState from '../context/candidate/CandidateState';
 import VotingState from '../context/voting/VotingState';
 import AdminState from '../context/admin/AdminState';
@@ -21,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </VotingState>
       </AdminState>
     </CandidateState>
+
   );
 }
 
