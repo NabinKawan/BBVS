@@ -22,12 +22,6 @@ interface VoterCardProps {
 }
 
 export default function VoterCard({ voter }: VoterCardProps) {
-  voter.image =
-    voter.image !== ''
-      ? voter.image.includes('http://')
-        ? voter.image
-        : `http://${voter.image}`
-      : '';
   console.log(voter.image);
   const [showDialog, setShowDialog] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -64,8 +58,7 @@ export default function VoterCard({ voter }: VoterCardProps) {
         <div className="flex flex-col items-center">
           <img
             className="rounded-full"
-            height={60}
-            width={60}
+            style={{ objectFit: 'cover', height: 60, width: 60 }}
             src={voter.image === '' ? 'images/noprofile.png' : voter.image}
           />
         </div>
