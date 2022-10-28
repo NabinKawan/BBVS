@@ -44,7 +44,7 @@ export default function ElectionCard({
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 50, width: 50 }}
-            src={image === '' ? 'images/noprofile.png' : `http://${image}`}
+            src={image === '' ? 'images/noprofile.png' : `${image}`}
           />
           <div className="flex flex-col  text-base text-gray-900">
             <div className="flex justify-between">
