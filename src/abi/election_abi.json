@@ -34,7 +34,7 @@
             "type": "string"
           }
         ],
-        "internalType": "struct Ballot.Candidate[]",
+        "internalType": "struct Bbvs.Candidate[]",
         "name": "_candidates",
         "type": "tuple[]"
       },
@@ -61,9 +61,14 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct Ballot.Voter[]",
+        "internalType": "struct Bbvs.Voter[]",
         "name": "_voters",
         "type": "tuple[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "_posts",
+        "type": "string[]"
       }
     ],
     "name": "startElection",
@@ -165,7 +170,7 @@
             "type": "string"
           }
         ],
-        "internalType": "struct Ballot.Candidate[]",
+        "internalType": "struct Bbvs.Candidate[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -231,7 +236,7 @@
             "type": "string"
           }
         ],
-        "internalType": "struct Ballot.Results[]",
+        "internalType": "struct Bbvs.Results[]",
         "name": "",
         "type": "tuple[]"
       }
@@ -266,7 +271,7 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct Ballot.Voter[]",
+        "internalType": "struct Bbvs.Voter[]",
         "name": "",
         "type": "tuple[]"
       }

@@ -58,7 +58,7 @@ export default function Login() {
                 }
               })
               .catch((e) => {
-                toast.error(e.message, {});
+                toast.error(e.message, { autoClose: 2000 });
                 setLoading(false);
               });
           }

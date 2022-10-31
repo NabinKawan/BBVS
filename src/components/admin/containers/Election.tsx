@@ -10,6 +10,7 @@ import VoterContext from '../../../context/voter/VoterContext';
 import ContractService from '../../../services/ContractService';
 import { ContractCandidateDto, ContractVoterDto } from '../../../models/dto/ContractDtos';
 import { toast } from 'react-toastify';
+import { AiOutlineLink } from 'react-icons/ai';
 
 export default function Election() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
@@ -59,6 +60,8 @@ export default function Election() {
       const contractCandidates: ContractCandidateDto[] = [];
       const contractVoters: ContractVoterDto[] = [];
 
+      const posts: string[] = [];
+
       candidateProvider.candidates.forEach((candidate) => {
         const contractCandidate = { candidateId: '', name: '', imageUrl: '', post: '' };
         contractCandidate.name =
@@ -67,6 +70,7 @@ export default function Election() {
         contractCandidate.post = candidate.post;
         contractCandidate.candidateId = candidate.candidate_id;
         contractCandidates.push(contractCandidate);
+        posts.push(candidate.post);
       });
 
       voterProvider.voters.forEach((voter) => {
@@ -75,12 +79,15 @@ export default function Election() {
         contractVoter.voterId = voter.voter_id;
         contractVoters.push(contractVoter);
       });
+      const postsSet = new Set(posts);
+      const posts_ = Array.from(postsSet);
 
       ContractService.startElection(
         electionName,
         parseInt(electionEndTime) * 60,
         contractCandidates,
         contractVoters,
+        posts_,
       )
         .catch((e) => {
           toast.error(e.message, { autoClose: 2000 });
@@ -97,6 +104,7 @@ export default function Election() {
   };
 
   useEffect(() => {
+    console.log({ posts: candidateProvider.posts });
     ContractService.getVotingEndTime()
       .then((val) => {
         if (val) {
@@ -132,7 +140,7 @@ export default function Election() {
 
         {/* election form */}
         {!isElectionStarted ? (
-          <div className="flex flex-col divide-y-2 divide-gray-50  px-12 pb-8">
+          <div className="flex flex-col  divide-gray-50  px-12 pb-8">
             {/* election card */}
             <div className="flex space-x-12">
               <div className="flex flex-col w-1/2 pt-4  font-medium text-sm justify-start space-y-2">
@@ -176,6 +184,15 @@ export default function Election() {
                 onClick={handleSubmit}
                 loading={loading}
               />
+            </div>
+            <div
+              onClick={() => {
+                Router.push('/election');
+              }}
+              className="flex space-x-2 pt-12 items-center cursor-pointer"
+            >
+              <p className=" text-sm   text-red-400">View recent election result</p>
+              <AiOutlineLink className="text-red-400" />
             </div>
           </div>
         ) : (
