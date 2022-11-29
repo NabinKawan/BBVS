@@ -68,7 +68,7 @@ export default function ElectionResult() {
       // });
 
       console.log({ highestVote });
-      if (highestVote.isUnique) {
+      if (highestVote.isUnique && highestVote.vote !== 0) {
         electedCandidates.push(highestVote.candidateId);
       }
     });
