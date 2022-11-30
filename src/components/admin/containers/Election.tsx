@@ -118,6 +118,7 @@ export default function Election() {
         }
       })
       .catch((e) => {
+        console.log(e.message);
         toast.error(e.message, { autoClose: 2000 });
       });
   }, []);

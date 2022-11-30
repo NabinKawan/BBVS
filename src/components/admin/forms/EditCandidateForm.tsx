@@ -116,41 +116,65 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       setLoading(true);
 
       // upload image and set the url to editCandidateRef.current
-      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-        console.log({ value });
-        editCandidateInfo(TextFieldIdEnum.Image, value);
+      image.img_file !== null
+        ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
+            console.log({ value });
+            editCandidateInfo(TextFieldIdEnum.Image, value);
 
-        // changing saved post and id values to uppercase
-        editCandidateInfo(TextFieldIdEnum.Post, editCandidateRef.current.post.toUpperCase());
-        editCandidateInfo(
-          TextFieldIdEnum.CandidateID,
-          editCandidateRef.current.candidate_id.toUpperCase(),
-        );
+            // changing saved post and id values to uppercase
+            editCandidateInfo(TextFieldIdEnum.Post, editCandidateRef.current.post.toUpperCase());
+            editCandidateInfo(
+              TextFieldIdEnum.CandidateID,
+              editCandidateRef.current.candidate_id.toUpperCase(),
+            );
 
-        ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
-          (response) => {
-            if (response) {
-              const candidates = candidateProvider.candidates;
+            ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
+              (response) => {
+                if (response) {
+                  const candidates = candidateProvider.candidates;
 
-              const index = candidates.findIndex(
-                (e) => e.candidate_id === editCandidateRef.current.candidate_id,
-              );
+                  const index = candidates.findIndex(
+                    (e) => e.candidate_id === editCandidateRef.current.candidate_id,
+                  );
 
-              candidates[index] = editCandidateRef.current;
+                  candidates[index] = editCandidateRef.current;
 
-              setImage({ ...{ img_file: null, img_url: '' } });
-              candidateProvider.setCandidates([...candidates]);
+                  setImage({ ...{ img_file: null, img_url: '' } });
+                  candidateProvider.setCandidates([...candidates]);
 
-              // hide edit form dialog
-              setShowDialog(false);
-            } else {
-              ('error');
-              // setLoading(false);
-            }
-            setLoading(false);
-          },
-        );
-      });
+                  // hide edit form dialog
+                  setShowDialog(false);
+                } else {
+                  ('error');
+                  // setLoading(false);
+                }
+                setLoading(false);
+              },
+            );
+          })
+        : ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
+            (response) => {
+              if (response) {
+                const candidates = candidateProvider.candidates;
+
+                const index = candidates.findIndex(
+                  (e) => e.candidate_id === editCandidateRef.current.candidate_id,
+                );
+
+                candidates[index] = editCandidateRef.current;
+
+                setImage({ ...{ img_file: null, img_url: '' } });
+                candidateProvider.setCandidates([...candidates]);
+
+                // hide edit form dialog
+                setShowDialog(false);
+              } else {
+                ('error');
+                // setLoading(false);
+              }
+              setLoading(false);
+            },
+          );
     } else {
       console.log('error');
       console.log(errors);

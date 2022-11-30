@@ -116,6 +116,7 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
       setLoading(true);
 
       // upload image and set the url to editVoterRef.current
+
       ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
         console.log({ value });
         editCandidateInfo(TextFieldIdEnum.Image, value);

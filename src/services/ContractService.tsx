@@ -104,7 +104,10 @@ export default class ContractService {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
       console.log(contract);
+      console.log(provider);
+      debugger;
       const votingEndTime: BigNumber = await contract.getVotingEndTime();
+      debugger;
       console.log(votingEndTime.toNumber());
       return votingEndTime.toNumber();
     } catch (e: any) {
@@ -122,6 +125,7 @@ export default class ContractService {
       return totalVotes.toNumber();
     } catch (e: any) {
       let errorMessage = e.message;
+      // print(e.message);
       errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
       throw new Error(errorMessage);
     }

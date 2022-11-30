@@ -53,7 +53,7 @@ export default function TextInputField({
         className={`bg-[#F7F7F7] rounded-xl ${
           disabled ? 'text-gray-400 cursor-not-allowed' : 'text-[#242424]'
         } text-base px-6 py-3 outline-none`}
-        placeholder={placeHolder}
+        placeholder={defaultValue ? defaultValue : placeHolder}
         value={value}
         onChange={handleChange}
       />
