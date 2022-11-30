@@ -117,33 +117,60 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
 
       // upload image and set the url to editVoterRef.current
 
-      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-        console.log({ value });
-        editCandidateInfo(TextFieldIdEnum.Image, value);
+      image.img_file !== null
+        ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
+            console.log({ value });
+            editCandidateInfo(TextFieldIdEnum.Image, value);
 
-        // changing saved post and id values to uppercase
-        editCandidateInfo(TextFieldIdEnum.CandidateID, editVoterRef.current.voter_id.toUpperCase());
+            // changing saved post and id values to uppercase
+            editCandidateInfo(
+              TextFieldIdEnum.CandidateID,
+              editVoterRef.current.voter_id.toUpperCase(),
+            );
 
-        ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then((response) => {
-          if (response) {
-            const voters = voterProvider.voters;
+            ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then(
+              (response) => {
+                if (response) {
+                  const voters = voterProvider.voters;
 
-            const index = voters.findIndex((e) => e.voter_id === editVoterRef.current.voter_id);
+                  const index = voters.findIndex(
+                    (e) => e.voter_id === editVoterRef.current.voter_id,
+                  );
 
-            voters[index] = editVoterRef.current;
+                  voters[index] = editVoterRef.current;
 
-            setImage({ ...{ img_file: null, img_url: '' } });
-            voterProvider.setVoters([...voters]);
+                  setImage({ ...{ img_file: null, img_url: '' } });
+                  voterProvider.setVoters([...voters]);
 
-            // hide edit form dialog
-            setShowDialog(false);
-          } else {
-            ('error');
-            // setLoading(false);
-          }
-          setLoading(false);
-        });
-      });
+                  // hide edit form dialog
+                  setShowDialog(false);
+                } else {
+                  ('error');
+                  // setLoading(false);
+                }
+                setLoading(false);
+              },
+            );
+          })
+        : ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then((response) => {
+            if (response) {
+              const voters = voterProvider.voters;
+
+              const index = voters.findIndex((e) => e.voter_id === editVoterRef.current.voter_id);
+
+              voters[index] = editVoterRef.current;
+
+              setImage({ ...{ img_file: null, img_url: '' } });
+              voterProvider.setVoters([...voters]);
+
+              // hide edit form dialog
+              setShowDialog(false);
+            } else {
+              ('error');
+              // setLoading(false);
+            }
+            setLoading(false);
+          });
     } else {
       console.log('error');
       console.log(errors);
