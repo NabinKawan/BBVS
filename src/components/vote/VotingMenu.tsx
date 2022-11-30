@@ -27,7 +27,7 @@ export default function VotingMenu() {
       // router.push('/congratulations');
       Swal.fire({
         title: 'Please wait',
-        text: 'Your vote is being submitting',
+        text: 'Your vote is being submitted',
         allowOutsideClick: false,
         allowEnterKey: false,
         showClass: {

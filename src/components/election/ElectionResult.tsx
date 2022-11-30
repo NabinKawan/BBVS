@@ -63,6 +63,7 @@ export default function ElectionResult() {
       });
       const set = new Set(voteCounts);
       voteCounts = Array.from(set);
+      // debugger;
       // const voteCounts = voteCounts.filter((vote: number) => {
       //   return vote !== 0;
       // });

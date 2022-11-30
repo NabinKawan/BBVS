@@ -20,7 +20,7 @@ export default function VotingContainer() {
   return (
     <div className="w-4/5 h-screen bg-AdminBg py-8 px-20  overflow-y-scroll">
       {/* title */}
-      <div className=" font-medium text-[#575353] text-lg ">Class Election</div>
+      <div className=" font-medium text-[#575353] text-lg ">Class Election </div>
 
       <div className="flex flex-col mb-20 divide-y-2 divide-gray-200">
         {candidateProvider.posts.map((post) => (
