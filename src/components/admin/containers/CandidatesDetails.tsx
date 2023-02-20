@@ -22,8 +22,8 @@ export default function CandidatesDetails() {
       <p className="font-medium text-[#575353] text-lg ">Candidate Details</p>
 
       {/* container card*/}
-      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20">
-        <p className="font-bold text-lg py-7 px-11 text-black">Candidate Details</p>
+      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-6 md:px-12">
+        <p className="font-bold text-lg py-7  text-black">Candidate Details</p>
 
         {/* filters */}
         {/* <div className="flex space-x-6 bg-[#F6F6F6] py-3 px-12">
@@ -37,7 +37,7 @@ export default function CandidatesDetails() {
         </div> */}
 
         {/* candidate list */}
-        <div className="flex flex-col divide-y-2 divide-gray-50  px-12">
+        <div className="flex flex-col divide-y-2 divide-gray-50">
           {/* candidate card */}
           {candidateProvider.candidates.map((e: CandidateDto) => (
             <CandidateCard key={e.candidate_id} candidate={e} />

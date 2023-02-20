@@ -6,6 +6,7 @@ import AdminState from '../context/admin/AdminState';
 import VoterState from '../context/voter/VoterState';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Drawer from '../components/drawer';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -15,6 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <VoterState>
             <div>
               <ToastContainer />
+              <Drawer />
               <Component {...pageProps} />
             </div>
           </VoterState>

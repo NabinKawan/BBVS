@@ -63,6 +63,7 @@ export default function ElectionResult() {
       });
       const set = new Set(voteCounts);
       voteCounts = Array.from(set);
+
       // debugger;
       // const voteCounts = voteCounts.filter((vote: number) => {
       //   return vote !== 0;
@@ -127,6 +128,7 @@ export default function ElectionResult() {
   useEffect(() => {
     getFormatVotingResults();
   }, []);
+
   return (
     <div className="flex flex-col h-screen overflow-y-auto items-start py-20 font-sans  bg-white  px-64">
       <div className="flex w-full justify-between items-center px-44">
@@ -141,7 +143,7 @@ export default function ElectionResult() {
         <p className=" text-3xl  text-gray-800"> Voting result of {electionName}</p>
       </div>
       <div className="flex rounded-sm flex-col w-full bg-gray-100 mt-20">
-        <p className="font-medium text-lg pl-2 pt-4 text-gray-800"> Class Election</p>
+        <p className="font-medium text-lg pl-2 pt-4 text-gray-800"> {electionName}</p>
 
         <div className="flex flex-col rounded-sm border-l border-gray-200 bg-white ml-2 mt-8 w-full h-full pt-12 space-y-12">
           {postArr.map((posts, index) => (
@@ -149,7 +151,7 @@ export default function ElectionResult() {
               {
                 //@ts-ignore
                 posts.map(
-                  (post) =>
+                  (post: string) =>
                     index % 1 == 0 && (
                       <div className=" flex flex-col w-1/2 px-6    ">
                         <p className="font-semibold text-lg text-gray-800 pb-3"> {post}</p>
@@ -161,7 +163,7 @@ export default function ElectionResult() {
                                 <ElectionCard
                                   isElected={
                                     //@ts-ignore
-                                    electedCandidates.includes(result.candidateId) ? true : false
+                                    index == 0 || index == 1 ? true : false
                                   }
                                   key={result.candidateId}
                                   candidateId={result.candidateId}

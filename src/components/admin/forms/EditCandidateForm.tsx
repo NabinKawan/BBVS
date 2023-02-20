@@ -189,7 +189,7 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       <div className="flex flex-col items-center justify-start space-y-4">
         <img
           className="rounded-full"
-          style={{ objectFit: 'cover', height: 100, width: 100 }}
+          style={{ objectFit: 'fill', height: 100, width: 100 }}
           src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
         />
         <input

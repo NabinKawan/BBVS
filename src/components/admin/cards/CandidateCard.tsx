@@ -84,20 +84,21 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
             <EditCandidateForm candidate={candidate} setShowDialog={setShowDialog} />
           </DialogContent>
         </Dialog>
-
-        <RoundedIconBtn
-          icon={<FaEdit size={20} />}
-          bgColor={'bg-editBtn'}
-          text={'Edit'}
-          onClick={handleEdit}
-        />
-        <RoundedIconBtn
-          icon={<MdDelete size={20} />}
-          loading={loading}
-          bgColor={'bg-removeBtn'}
-          text={'Remove'}
-          onClick={handleDelete}
-        />
+        <div className="flex  space-x-4">
+          <RoundedIconBtn
+            icon={<FaEdit size={20} />}
+            bgColor={'bg-editBtn'}
+            text={'Edit'}
+            onClick={handleEdit}
+          />
+          <RoundedIconBtn
+            icon={<MdDelete size={20} />}
+            loading={loading}
+            bgColor={'bg-removeBtn'}
+            text={'Remove'}
+            onClick={handleDelete}
+          />
+        </div>
       </div>
     </div>
   );
