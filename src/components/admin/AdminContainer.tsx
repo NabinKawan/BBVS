@@ -7,7 +7,7 @@ import AddVoters from './containers/AddVoters';
 import CandidateDetails from './containers/CandidatesDetails';
 import Election from './containers/Election';
 import VoterDetails from './containers/VotersDetails';
-import { useDrawer } from '../drawer/context';
+import { useDrawer } from '../drawer-view/context';
 import DrawerButton from '../ui/drawer-button';
 
 export default function AdminContainer() {

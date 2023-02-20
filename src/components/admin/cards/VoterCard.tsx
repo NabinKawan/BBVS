@@ -4,8 +4,7 @@ import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { DialogContent } from '@mui/material';
 import RoundedIconBtn from '../../../shared/button/RoundedIconBtn';
-import EditCandidateForm from '../forms/EditCandidateForm';
-import { CandidateDto, VoterDto } from '../../../models/dto/ServerOpDtos';
+import { VoterDto } from '../../../models/dto/ServerOpDtos';
 import ServerOp from '../../../services/ServerOp';
 import CandidateContext from '../../../context/candidate/CandidateContext';
 import {
@@ -14,8 +13,8 @@ import {
   VoterContextDto,
 } from '../../../models/dto/ContextDtos';
 import VoterContext from '../../../context/voter/VoterContext';
-import EditvoterForm from '../forms/EditVoterForm';
 import AdminContext from '../../../context/admin/AdminContext';
+import { useDialog } from '../../dialog-view.tsx/context';
 
 interface VoterCardProps {
   voter: VoterDto;
@@ -23,7 +22,7 @@ interface VoterCardProps {
 
 export default function VoterCard({ voter }: VoterCardProps) {
   console.log(voter.image);
-  const [showDialog, setShowDialog] = useState(false);
+  const { openDialog } = useDialog();
   const [loading, setLoading] = useState(false);
 
   // @ts-ignore managed by using dto
@@ -31,7 +30,7 @@ export default function VoterCard({ voter }: VoterCardProps) {
   //@ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
   const handleEdit = () => {
-    setShowDialog(!showDialog);
+    openDialog('EDIT_VOTER_VIEW', { voter });
   };
 
   const handleDelete = () => {
@@ -74,21 +73,6 @@ export default function VoterCard({ voter }: VoterCardProps) {
       {/* edit delete buttons */}
       <div className="flex space-x-4 text-white font-bold text-base ">
         {/* edit dialog */}
-        <Dialog
-          className="font-sans"
-          PaperProps={{
-            style: { borderRadius: 12, minWidth: '1000px' },
-          }}
-          open={showDialog}
-          fullWidth
-          onClose={() => {
-            setShowDialog(!showDialog);
-          }}
-        >
-          <DialogContent>
-            <EditvoterForm voter={voter} setShowDialog={setShowDialog} />
-          </DialogContent>
-        </Dialog>
 
         <RoundedIconBtn
           icon={<FaEdit size={20} />}

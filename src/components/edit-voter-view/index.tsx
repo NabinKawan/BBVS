@@ -1,37 +1,38 @@
 import React, { useContext, useRef, useState } from 'react';
-import AdminContext from '../../../context/admin/AdminContext';
-import CandidateContext from '../../../context/candidate/CandidateContext';
-import { AdminContextDto, CandidateContextDto } from '../../../models/dto/ContextDtos';
-import { CandidateDto } from '../../../models/dto/ServerOpDtos';
-import { TextFieldIdEnum } from '../../../models/enums/TextFieldEnums';
-import ServerOp from '../../../services/ServerOp';
-import RoundedTextBtn from '../../../shared/button/RoundedTextBtn';
-import TextInputField from '../TextInputField';
+import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
+import { EditVoterDialogPropsDto } from '../../models/dto/DialogPropsDtos';
+import { VoterDto } from '../../models/dto/ServerOpDtos';
+import { TextFieldIdEnum } from '../../models/enums/TextFieldEnums';
+import ServerOp from '../../services/ServerOp';
+import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
+import TextInputField from '../admin/TextInputField';
+import { useDialog } from '../dialog-view.tsx/context';
 
-interface EditCandidateFormProps {
-  candidate: CandidateDto;
-  setShowDialog: any;
-}
+export default function EditVoterView() {
+  const dialog = useDialog();
+  const dialogProps: EditVoterDialogPropsDto | null = dialog.dialogProps;
+  //@ts-ignore
+  const voter: VoterDto = dialogProps && dialogProps.voter;
+  const breakpoint = useBreakpoint();
 
-export default function EditCandidateForm({ candidate, setShowDialog }: EditCandidateFormProps) {
-  const [image, setImage] = useState({ img_file: null, img_url: candidate.image });
+  const [image, setImage] = useState({ img_file: null, img_url: voter.image });
   const fileInput = useRef<HTMLInputElement>(null);
 
   // @ts-ignore
-  const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
+  const voterProvider = useContext(VoterContext) as VoterContextDto;
   //@ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
 
-  const editCandidateRef = useRef(candidate);
+  const editVoterRef = useRef(voter);
 
   const editCandidateInfo = (key: string, value: string) => {
     // @ts-ignore
-    editCandidateRef.current[`${key}`] = value;
+    editVoterRef.current[`${key}`] = value;
     // console.log(addCandidateRef.current);
   };
 
   const [formErros, setFormErros] = useState({
-    candidate_id: '',
+    voter_id: '',
     first_name: '',
     last_name: '',
     post: '',
@@ -50,7 +51,7 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       // creates object url
       const img_url = window.URL.createObjectURL(img_file!);
 
-      // adding image into editCandidateRef.current
+      // adding image into editVoterRef.current
       editCandidateInfo(TextFieldIdEnum.Image, img_url);
 
       // @ts-ignore becasue changing null value into string value
@@ -60,14 +61,14 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
     }
   };
 
-  const handleTextInput = (candidate_id: string, inputValue: string) => {
-    editCandidateInfo(candidate_id, inputValue);
+  const handleTextInput = (voter_id: string, inputValue: string) => {
+    editCandidateInfo(voter_id, inputValue);
   };
 
   const handleSubmit = (event: any) => {
     event.preventDefault(); // preventing default redirection
 
-    const { candidate_id, first_name, middle_name, last_name, post } = editCandidateRef.current;
+    const { voter_id, first_name, middle_name, last_name } = editVoterRef.current;
     const errors = formErros;
 
     // returns true if no errors
@@ -85,10 +86,10 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
     }
 
     function validateForm() {
-      if (candidate_id === '') {
-        errors.candidate_id = 'Candidate ID is required';
+      if (voter_id === '') {
+        errors.voter_id = 'Candidate ID is required';
       } else {
-        errors.candidate_id = '';
+        errors.voter_id = '';
       }
       if (first_name === '') {
         errors.first_name = 'First Name is required';
@@ -100,11 +101,6 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       } else {
         errors.last_name = '';
       }
-      if (post === '') {
-        errors.post = 'Post is required';
-      } else {
-        errors.post = '';
-      }
     }
 
     // checking empty errors
@@ -115,35 +111,35 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       setFormErros({ ...errors });
       setLoading(true);
 
-      // upload image and set the url to editCandidateRef.current
+      // upload image and set the url to editVoterRef.current
+
       image.img_file !== null
         ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
             console.log({ value });
             editCandidateInfo(TextFieldIdEnum.Image, value);
 
             // changing saved post and id values to uppercase
-            editCandidateInfo(TextFieldIdEnum.Post, editCandidateRef.current.post.toUpperCase());
             editCandidateInfo(
               TextFieldIdEnum.CandidateID,
-              editCandidateRef.current.candidate_id.toUpperCase(),
+              editVoterRef.current.voter_id.toUpperCase(),
             );
 
-            ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
+            ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then(
               (response) => {
                 if (response) {
-                  const candidates = candidateProvider.candidates;
+                  const voters = voterProvider.voters;
 
-                  const index = candidates.findIndex(
-                    (e) => e.candidate_id === editCandidateRef.current.candidate_id,
+                  const index = voters.findIndex(
+                    (e: any) => e.voter_id === editVoterRef.current.voter_id,
                   );
 
-                  candidates[index] = editCandidateRef.current;
+                  voters[index] = editVoterRef.current;
 
                   setImage({ ...{ img_file: null, img_url: '' } });
-                  candidateProvider.setCandidates([...candidates]);
+                  voterProvider.setVoters([...voters]);
 
                   // hide edit form dialog
-                  setShowDialog(false);
+                  dialog.closeDialog();
                 } else {
                   ('error');
                   // setLoading(false);
@@ -152,29 +148,27 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
               },
             );
           })
-        : ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
-            (response) => {
-              if (response) {
-                const candidates = candidateProvider.candidates;
+        : ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then((response) => {
+            if (response) {
+              const voters = voterProvider.voters;
 
-                const index = candidates.findIndex(
-                  (e) => e.candidate_id === editCandidateRef.current.candidate_id,
-                );
+              const index = voters.findIndex(
+                (e: any) => e.voter_id === editVoterRef.current.voter_id,
+              );
 
-                candidates[index] = editCandidateRef.current;
+              voters[index] = editVoterRef.current;
 
-                setImage({ ...{ img_file: null, img_url: '' } });
-                candidateProvider.setCandidates([...candidates]);
+              setImage({ ...{ img_file: null, img_url: '' } });
+              voterProvider.setVoters([...voters]);
 
-                // hide edit form dialog
-                setShowDialog(false);
-              } else {
-                ('error');
-                // setLoading(false);
-              }
-              setLoading(false);
-            },
-          );
+              // hide edit form dialog
+              dialog.closeDialog();
+            } else {
+              ('error');
+              // setLoading(false);
+            }
+            setLoading(false);
+          });
     } else {
       console.log('error');
       console.log(errors);
@@ -182,14 +176,14 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
     }
   };
 
-  console.log(editCandidateRef.current);
+  console.log(editVoterRef.current);
   return (
-    <div className="flex flex-col items-start space-y-8 my-10">
+    <div className="flex flex-col w-full items-start justify-center space-y-8 py-8 px-8 md:px-10 lg:px-12 ">
       {/* upload profile */}
-      <div className="flex flex-col items-center justify-start space-y-4">
+      <div className="flex flex-col w-full items-center lg:items-start  space-y-4">
         <img
           className="rounded-full"
-          style={{ objectFit: 'fill', height: 100, width: 100 }}
+          style={{ objectFit: 'cover', height: 100, width: 100 }}
           src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
         />
         <input
@@ -208,12 +202,13 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       </div>
 
       {/* textfields */}
-      <div className="flex flex-col items-start space-y-8">
-        <div className="flex space-x-10 form-group">
+      <div className="flex flex-col w-full  items-start space-y-3 lg:space-y-8">
+        <div className="flex flex-col w-full space-y-2.5 lg:flex-row  lg:space-x-10 lg:space-y-0 form-group">
           <TextInputField
             id={TextFieldIdEnum.FirstName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'First Name'}
-            defaultValue={editCandidateRef.current.first_name}
+            defaultValue={editVoterRef.current.first_name}
             isRequired={true}
             error={formErros.first_name}
             placeHolder={'eg: Hari'}
@@ -221,15 +216,17 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
           />
           <TextInputField
             id={TextFieldIdEnum.MiddleName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'Middle Name'}
-            defaultValue={editCandidateRef.current.middle_name}
+            defaultValue={editVoterRef.current.middle_name}
             isRequired={false}
             placeHolder={'eg: Bahadur'}
             inputHandler={handleTextInput}
           />
           <TextInputField
             id={TextFieldIdEnum.LastName}
-            defaultValue={editCandidateRef.current.last_name}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
+            defaultValue={editVoterRef.current.last_name}
             title={'Last Name'}
             isRequired={true}
             error={formErros.last_name}
@@ -238,24 +235,16 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
           />
         </div>
 
-        <div className="flex space-x-10">
+        <div className="flex flex-col w-full space-y-3 lg:flex-row  lg:space-x-10 lg:space-y-0">
           <TextInputField
-            id={TextFieldIdEnum.CandidateID}
-            title={'Candidate ID'}
-            defaultValue={editCandidateRef.current.candidate_id}
+            id={TextFieldIdEnum.VoterID}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
+            title={'Voter ID'}
+            defaultValue={editVoterRef.current.voter_id}
             isRequired={true}
             disabled
-            error={formErros.candidate_id}
+            error={formErros.voter_id}
             placeHolder={'eg: KCE075BCT020'}
-            inputHandler={handleTextInput}
-          />
-          <TextInputField
-            id={TextFieldIdEnum.Post}
-            title={'POST'}
-            defaultValue={editCandidateRef.current.post}
-            isRequired={true}
-            error={formErros.post}
-            placeHolder={'eg: CR'}
             inputHandler={handleTextInput}
           />
         </div>

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CandidateContext from '../../context/candidate/CandidateContext';
 import { CandidateContextDto } from '../../models/dto/ContextDtos';
+import cn from 'classnames';
 
 interface TextInputFieldProps {
   id: string;
@@ -10,6 +11,7 @@ interface TextInputFieldProps {
   defaultValue?: string;
   isRequired: boolean;
   placeHolder: string;
+  fullWidth?: boolean;
   inputHandler: any;
 }
 
@@ -22,6 +24,7 @@ export default function TextInputField({
   defaultValue = '',
   error = '',
   disabled = false,
+  fullWidth = false,
 }: TextInputFieldProps) {
   // checking null in default value
   const [value, setValue] = useState(defaultValue);
@@ -43,7 +46,12 @@ export default function TextInputField({
   };
 
   return (
-    <div className="flex flex-col w-64  font-medium text-sm justify-start space-y-2">
+    <div
+      className={cn(
+        fullWidth ? 'w-full' : 'w-64',
+        'flex flex-col font-medium text-sm justify-start space-y-2',
+      )}
+    >
       <p className="text-[#424040]">
         {title} {isRequired && <span className="text-red-500">*</span>}
       </p>
