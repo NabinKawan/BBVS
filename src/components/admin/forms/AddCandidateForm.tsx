@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import AdminContext from '../../../context/admin/AdminContext';
 import CandidateContext from '../../../context/candidate/CandidateContext';
+import { useBreakpoint } from '../../../lib/hooks/use-breakpoint';
 import { AdminContextDto, CandidateContextDto } from '../../../models/dto/ContextDtos';
 import { TextFieldIdEnum } from '../../../models/enums/TextFieldEnums';
 import ServerOp from '../../../services/ServerOp';
@@ -12,7 +13,7 @@ export default function AddCandidateForm() {
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
   //@ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
-
+  const breakpoint = useBreakpoint();
   const addCandidateInfo = candidateProvider.getAddCandidateInfo();
   const [image, setImage] = useState({ img_file: null, img_url: addCandidateInfo.image });
   const fileInput = useRef<HTMLInputElement>(null);
@@ -148,62 +149,9 @@ export default function AddCandidateForm() {
   console.log(addCandidateInfo);
   return (
     <div className="flex flex-col items-start space-y-8 my-10">
-      <div className="flex items-center space-x-32 ">
-        {/* textfields */}
-        <div className="flex flex-col items-start space-y-8">
-          <div className="flex space-x-10 form-group">
-            <TextInputField
-              id={TextFieldIdEnum.FirstName}
-              title={'First Name'}
-              defaultValue={addCandidateInfo.first_name}
-              isRequired={true}
-              error={formErros.first_name}
-              placeHolder={'eg: Hari'}
-              inputHandler={handleTextInput}
-            />
-            <TextInputField
-              id={TextFieldIdEnum.MiddleName}
-              title={'Middle Name'}
-              defaultValue={addCandidateInfo.middle_name}
-              isRequired={false}
-              placeHolder={'eg: Bahadur'}
-              inputHandler={handleTextInput}
-            />
-            <TextInputField
-              id={TextFieldIdEnum.LastName}
-              defaultValue={addCandidateInfo.last_name}
-              title={'Last Name'}
-              isRequired={true}
-              error={formErros.last_name}
-              placeHolder={'eg: Kawan'}
-              inputHandler={handleTextInput}
-            />
-          </div>
-
-          <div className="flex space-x-10">
-            <TextInputField
-              id={TextFieldIdEnum.CandidateID}
-              title={'Candidate ID'}
-              defaultValue={addCandidateInfo.candidate_id}
-              isRequired={true}
-              error={formErros.candidate_id}
-              placeHolder={'eg: KCE075BCT020'}
-              inputHandler={handleTextInput}
-            />
-            <TextInputField
-              id={TextFieldIdEnum.Post}
-              title={'POST'}
-              defaultValue={addCandidateInfo.post}
-              isRequired={true}
-              error={formErros.post}
-              placeHolder={'eg: CR'}
-              inputHandler={handleTextInput}
-            />
-          </div>
-        </div>
-
+      <div className="flex flex-col 2xl:flex-row w-full  space-y-8 items-start 2xl:space-x-32  2xl:space-y-0">
         {/* upload profile */}
-        <div className="flex flex-col items-center justify-start space-y-4">
+        <div className="flex flex-col items-center justify-start space-y-4 w-32">
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 100, width: 100 }}
@@ -222,6 +170,66 @@ export default function AddCandidateForm() {
           >
             Choose a file
           </p>
+        </div>
+        {/* textfields */}
+        <div className="flex flex-col items-start space-y-4 w-full">
+          <div className="flex flex-col xl:flex-row space-y-4 xl:space-x-10 xl:space-y-0 form-group w-full">
+            <div className="flex flex-col space-y-4 md:flex-row  md:space-x-10 md:space-y-0">
+              <TextInputField
+                id={TextFieldIdEnum.FirstName}
+                fullWidth={['xs', 'sm'].includes(breakpoint)}
+                title={'First Name'}
+                defaultValue={addCandidateInfo.first_name}
+                isRequired={true}
+                error={formErros.first_name}
+                placeHolder={'eg: Hari'}
+                inputHandler={handleTextInput}
+              />
+              <TextInputField
+                id={TextFieldIdEnum.MiddleName}
+                fullWidth={['xs', 'sm'].includes(breakpoint)}
+                title={'Middle Name'}
+                defaultValue={addCandidateInfo.middle_name}
+                isRequired={false}
+                placeHolder={'eg: Bahadur'}
+                inputHandler={handleTextInput}
+              />
+            </div>
+
+            <TextInputField
+              id={TextFieldIdEnum.LastName}
+              defaultValue={addCandidateInfo.last_name}
+              fullWidth={['xs', 'sm'].includes(breakpoint)}
+              title={'Last Name'}
+              isRequired={true}
+              error={formErros.last_name}
+              placeHolder={'eg: Kawan'}
+              inputHandler={handleTextInput}
+            />
+          </div>
+
+          <div className="flex flex-col space-y-4 md:flex-row  md:space-x-10 md:space-y-0 w-full">
+            <TextInputField
+              id={TextFieldIdEnum.CandidateID}
+              fullWidth={['xs', 'sm'].includes(breakpoint)}
+              title={'Candidate ID'}
+              defaultValue={addCandidateInfo.candidate_id}
+              isRequired={true}
+              error={formErros.candidate_id}
+              placeHolder={'eg: KCE075BCT020'}
+              inputHandler={handleTextInput}
+            />
+            <TextInputField
+              id={TextFieldIdEnum.Post}
+              fullWidth={['xs', 'sm'].includes(breakpoint)}
+              title={'POST'}
+              defaultValue={addCandidateInfo.post}
+              isRequired={true}
+              error={formErros.post}
+              placeHolder={'eg: CR'}
+              inputHandler={handleTextInput}
+            />
+          </div>
         </div>
       </div>
       <div className="flex">

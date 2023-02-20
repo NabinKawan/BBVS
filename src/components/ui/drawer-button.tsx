@@ -14,7 +14,7 @@ export default function DrawerButton() {
   };
   return (
     <div
-      className="group inline-flex lg:hidden rounded-full p-3 bg-gray-200  hover:bg-blue-400 cursor-pointer mb-4"
+      className="group inline-flex lg:hidden rounded-full p-3 bg-gray-200  hover:bg-primary cursor-pointer mb-4"
       onClick={handleDrawer}
     >
       <AiOutlineMenu className="group-hover:text-white" size={18} />

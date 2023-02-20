@@ -1,5 +1,8 @@
 import React, { useContext, useRef, useState } from 'react';
+import AdminContext from '../../context/admin/AdminContext';
+import VoterContext from '../../context/voter/VoterContext';
 import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
+import { AdminContextDto, VoterContextDto } from '../../models/dto/ContextDtos';
 import { EditVoterDialogPropsDto } from '../../models/dto/DialogPropsDtos';
 import { VoterDto } from '../../models/dto/ServerOpDtos';
 import { TextFieldIdEnum } from '../../models/enums/TextFieldEnums';
@@ -15,10 +18,10 @@ export default function EditVoterView() {
   const voter: VoterDto = dialogProps && dialogProps.voter;
   const breakpoint = useBreakpoint();
 
-  const [image, setImage] = useState({ img_file: null, img_url: voter.image });
+  const [image, setImage] = useState({ img_file: null, img_url: voter?.image });
   const fileInput = useRef<HTMLInputElement>(null);
 
-  // @ts-ignore
+  //@ts-ignore
   const voterProvider = useContext(VoterContext) as VoterContextDto;
   //@ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
