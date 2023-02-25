@@ -130,9 +130,9 @@ export default function ElectionResult() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen overflow-y-auto items-start py-20 font-sans  bg-white  px-64">
-      <div className="flex w-full justify-between items-center px-44">
-        <div className="flex items-center">
+    <div className="flex flex-col h-screen overflow-y-auto items-start py-20 font-sans  bg-white  xl:px-20 2xl:px-64">
+      <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 px-4 sm:px-12 w-full justify-between items-start lg:items-center lg:px-20  2xl:px-20 3xl:px-44">
+        <div className="flex items-center -ml-4 ">
           <img src="logos/logo.png" />
           <div className="flex flex-col justify-center">
             <p className="font-bold  text-2xl text-[#202020]">BBVS</p>
@@ -147,13 +147,13 @@ export default function ElectionResult() {
 
         <div className="flex flex-col rounded-sm border-l border-gray-200 bg-white ml-2 mt-8 w-full h-full pt-12 space-y-12">
           {postArr.map((posts, index) => (
-            <div className="flex w-full divide-x-2  ">
+            <div className="flex flex-col space-y-12 lg:flex-row w-full lg:divide-x-2 lg:space-y-0  ">
               {
                 //@ts-ignore
                 posts.map(
                   (post: string) =>
                     index % 1 == 0 && (
-                      <div className=" flex flex-col w-1/2 px-6    ">
+                      <div className=" flex flex-col w-full lg:w-1/2 px-6    ">
                         <p className="font-semibold text-lg text-gray-800 pb-3"> {post}</p>
                         <div className="w-full h-[2px] bg-gray-200"></div>
                         <div className="flex flex-col  pt-6">

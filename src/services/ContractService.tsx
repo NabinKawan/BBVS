@@ -105,9 +105,9 @@ export default class ContractService {
       const contract = this.getContract(provider);
       console.log(contract);
       console.log(provider);
-      debugger;
+
       const votingEndTime: BigNumber = await contract.getVotingEndTime();
-      debugger;
+
       console.log(votingEndTime.toNumber());
       return votingEndTime.toNumber();
     } catch (e: any) {
