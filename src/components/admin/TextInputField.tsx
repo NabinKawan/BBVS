@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 interface TextInputFieldProps {
   id: string;
-  title: string;
+  title?: string;
   disabled?: boolean;
   error?: string;
   defaultValue?: string;
@@ -49,12 +49,14 @@ export default function TextInputField({
     <div
       className={cn(
         fullWidth ? 'w-full' : 'w-64',
-        'flex flex-col font-medium text-sm justify-start space-y-2',
+        'flex flex-col h-full  text-sm justify-start space-y-2',
       )}
     >
-      <p className="text-[#424040]">
-        {title} {isRequired && <span className="text-red-500">*</span>}
-      </p>
+      {title && (
+        <p className="text-[#424040] font-medium">
+          {title} {isRequired && <span className="text-red-500">*</span>}
+        </p>
+      )}
 
       <input
         disabled={disabled}
@@ -65,7 +67,7 @@ export default function TextInputField({
         value={value}
         onChange={handleChange}
       />
-      {<p className="font-normal text-xs text-red-500">{error}</p>}
+      {error && <p className="font-normal text-xs text-red-500">{error}</p>}
     </div>
   );
 }

@@ -46,7 +46,7 @@ export default function AdminMenu({ className }: AdminMenuProps) {
         </div>
       </div>
       {/* profile details */}
-      <div className="flex rounded-xl items-center bg-[#1c4e80] space-x-4 p-4 my-8">
+      <div className="flex rounded-xl items-center justify-between bg-[#1c4e80] space-x-4 p-4 my-8">
         <div className="flex space-x-4">
           <img
             className="rounded-full"

@@ -26,67 +26,6 @@ export default function VotingMenu({ className }: VotingMenuProps) {
   // @ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
 
-  const onVote = () => {
-    if (votingProvider.completedSteps.length === candidateProvider.posts.length) {
-      // router.push('/congratulations');
-      Swal.fire({
-        title: 'Please wait',
-        text: 'Your vote is being submitted',
-        allowOutsideClick: false,
-        allowEnterKey: false,
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown',
-        },
-        didOpen: () => {
-          Swal.showLoading();
-          ContractService.vote(votingProvider.voter.voter_id, Object.values(votingProvider.votes))
-            .then((val) => {
-              if (val) {
-                toast.success('Voted successfully', { autoClose: 2000 });
-                Swal.close();
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Congratulations',
-                  text: 'Your vote has been submitted successfully',
-                  timer: 2000,
-                  allowOutsideClick: false,
-                  allowEnterKey: false,
-                  hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp',
-                  },
-
-                  showConfirmButton: false,
-                }).then((result) => {
-                  /* Read more about handling dismissals below */
-                  if (result.dismiss === Swal.DismissReason.timer) {
-                    CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
-                      if (value) {
-                        Router.push('/login');
-                        votingProvider.clearVotes();
-                      }
-                    });
-                  }
-                });
-              }
-            })
-            .catch((e) => {
-              toast.error(e.message, { autoClose: 2000 });
-              CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
-                if (value) {
-                  Router.push('/login');
-                  votingProvider.clearVotes();
-                }
-              });
-              votingProvider.clearVotes();
-              Swal.close();
-            });
-        },
-
-        showConfirmButton: false,
-      });
-    }
-  };
-
   return (
     <div className={className}>
       {/* logo details*/}
@@ -142,26 +81,6 @@ export default function VotingMenu({ className }: VotingMenuProps) {
             />
           ))}
         </div>
-      </div>
-
-      {/* submit */}
-      <div
-        onClick={onVote}
-        className={`flex w-28 ${
-          votingProvider.completedSteps.length === candidateProvider.posts.length
-            ? 'cursor-pointer '
-            : 'cursor-not-allowed'
-        }`}
-      >
-        <RoundedTextBtn
-          text={'Submit'}
-          loading={loading}
-          bgColor={
-            votingProvider.completedSteps.length === candidateProvider.posts.length
-              ? 'bg-primary '
-              : 'bg-[#C6C6C6]'
-          }
-        />
       </div>
     </div>
   );

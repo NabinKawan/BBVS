@@ -42,7 +42,7 @@ export type VotingContextDto = {
   voter: VoterDto;
   setVoter: (voter: VoterDto) => null;
   setAccessToken: (accessToken: string) => null;
-  addVote: (post: string, candidateId: string) => null;
+  addVote: (post: string, candidate: CandidateDto | null) => null;
   addStep: (step: string) => null;
   clearVotes: () => null;
 };

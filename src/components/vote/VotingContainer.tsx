@@ -11,20 +11,127 @@ import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { AnimatePresence } from 'framer-motion';
 import TransistionAnimation from '../animations/tansistion-animation';
+import VotingResultCard from './VotingResultCard';
+import { toast } from 'react-toastify';
+import Router from 'next/router';
+import Swal from 'sweetalert2';
+import { CachNamesEnum } from '../../models/enums/CacheEnums';
+import CachService from '../../services/CacheService';
+import ContractService from '../../services/ContractService';
+import { MdEditOff } from 'react-icons/md';
+import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
 
 export default function VotingContainer() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [isEdit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
   // @ts-ignore
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
   // @ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
+  const onVote = () => {
+    if (votingProvider.completedSteps.length === candidateProvider.posts.length) {
+      // router.push('/congratulations');
+      Swal.fire({
+        title: 'Please wait',
+        text: 'Your vote is being submitted',
+        allowOutsideClick: false,
+        allowEnterKey: false,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown',
+        },
+        didOpen: () => {
+          Swal.showLoading();
+          ContractService.vote(votingProvider.voter.voter_id, Object.values(votingProvider.votes))
+            .then((val) => {
+              if (val) {
+                toast.success('Voted successfully', { autoClose: 2000 });
+                Swal.close();
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Congratulations',
+                  text: 'Your vote has been submitted successfully',
+                  timer: 2000,
+                  allowOutsideClick: false,
+                  allowEnterKey: false,
+                  hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                  },
 
-  console.log(Object.values(votingProvider.votes));
-  console.log('voting container');
+                  showConfirmButton: false,
+                }).then((result) => {
+                  /* Read more about handling dismissals below */
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                    CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+                      if (value) {
+                        Router.push('/login');
+                        votingProvider.clearVotes();
+                      }
+                    });
+                  }
+                });
+              }
+            })
+            .catch((e) => {
+              toast.error(e.message, { autoClose: 2000 });
+              CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+                if (value) {
+                  Router.push('/login');
+                  votingProvider.clearVotes();
+                }
+              });
+              votingProvider.clearVotes();
+              Swal.close();
+            });
+        },
+
+        showConfirmButton: false,
+      });
+    }
+  };
 
   const getSubmitComponent = () => {
-    return <div>Submit</div>;
+    return (
+      <div>
+        <p className="font-bold text-xl text-black mb-6">Your votes</p>
+
+        <div
+          onClick={onVote}
+          className={`flex w-28 mb-10 ${
+            votingProvider.completedSteps.length === candidateProvider.posts.length
+              ? 'cursor-pointer '
+              : 'cursor-not-allowed'
+          }`}
+        >
+          <RoundedTextBtn
+            text={'Submit'}
+            loading={loading}
+            bgColor={
+              votingProvider.completedSteps.length === candidateProvider.posts.length
+                ? 'bg-primary '
+                : 'bg-[#C6C6C6]'
+            }
+          />
+        </div>
+        <div className="space-y-8">
+          {Object.values(votingProvider.votes).map((candidate: CandidateDto, index) => {
+            return (
+              <div>
+                <p className="font-medium text-sm text-gray-700 mb-3">{candidate.post}</p>
+                <VotingResultCard
+                  candidate={candidate}
+                  handleEdit={() => {
+                    setCurrentPage(index);
+                    setEdit(true);
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   const handleNext = () => {
@@ -36,7 +143,7 @@ export default function VotingContainer() {
   };
 
   return (
-    <div className="w-full  min-h-screen overflow-y-auto bg-AdminBg px-16 py-8">
+    <div className="w-full  min-h-screen overflow-y-auto bg-AdminBg px-6 md:px-16 py-8">
       <DrawerButton drawerType="VOTING" />
       <div className="w-full  bg-AdminBg ">
         {/* title */}
@@ -70,11 +177,13 @@ export default function VotingContainer() {
                   <div className="flex flex-col ">
                     <p className="font-bold text-xl text-black">{`Vote for ${candidateProvider.posts[currentPage]}`}</p>
                     <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${candidateProvider.posts[currentPage]}?`}</p>
-                    <div className="w-28 mt-8">
-                      <RoundedTextBtn
+                    <div className="w-32 mt-8">
+                      <RoundedIconBtn
+                        icon={<MdEditOff size={20} />}
                         text={'No Vote'}
                         // loading={loading}
                         bgColor={'bg-red-300 '}
+                        onClick={() => {}}
                       />
                     </div>
                   </div>
@@ -88,17 +197,19 @@ export default function VotingContainer() {
                             <VotingCard
                               key={e.candidate_id}
                               candidate={e}
-                              isSelected={Object.values(votingProvider.votes).includes(
-                                e.candidate_id,
-                              )}
+                              isSelected={Object.values(votingProvider.votes).includes(e)}
                               onClick={() => {
-                                votingProvider.addVote(
-                                  candidateProvider.posts[currentPage],
-                                  e.candidate_id,
-                                );
+                                votingProvider.addVote(candidateProvider.posts[currentPage], e);
                                 votingProvider.addStep(candidateProvider.posts[currentPage]);
                                 setTimeout(() => {
-                                  setCurrentPage(currentPage + 1);
+                                  console.log({ isEdit });
+                                  if (isEdit) {
+                                    console.log('hi');
+                                    setCurrentPage(candidateProvider.posts.length);
+                                    setEdit(!isEdit);
+                                  } else {
+                                    setCurrentPage(currentPage + 1);
+                                  }
                                 }, 1000);
                               }}
                             />

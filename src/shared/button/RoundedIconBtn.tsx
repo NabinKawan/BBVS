@@ -22,7 +22,7 @@ export default function RoundedIconBtn({
       onClick={() => {
         onClick();
       }}
-      className={`flex cursor-pointer text-white font-bold text-sm items-center rounded-xl py-2 pl-2 md:pl-6 pr-3.5 ${bgColor}`}
+      className={`flex h-full cursor-pointer text-white font-bold text-sm items-center rounded-xl py-2 pl-2 md:pl-6 pr-3.5 ${bgColor}`}
     >
       {loading ? (
         <CircularProgress color="inherit" size={18} />

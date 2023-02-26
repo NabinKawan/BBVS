@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VoterDto } from '../../models/dto/ServerOpDtos';
+import { CandidateDto, VoterDto } from '../../models/dto/ServerOpDtos';
 import VotingContext from './VotingContext';
 
 export default function VotingState({ children }: { children: any }) {
@@ -24,9 +24,9 @@ export default function VotingState({ children }: { children: any }) {
     }
   };
 
-  const addVote = (post: string, candidateId: string) => {
+  const addVote = (post: string, candidate: CandidateDto | null) => {
     // @ts-ignore
-    votes[post] = candidateId;
+    votes[post] = candidate;
     console.log(votes);
     setVotes(votes);
     setState(!state);
