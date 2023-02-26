@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ElectionResultDto } from '../../models/dto/ContractDtos';
 import ContractService from '../../services/ContractService';
+import { getElectedCandidates } from '../../utils/electionUtils';
 import ElectionCard from './ElectionCard';
 
 export default function ElectionResult() {
@@ -12,7 +13,7 @@ export default function ElectionResult() {
   const [postArr, setPostArr] = useState([]);
   const [electedCandidates, setElectedCandidates] = useState([]);
 
-  const getDetails = () => {
+  const getElectionDetails = () => {
     try {
       ContractService.getTotalVotes().then((val) => {
         if (val) {
@@ -36,54 +37,14 @@ export default function ElectionResult() {
     }
   };
 
-  //@ts-ignore
-  const getElectedCandidates = (posts_, candidates: any) => {
-    console.log({ posts_ });
-    const electedCandidates: any = [];
-    const groupByCategory = candidates.reduce((group: any, candidate: any) => {
-      const { post } = candidate;
-      group[post] = group[post] ?? [];
-      group[post].push(candidate);
-      return group;
-    }, {});
-    console.log({ groupByCategory });
-
-    posts_.forEach((post: any) => {
-      const highestVote = { vote: 0, candidateId: '', isUnique: true };
-      let voteCounts: any = [];
-      groupByCategory[`${post}`].forEach((candidate: any) => {
-        if (candidate.voteCount > highestVote.vote) {
-          highestVote.vote = candidate.voteCount;
-          highestVote.candidateId = candidate.candidateId;
-        }
-        if (voteCounts.includes(candidate.voteCount)) {
-          highestVote.isUnique = false;
-        }
-        voteCounts.push(candidate.voteCount);
-      });
-      const set = new Set(voteCounts);
-      voteCounts = Array.from(set);
-
-      // debugger;
-      // const voteCounts = voteCounts.filter((vote: number) => {
-      //   return vote !== 0;
-      // });
-
-      console.log({ highestVote });
-      if (highestVote.isUnique && highestVote.vote !== 0) {
-        electedCandidates.push(highestVote.candidateId);
-      }
-    });
-    return electedCandidates;
-  };
-
   const getFormatVotingResults = () => {
-    getDetails();
+    getElectionDetails();
 
     ContractService.getResults()
       .then((results: []) => {
         let posts_: string[] = [];
         let formattedResults: any[] = [];
+        console.log({ results });
         results.forEach((e: ElectionResultDto) => {
           const result = {
             name: '',
@@ -104,6 +65,7 @@ export default function ElectionResult() {
         posts_ = Array.from(postSet);
         console.log({ posts_ });
         const electedCandidates_ = getElectedCandidates(Array.from(postSet), formattedResults);
+        console.log({ electedCandidates_ });
         //@ts-ignore
         setElectedCandidates(electedCandidates_);
         const newPosts: string[] = [];
@@ -147,13 +109,16 @@ export default function ElectionResult() {
 
         <div className="flex flex-col rounded-sm border-l border-gray-200 bg-white ml-2 mt-8 w-full h-full pt-12 space-y-12">
           {postArr.map((posts, index) => (
-            <div className="flex flex-col space-y-12 lg:flex-row w-full lg:divide-x-2 lg:space-y-0  ">
+            <div
+              key={index}
+              className="flex flex-col space-y-12 lg:flex-row w-full lg:divide-x-2 lg:space-y-0  "
+            >
               {
                 //@ts-ignore
                 posts.map(
                   (post: string) =>
                     index % 1 == 0 && (
-                      <div className=" flex flex-col w-full lg:w-1/2 px-6    ">
+                      <div key={post} className=" flex flex-col w-full lg:w-1/2 px-6    ">
                         <p className="font-semibold text-lg text-gray-800 pb-3"> {post}</p>
                         <div className="w-full h-[2px] bg-gray-200"></div>
                         <div className="flex flex-col  pt-6">
@@ -163,7 +128,7 @@ export default function ElectionResult() {
                                 <ElectionCard
                                   isElected={
                                     //@ts-ignore
-                                    index == 0 || index == 1 ? true : false
+                                    electedCandidates.includes(result.candidateId)
                                   }
                                   key={result.candidateId}
                                   candidateId={result.candidateId}
