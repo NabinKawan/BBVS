@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { candidates, posts } from '../../dummy/data';
 import VotingCard from './VotingCard';
 import VotingContext from '../../context/voting/VotingContext';
@@ -9,8 +9,11 @@ import { CandidateDto } from '../../models/dto/ServerOpDtos';
 import DrawerButton from '../ui/drawer-button';
 import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { AnimatePresence } from 'framer-motion';
+import TransistionAnimation from '../animations/tansistion-animation';
 
 export default function VotingContainer() {
+  const [currentPage, setCurrentPage] = useState(0);
   // @ts-ignore
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
@@ -20,57 +23,94 @@ export default function VotingContainer() {
   console.log(Object.values(votingProvider.votes));
   console.log('voting container');
 
+  const getSubmitComponent = () => {
+    return <div>Submit</div>;
+  };
+
+  const handleNext = () => {
+    if (currentPage < candidateProvider.posts.length) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
+
   return (
-    <div className="w-full  h-screen overflow-y-auto bg-AdminBg px-16 py-8">
+    <div className="w-full  min-h-screen overflow-y-auto bg-AdminBg px-16 py-8">
       <DrawerButton drawerType="VOTING" />
-      <div className="w-full h-screen bg-AdminBg ">
+      <div className="w-full  bg-AdminBg ">
         {/* title */}
         <div className=" font-medium text-[#575353] text-lg ">Class Election </div>
         <div className="flex justify-between my-12 -ml-1">
-          <div className="flex text-gray-700 font-medium space-x-2 ">
+          <div
+            className={`flex font-medium space-x-2 cursor-pointer ${
+              currentPage > 0 ? 'text-gray-700' : 'text-gray-300'
+            }`}
+            onClick={handlePrev}
+          >
             <IoIosArrowBack size={24} /> <p>Previous</p>
           </div>
-          <div className="flex text-gray-700 font-medium space-x-2">
+
+          <div
+            className={`flex font-medium space-x-2 cursor-pointer ${
+              currentPage < candidateProvider.posts.length ? 'text-gray-700' : 'text-gray-300'
+            }`}
+            onClick={handleNext}
+          >
             <p>Next</p> <IoIosArrowForward size={24} />
           </div>
         </div>
-        <div className="flex flex-col mb-20 divide-y-2 divide-gray-200">
-          {candidateProvider.posts.map((post) => (
-            <div key={post} className="flex flex-col pb-32">
-              <div className="flex flex-col ">
-                <p className="font-bold text-xl text-black">{`Vote for ${post}`}</p>
-                <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${post}?`}</p>
-                <div className="w-28 mt-8">
-                  <RoundedTextBtn
-                    text={'No Vote'}
-                    // loading={loading}
-                    bgColor={'bg-red-300 '}
-                  />
+        <AnimatePresence mode="wait">
+          <TransistionAnimation key={currentPage}>
+            {currentPage === candidateProvider.posts.length ? (
+              getSubmitComponent()
+            ) : (
+              <div className="flex flex-col mb-20 divide-y-2 divide-gray-200">
+                <div className="flex flex-col pb-32">
+                  <div className="flex flex-col ">
+                    <p className="font-bold text-xl text-black">{`Vote for ${candidateProvider.posts[currentPage]}`}</p>
+                    <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${candidateProvider.posts[currentPage]}?`}</p>
+                    <div className="w-28 mt-8">
+                      <RoundedTextBtn
+                        text={'No Vote'}
+                        // loading={loading}
+                        bgColor={'bg-red-300 '}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-8 mt-14">
+                    {
+                      // @ts-ignore
+                      candidateProvider.candidates.map(
+                        (e: CandidateDto) =>
+                          e.post === candidateProvider.posts[currentPage] && (
+                            <VotingCard
+                              key={e.candidate_id}
+                              candidate={e}
+                              isSelected={Object.values(votingProvider.votes).includes(
+                                e.candidate_id,
+                              )}
+                              onClick={() => {
+                                votingProvider.addVote(
+                                  candidateProvider.posts[currentPage],
+                                  e.candidate_id,
+                                );
+                                votingProvider.addStep(candidateProvider.posts[currentPage]);
+                                setTimeout(() => {
+                                  setCurrentPage(currentPage + 1);
+                                }, 1000);
+                              }}
+                            />
+                          ),
+                      )
+                    }
+                  </div>
                 </div>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-8 mt-8">
-                {
-                  // @ts-ignore
-                  candidateProvider.candidates.map(
-                    (e: CandidateDto) =>
-                      e.post === post && (
-                        <VotingCard
-                          key={e.candidate_id}
-                          candidate={e}
-                          isSelected={Object.values(votingProvider.votes).includes(e.candidate_id)}
-                          onClick={() => {
-                            votingProvider.addVote(post, e.candidate_id);
-                            votingProvider.addStep(post);
-                          }}
-                        />
-                      ),
-                  )
-                }
-              </div>
-            </div>
-          ))}
-        </div>
+            )}
+          </TransistionAnimation>
+        </AnimatePresence>
       </div>
     </div>
   );

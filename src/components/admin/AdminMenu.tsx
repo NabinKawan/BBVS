@@ -38,7 +38,7 @@ export default function AdminMenu({ className }: AdminMenuProps) {
   return (
     <div className={className}>
       {/* logo details*/}
-      <div className="flex items-center space-x-1 ">
+      <div className="flex items-center space-x-1 w-72 2xl:w-80 ">
         <img className="-ml-3" src="logos/logo.png" />
         <div className="flex flex-col justify-center">
           <p className="font-bold  text-xl text-[#202020]">BBVS</p>
@@ -46,7 +46,7 @@ export default function AdminMenu({ className }: AdminMenuProps) {
         </div>
       </div>
       {/* profile details */}
-      <div className="flex rounded-xl items-center bg-[#1c4e80] justify-between w-64 p-4 my-8">
+      <div className="flex rounded-xl items-center bg-[#1c4e80] space-x-4 p-4 my-8">
         <div className="flex space-x-4">
           <img
             className="rounded-full"

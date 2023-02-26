@@ -107,7 +107,7 @@ export default function Voting() {
   return (
     votingProvider.accessToken !== '' && (
       <div className="flex h-screen w-screen font-sans bg-AdminBg">
-        <VotingMenu />
+        <VotingMenu className="hidden lg:flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-fit p-8" />
         <VotingContainer />
       </div>
     )

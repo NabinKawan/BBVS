@@ -1,15 +1,18 @@
 import React from 'react';
-import { useDrawer } from '../drawer-view/context';
+import { DrawerType, useDrawer } from '../drawer-view/context';
 import { AiOutlineMenu } from 'react-icons/ai';
 
-export default function DrawerButton() {
+interface IDrawerButton {
+  drawerType?: DrawerType;
+}
+export default function DrawerButton({ drawerType }: IDrawerButton) {
   const { isOpen, openDrawer, closeDrawer } = useDrawer();
 
   const handleDrawer = () => {
     if (isOpen) {
       closeDrawer();
     } else {
-      openDrawer();
+      drawerType && openDrawer(drawerType);
     }
   };
   return (

@@ -1,12 +1,14 @@
 import { atom, useAtom } from 'jotai';
 
-const drawerAtom = atom({ isOpen: false });
+export type DrawerType = 'ADMIN' | 'VOTING';
+
+const drawerAtom = atom({ isOpen: false, drawerType: 'ADMIN' });
 
 export function useDrawer() {
   const [state, setState] = useAtom(drawerAtom);
-  const openDrawer = () => setState({ isOpen: true });
+  const openDrawer = (drawerType: DrawerType) => setState({ isOpen: true, drawerType });
   const closeDrawer = () => {
-    setState({ isOpen: false });
+    setState({ ...state, isOpen: false });
   };
 
   return {

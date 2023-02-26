@@ -2,10 +2,11 @@ import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
 import AdminMenu from '../admin/AdminMenu';
 import DrawerButton from '../ui/drawer-button';
+import VotingMenu from '../vote/VotingMenu';
 import { useDrawer } from './context';
 
 export default function Drawer() {
-  const { isOpen, openDrawer, closeDrawer } = useDrawer();
+  const { isOpen, drawerType, openDrawer, closeDrawer } = useDrawer();
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -36,7 +37,7 @@ export default function Drawer() {
           >
             <div className="bg-white p-8 items-start">
               <DrawerButton />
-              <AdminMenu />
+              {drawerType === 'ADMIN' ? <AdminMenu /> : <VotingMenu />}
             </div>
           </div>
         </Transition.Child>
