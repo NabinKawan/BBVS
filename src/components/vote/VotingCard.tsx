@@ -14,17 +14,17 @@ export default function VotingCard({ candidate, isSelected, onClick }: VotingCar
   return (
     <div
       onClick={onClick}
-      className={`relative w-[177x] h-[230px] p-8  bg-white cursor-pointer border border-[#DCDCDC] rounded-xl  font-sans ${
-        isSelected && 'shadow-md shadow-blue-100 border border-primary'
+      className={`relative product-box w-[177x] h-[230px] p-8  bg-white cursor-pointer border border-[#DCDCDC] rounded-xl  font-sans ${
+        isSelected && 'shadow-2xl shadow-blue-100 border border-primary/60'
       }`}
     >
-      <div className={`flex flex-col items-center justify-center space-y-7`}>
+      <div className={`flex flex-col product-image items-center justify-center space-y-7`}>
         <img
           className="rounded-full w-24 h-24"
           src={candidate.image === '' ? 'images/noprofile.png' : candidate.image}
           style={{ objectFit: 'cover' }}
         />
-        <div className="flex w-[150px]  overflow-x-clip flex-col items-center space-y-1">
+        <div className="flex w-full overflow-x-clip flex-col items-center space-y-1">
           <p className="flex text-center font-medium text-base leading-tight text-black">
             {`${candidate.first_name} ${candidate.middle_name} ${candidate.last_name}`}
           </p>
