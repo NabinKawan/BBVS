@@ -14,6 +14,7 @@ import TextInputField from '../TextInputField';
 import RoundedIconBtn from '../../../shared/button/RoundedIconBtn';
 import { FiSearch } from 'react-icons/fi';
 import SearchView from '../../search-view';
+import { isEmpty } from '../../../utils/helperUtils';
 
 export default function CandidatesDetails() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
@@ -44,6 +45,12 @@ export default function CandidatesDetails() {
         <p className="font-bold text-lg pt-7  text-black">Candidate Details</p>
         <SearchView handleSearch={handleSearch} />
         <CandidateTabs candidates={filteredCandidates} />
+        {isEmpty(filteredCandidates) && (
+          <div className="flex items-center mb-4 space-x-4">
+            <img className="h-10 " src="/images/record-not-found.png" />
+            <p className="text-gray-700">No candidates found</p>
+          </div>
+        )}
       </div>
     </div>
   );

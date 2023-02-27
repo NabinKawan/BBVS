@@ -9,6 +9,7 @@ import VotingContext from '../../../context/voting/VotingContext';
 import VoterCard from '../cards/VoterCard';
 import VoterContext from '../../../context/voter/VoterContext';
 import SearchView from '../../search-view';
+import { isEmpty } from '../../../utils/helperUtils';
 
 export default function VotersDetails() {
   // @ts-ignore
@@ -34,19 +35,26 @@ export default function VotersDetails() {
       <p className="font-medium text-[#575353] text-lg ">Voter Details</p>
 
       {/* container card*/}
-      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20">
-        <p className="font-bold text-lg pt-7 px-11 text-black">Voter Details</p>
-        <div className="px-11">
+      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-6 md:px-12">
+        <p className="font-bold text-lg pt-7  text-black">Voter Details</p>
+        <div>
           <SearchView handleSearch={handleSearch} />
         </div>
 
         {/* candidate list */}
-        <div className="flex flex-col divide-y-2 divide-gray-50  px-12">
+        <div className="flex flex-col divide-y-2 divide-gray-50 ">
           {/* candidate card */}
           {filteredVoters.map((e: VoterDto) => (
             <VoterCard key={e.voter_id} voter={e} />
           ))}
         </div>
+
+        {isEmpty(filteredVoters) && (
+          <div className="flex items-center mb-4 space-x-4 mx-">
+            <img className="h-10 " src="/images/record-not-found.png" />
+            <p className="text-gray-700">No voters found</p>
+          </div>
+        )}
       </div>
     </div>
   );
