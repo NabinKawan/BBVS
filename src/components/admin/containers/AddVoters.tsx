@@ -6,9 +6,8 @@ import { CandidateDto, VoterDto } from '../../../models/dto/ServerOpDtos';
 import AddCandidateForm from '../forms/AddCandidateForm';
 import AddVoterForm from '../forms/AddVoterForm';
 import CandidateCard from '../cards/CandidateCard';
-import EditVoterForm from '../forms/EditVoterForm';
-import EditvoterForm from '../forms/EditVoterForm';
 import VoterCard from '../cards/VoterCard';
+import { motion } from 'framer-motion';
 
 export default function AddVoters() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
@@ -28,12 +27,18 @@ export default function AddVoters() {
         {/* form */}
         <AddVoterForm />
         {/* candidate list */}
-        <div className="flex flex-col divide-y-2 divide-gray-50 mt-4">
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 32 }}
+          exit={{ opacity: 0, y: -32 }}
+          transition={{ duration: 0.2 }}
+          className="flex flex-col divide-y-2 divide-gray-50 mt-10"
+        >
           {/* candidate card */}
           {voterProvider.voters.map((e: VoterDto) => (
             <VoterCard key={e.voter_id} voter={e} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

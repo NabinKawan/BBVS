@@ -148,7 +148,7 @@ export default function AddCandidateForm() {
 
   console.log(addCandidateInfo);
   return (
-    <div className="flex flex-col items-start space-y-8 my-10">
+    <div className="flex flex-col items-start space-y-8 mt-10">
       <div className="flex flex-col 2xl:flex-row w-full  space-y-8 items-start 2xl:space-x-32  2xl:space-y-0">
         {/* upload profile */}
         <div className="flex flex-col items-center justify-start space-y-4 w-32">

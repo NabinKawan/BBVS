@@ -4,6 +4,7 @@ import { CandidateContextDto } from '../../../models/dto/ContextDtos';
 import { CandidateDto } from '../../../models/dto/ServerOpDtos';
 import AddCandidateForm from '../forms/AddCandidateForm';
 import CandidateCard from '../cards/CandidateCard';
+import { motion } from 'framer-motion';
 
 export default function AddCandidates() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
@@ -23,12 +24,18 @@ export default function AddCandidates() {
         {/* form */}
         <AddCandidateForm />
         {/* candidate list */}
-        <div className="flex flex-col divide-y-2 divide-gray-50 mt-4">
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 32 }}
+          exit={{ opacity: 0, y: -32 }}
+          transition={{ duration: 0.2 }}
+          className="flex flex-col divide-y-2 divide-gray-50 mt-10"
+        >
           {/* candidate card */}
           {adminProvider.candidates.map((e: CandidateDto) => (
             <CandidateCard key={e.candidate_id} candidate={e} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

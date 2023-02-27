@@ -142,7 +142,7 @@ export default function AddVoterForm() {
 
   console.log(addVoterInfo);
   return (
-    <div className="flex flex-col items-start space-y-8 my-10">
+    <div className="flex flex-col items-start space-y-8 mt-10">
       <div className="flex flex-col xl:flex-row w-full  space-y-8 items-start xl:space-x-28  xl:space-y-0">
         {/* upload profile */}
         <div className="flex flex-col items-center justify-start space-y-4 w-32">

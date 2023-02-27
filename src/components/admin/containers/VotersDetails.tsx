@@ -10,6 +10,7 @@ import VoterCard from '../cards/VoterCard';
 import VoterContext from '../../../context/voter/VoterContext';
 import SearchView from '../../search-view';
 import { isEmpty } from '../../../utils/helperUtils';
+import { motion } from 'framer-motion';
 
 export default function VotersDetails() {
   // @ts-ignore
@@ -42,12 +43,18 @@ export default function VotersDetails() {
         </div>
 
         {/* candidate list */}
-        <div className="flex flex-col divide-y-2 divide-gray-50 ">
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 32 }}
+          exit={{ opacity: 0, y: -32 }}
+          transition={{ duration: 0.2 }}
+          className="flex flex-col divide-y-2 divide-gray-50 mt-6 "
+        >
           {/* candidate card */}
           {filteredVoters.map((e: VoterDto) => (
             <VoterCard key={e.voter_id} voter={e} />
           ))}
-        </div>
+        </motion.div>
 
         {isEmpty(filteredVoters) && (
           <div className="flex items-center mb-4 space-x-4 mx-">
