@@ -20,14 +20,12 @@ export default function VotingState({ children }: { children: any }) {
     if (!completedStepsCopy.includes(step)) {
       completedStepsCopy.push(step);
       setCompletedSteps(completedStepsCopy);
-      console.log(completedSteps);
     }
   };
 
   const addVote = (post: string, candidate: CandidateDto | null) => {
     // @ts-ignore
     votes[post] = candidate;
-    console.log(votes);
     setVotes(votes);
     setState(!state);
   };

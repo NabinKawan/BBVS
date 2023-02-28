@@ -6,4 +6,5 @@ export enum TextFieldIdEnum {
   LastName = 'last_name',
   Post = 'post',
   Image = 'image',
+  Logo = 'logo',
 }

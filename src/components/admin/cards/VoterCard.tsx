@@ -22,7 +22,6 @@ interface VoterCardProps {
 }
 
 export default function VoterCard({ voter }: VoterCardProps) {
-  console.log(voter.image);
   const { openDialog } = useDialog();
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +45,7 @@ export default function VoterCard({ voter }: VoterCardProps) {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true);
-        ServerOp.deleteCandidate(voter.voter_id, adminProvider.accessToken).then((value) => {
+        ServerOp.deleteVoter(voter.voter_id, adminProvider.accessToken).then((value) => {
           if (value) {
             const voters = voterProvider.voters;
             const index = voters.findIndex((e) => e.voter_id === voter.voter_id);

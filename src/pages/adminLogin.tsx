@@ -12,7 +12,6 @@ import { AdminContextDto } from '../models/dto/ContextDtos';
 import { CacheDto } from '../models/dto/CacheDtos';
 
 export default function AdminLogin() {
-  console.log('login');
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({ admin_id: '', password: '' });
   const [error, setError] = useState(false);
@@ -31,7 +30,6 @@ export default function AdminLogin() {
   const onLogin = () => {
     setLoading(true);
     if (validate(formValues)) {
-      console.log(formValues);
       ServerOp.adminLogin(formValues).then((value) => {
         if (value) {
           const cacheData: CacheDto = {

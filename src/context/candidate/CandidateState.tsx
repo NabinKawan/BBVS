@@ -20,6 +20,7 @@ export default function CandidateState({ children }: CandidateStateProps) {
     last_name: '',
     post: '',
     image: '',
+    logo: '',
   });
   const [clearAddCandidateRef, setClearAddCandidateRef] = useState(false);
 
@@ -33,7 +34,6 @@ export default function CandidateState({ children }: CandidateStateProps) {
     setClearAddCandidateRef(false);
     // @ts-ignore
     addCandidateRef.current[`${key}`] = value;
-    // console.log(addCandidateRef.current);
   };
 
   const clearAddCandidateInfo = () => {

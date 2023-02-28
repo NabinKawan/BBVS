@@ -21,8 +21,6 @@ export default function AdminMenu({ className }: AdminMenuProps) {
   // @ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
 
-  console.log(adminProvider.admin.image);
-
   const handleLogout = () => {
     setLoading(true);
     setTimeout(() => {

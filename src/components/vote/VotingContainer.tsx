@@ -202,9 +202,7 @@ export default function VotingContainer() {
                                 votingProvider.addVote(candidateProvider.posts[currentPage], e);
                                 votingProvider.addStep(candidateProvider.posts[currentPage]);
                                 setTimeout(() => {
-                                  console.log({ isEdit });
                                   if (isEdit) {
-                                    console.log('hi');
                                     setCurrentPage(candidateProvider.posts.length);
                                     setEdit(!isEdit);
                                   } else {

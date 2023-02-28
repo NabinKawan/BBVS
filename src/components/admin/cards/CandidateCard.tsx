@@ -61,7 +61,7 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
 
   return (
     <div className="flex items-center justify-between py-4">
-      {/* profile details */}
+      {/* profile details */}{' '}
       <div className="flex  space-x-4">
         <div className="flex flex-col items-center">
           <img
@@ -78,8 +78,12 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
           </p>
           <p className="font-medium text-sm text-[#686868]">{candidate.candidate_id}</p>
         </div>
+        {candidate.logo && (
+          <div className="hidden md:flex pt-4 pl-8">
+            <img className="w-10 h-10" src={candidate.logo} />{' '}
+          </div>
+        )}
       </div>
-
       {/* edit delete buttons */}
       <div className="flex space-x-4 text-white font-bold text-base ">
         {/* edit dialog */}

@@ -57,7 +57,7 @@ export default function VotersDetails() {
         </motion.div>
 
         {isEmpty(filteredVoters) && (
-          <div className="flex items-center mb-4 space-x-4 mx-">
+          <div className="flex items-center mt-4 mb-4 space-x-4 mx-">
             <img className="h-10 " src="/images/record-not-found.png" />
             <p className="text-gray-700">No voters found</p>
           </div>

@@ -10,7 +10,6 @@ export default function AddCandidates() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
   // @ts-ignore already used dto to handle
   const adminProvider = useContext(CandidateContext) as CandidateContextDto;
-  console.log('add candidate');
 
   return (
     <div className="flex flex-col">
@@ -18,7 +17,7 @@ export default function AddCandidates() {
       <p className="font-medium text-[#575353] text-lg ">Add Candidates</p>
 
       {/* container card */}
-      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-11 py-7">
+      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-11 pt-7">
         <p className="font-bold text-lg text-black">Add Candidates Information</p>
 
         {/* form */}

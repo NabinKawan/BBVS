@@ -40,16 +40,14 @@ export default class CachService {
 
       const index = names.indexOf(cacheName);
       const cache = await caches.open(names[index]);
-      console.log(cache);
-      console.log('khatey dum');
-      console.log({ cache });
+
       if (cache) {
         // opening response of cached url;
         const cachedResponse = await cache.match(this.url);
 
         // getting cached data
         const data = (await cachedResponse?.json()) as CacheDto | undefined;
-        console.log({ 'cach data': data });
+
         return data;
         // cacheDataArray.push(data);
       }

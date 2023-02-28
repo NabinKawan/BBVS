@@ -13,7 +13,6 @@ export default function AddVoters() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
   // @ts-ignore already used dto to handle
   const voterProvider = useContext(VoterContext) as VoterContextDto;
-  console.log('add candidate');
 
   return (
     <div className="flex flex-col">
@@ -21,7 +20,7 @@ export default function AddVoters() {
       <p className="font-medium text-[#575353] text-lg ">Add Voters</p>
 
       {/* container card */}
-      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-11 py-7">
+      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-11 pt-7">
         <p className="font-bold text-lg text-black">Add Voters Information</p>
 
         {/* form */}

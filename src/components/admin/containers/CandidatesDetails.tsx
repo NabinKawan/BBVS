@@ -15,13 +15,14 @@ import RoundedIconBtn from '../../../shared/button/RoundedIconBtn';
 import { FiSearch } from 'react-icons/fi';
 import SearchView from '../../search-view';
 import { isEmpty } from '../../../utils/helperUtils';
+import { useIsMounted } from '../../../lib/hooks/use-is-mounted';
 
 export default function CandidatesDetails() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
   // @ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
+  const isMounted = useIsMounted();
   // @ts-ignore
-  console.log({ candidates: candidateProvider.candidates });
   const [filteredCandidates, setFilteredCandidates] = useState(candidateProvider.candidates);
   const handleSearch = (searchValue: string) => {
     let candidates = candidateProvider.candidates;
@@ -36,6 +37,10 @@ export default function CandidatesDetails() {
     });
     setFilteredCandidates([...candidates]);
   };
+  useEffect(() => {
+    setFilteredCandidates([...candidateProvider.candidates]);
+  }, [candidateProvider.candidates]);
+
   return (
     <div className="flex flex-col">
       {/* title */}
@@ -46,7 +51,7 @@ export default function CandidatesDetails() {
         <SearchView handleSearch={handleSearch} />
         <CandidateTabs candidates={filteredCandidates} />
         {isEmpty(filteredCandidates) && (
-          <div className="flex items-center mb-4 space-x-4">
+          <div className="flex items-center mt-3 mb-4 space-x-4">
             <img className="h-10 " src="/images/record-not-found.png" />
             <p className="text-gray-700">No candidates found</p>
           </div>

@@ -42,7 +42,6 @@ export default function Election() {
       .then((val) => {
         if (val) {
           if (val !== endTime) {
-            console.log({ end_time: val });
             const date = new Date();
             const nowTime = date.getTime() / 1000;
             if (val - nowTime > 0) {

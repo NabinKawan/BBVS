@@ -104,11 +104,9 @@ export default function Election() {
   };
 
   useEffect(() => {
-    console.log({ posts: candidateProvider.posts });
     ContractService.getVotingEndTime()
       .then((val) => {
         if (val) {
-          console.log({ end_time: val });
           const date = new Date();
           const nowTime = date.getTime() / 1000;
           if (val - nowTime > 0) {
@@ -118,7 +116,6 @@ export default function Election() {
         }
       })
       .catch((e) => {
-        console.log(e.message);
         toast.error(e.message, { autoClose: 2000 });
       });
   }, []);

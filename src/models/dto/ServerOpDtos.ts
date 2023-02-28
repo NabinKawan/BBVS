@@ -4,7 +4,8 @@ export type CandidateDto = {
   middle_name: string;
   last_name: string;
   post: string;
-  image: string;
+  image?: string;
+  logo?: string;
 };
 
 export type VoterDto = {

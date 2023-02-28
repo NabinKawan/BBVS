@@ -1,5 +1,4 @@
 export function hasDuplicates(arr: any) {
-  console.log({ arr });
   return arr.filter((value: any, index: any) => arr.indexOf(value) !== index).length > 0;
 }
 

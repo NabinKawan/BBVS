@@ -44,7 +44,6 @@ export default function ElectionResult() {
       .then((results: []) => {
         let posts_: string[] = [];
         let formattedResults: any[] = [];
-        console.log({ results });
         results.forEach((e: ElectionResultDto) => {
           const result = {
             name: '',
@@ -63,21 +62,17 @@ export default function ElectionResult() {
         });
         const postSet = new Set(posts_);
         posts_ = Array.from(postSet);
-        console.log({ posts_ });
         const electedCandidates_ = getElectedCandidates(Array.from(postSet), formattedResults);
-        console.log({ electedCandidates_ });
         //@ts-ignore
         setElectedCandidates(electedCandidates_);
         const newPosts: string[] = [];
         //@ts-ignore
         while (posts_.length) newPosts.push(posts_.splice(0, 2));
-        console.log({ newPosts });
         //@ts-ignore
         setPostArr(newPosts);
         formattedResults.sort(function (a: any, b: any) {
           return b.voteCount - a.voteCount;
         });
-        console.log({ formattedResults });
 
         //@ts-ignore
         setVotingResults(formattedResults);
