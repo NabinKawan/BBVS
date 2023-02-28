@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CandidateContext from '../../context/candidate/CandidateContext';
 import { CandidateContextDto } from '../../models/dto/ContextDtos';
+import cn from 'classnames';
 
 interface TextInputFieldProps {
   id: string;
-  title: string;
+  title?: string;
   disabled?: boolean;
   error?: string;
   defaultValue?: string;
   isRequired: boolean;
   placeHolder: string;
+  fullWidth?: boolean;
   inputHandler: any;
 }
 
@@ -22,6 +24,7 @@ export default function TextInputField({
   defaultValue = '',
   error = '',
   disabled = false,
+  fullWidth = false,
 }: TextInputFieldProps) {
   // checking null in default value
   const [value, setValue] = useState(defaultValue);
@@ -43,21 +46,28 @@ export default function TextInputField({
   };
 
   return (
-    <div className="flex flex-col w-64  font-medium text-sm justify-start space-y-2">
-      <p className="text-[#424040]">
-        {title} {isRequired && <span className="text-red-500">*</span>}
-      </p>
+    <div
+      className={cn(
+        fullWidth ? 'w-full' : 'w-64',
+        'flex flex-col h-full  text-sm justify-start space-y-2',
+      )}
+    >
+      {title && (
+        <p className="text-[#424040] font-medium">
+          {title} {isRequired && <span className="text-red-500">*</span>}
+        </p>
+      )}
 
       <input
         disabled={disabled}
         className={`bg-[#F7F7F7] rounded-xl ${
           disabled ? 'text-gray-400 cursor-not-allowed' : 'text-[#242424]'
         } text-base px-6 py-3 outline-none`}
-        placeholder={placeHolder}
+        placeholder={defaultValue ? defaultValue : placeHolder}
         value={value}
         onChange={handleChange}
       />
-      {<p className="font-normal text-xs text-red-500">{error}</p>}
+      {error && <p className="font-normal text-xs text-red-500">{error}</p>}
     </div>
   );
 }

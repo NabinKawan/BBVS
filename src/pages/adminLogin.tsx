@@ -66,7 +66,7 @@ export default function AdminLogin() {
 
   return (
     <div className="flex justify-center items-center bg-loginBg h-screen font-sans ">
-      <div className="flex flex-col items-center lg:px-10 sm:px-10 py-12 space-y-5  rounded-xl bg-white shadow-lg">
+      <div className="flex flex-col items-center px-8 sm:px-10 py-12 space-y-5  rounded-xl bg-white shadow-lg">
         <div className="flex flex-col items-center ">
           <img src="logos/logo.png" />
           <p className="text-3xl font-medium text-[#455875]">BBVS</p>

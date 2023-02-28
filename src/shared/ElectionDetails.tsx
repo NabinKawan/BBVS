@@ -108,12 +108,15 @@ export default function ElectionDetails({
         </div>
       )}
       {isElectionPage ? (
-        <p className=" text-3xl  text-gray-800 pb-8"> Voting session of {electionName}</p>
+        <p className=" text-3xl  text-gray-800 pb-8 text-center">
+          {' '}
+          Voting session of {electionName}
+        </p>
       ) : (
         <p className="font-bold text-2xl  text-gray-700">{electionName}</p>
       )}
 
-      <div className="flex mx-12 w-full justify-center space-x-24 my-20 ">
+      <div className="flex flex-col items-center space-x-0 space-y-8 sm:flex-row mx-12 w-full justify-center sm:space-x-4 md:space-x-24 sm:space-y-0 my-20 ">
         <div className="flex w-44 flex-col space-y-4  border-t-4 border-green-600 shadow-lg px-8 py-4 bg-white ">
           <p className="font-normal text-sm text-gray-700 ">Total Votes</p>
           <p className="font-bold text-5xl">

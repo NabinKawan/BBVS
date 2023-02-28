@@ -33,23 +33,26 @@ export default class CachService {
 
   static async getCacheData(cacheName: string) {
     // getting names of caches
-    console.log(caches);
-    const names = await caches.keys();
-
-    const index = names.indexOf(cacheName);
 
     // getting cache
-    const cache = await caches.open(names[index]);
+    if ('caches' in window) {
+      const names = await caches.keys();
 
-    if (cache) {
-      // opening response of cached url;
-      const cachedResponse = await cache.match(this.url);
+      const index = names.indexOf(cacheName);
+      const cache = await caches.open(names[index]);
+      console.log(cache);
+      console.log('khatey dum');
+      console.log({ cache });
+      if (cache) {
+        // opening response of cached url;
+        const cachedResponse = await cache.match(this.url);
 
-      // getting cached data
-      const data = (await cachedResponse?.json()) as CacheDto | undefined;
-      console.log({ 'cach data': data });
-      return data;
-      // cacheDataArray.push(data);
+        // getting cached data
+        const data = (await cachedResponse?.json()) as CacheDto | undefined;
+        console.log({ 'cach data': data });
+        return data;
+        // cacheDataArray.push(data);
+      }
     }
   }
 }

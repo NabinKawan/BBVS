@@ -104,7 +104,10 @@ export default class ContractService {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
       console.log(contract);
+      console.log(provider);
+
       const votingEndTime: BigNumber = await contract.getVotingEndTime();
+
       console.log(votingEndTime.toNumber());
       return votingEndTime.toNumber();
     } catch (e: any) {
@@ -122,6 +125,7 @@ export default class ContractService {
       return totalVotes.toNumber();
     } catch (e: any) {
       let errorMessage = e.message;
+      // print(e.message);
       errorMessage = errorMessage.slice(0, errorMessage.indexOf('('));
       throw new Error(errorMessage);
     }
@@ -185,6 +189,7 @@ export default class ContractService {
     endTimeSec: number,
     candidates: ContractCandidateDto[],
     voters: ContractVoterDto[],
+    posts: string[],
   ) {
     try {
       const contractService = new ContractService();
@@ -203,6 +208,7 @@ export default class ContractService {
         endTimeSec,
         candidateTuple,
         voterTuple,
+        posts,
       );
       console.log(res);
       if (res) {

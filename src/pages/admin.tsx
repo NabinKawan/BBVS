@@ -82,8 +82,7 @@ export default function admin() {
       <div className="w-full h-screen font-sans">
         <div className="flex flex-row">
           {/* menu */}
-          <AdminMenu />
-
+          <AdminMenu className="hidden lg:flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-fit p-8" />
           {/* Admin */}
           <AdminContainer />
         </div>

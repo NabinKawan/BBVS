@@ -7,6 +7,8 @@ import AddVoters from './containers/AddVoters';
 import CandidateDetails from './containers/CandidatesDetails';
 import Election from './containers/Election';
 import VoterDetails from './containers/VotersDetails';
+import { useDrawer } from '../drawer-view/context';
+import DrawerButton from '../ui/drawer-button';
 
 export default function AdminContainer() {
   // @ts-ignore: Unreachable code error
@@ -32,5 +34,10 @@ export default function AdminContainer() {
     default:
     // default
   }
-  return <div className="w-4/5 h-screen overflow-y-auto bg-AdminBg p-8">{container}</div>;
+  return (
+    <div className="w-full  h-screen overflow-y-auto bg-AdminBg p-8">
+      <DrawerButton />
+      {container}
+    </div>
+  );
 }

@@ -12,7 +12,10 @@ import { AdminContainerEnum } from '../../models/enums/ContainerEnums';
 import CachService from '../../services/CacheService';
 import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
 
-export default function AdminMenu() {
+interface AdminMenuProps {
+  className?: string;
+}
+export default function AdminMenu({ className }: AdminMenuProps) {
   // const [menuIndex, setMenuIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   // @ts-ignore
@@ -33,18 +36,17 @@ export default function AdminMenu() {
   };
 
   return (
-    <div className="flex flex-col bg-white drop-shadow-2xl shadow-blue-900 h-screen w-1/5 p-8">
+    <div className={className}>
       {/* logo details*/}
-      <div className="flex items-center space-x-1">
-        <img src="logos/logo.png" />
+      <div className="flex items-center space-x-1 w-72 2xl:w-80 ">
+        <img className="-ml-3" src="logos/logo.png" />
         <div className="flex flex-col justify-center">
           <p className="font-bold  text-xl text-[#202020]">BBVS</p>
           <p className="font-medium text-sm text-[#979797]">Blockchain Based Voting System</p>
         </div>
       </div>
-
       {/* profile details */}
-      <div className="flex rounded-xl items-center bg-[#1c4e80] justify-between p-4  my-8">
+      <div className="flex rounded-xl items-center justify-between bg-[#1c4e80] space-x-4 p-4 my-8">
         <div className="flex space-x-4">
           <img
             className="rounded-full"
@@ -78,7 +80,7 @@ export default function AdminMenu() {
         ) : (
           <FiLogOut
             onClick={handleLogout}
-            className="text-gray-400 hover:text-white cursor-pointer "
+            className="text-gray-400 hover:text-white cursor-pointer ml-4"
             size={22}
           />
         )}
@@ -90,7 +92,6 @@ export default function AdminMenu() {
           bgColor={'bg-[#C6C6C6]'}
         />
       </div> */}
-
       {/* menus */}
       <div className="flex flex-col space-y-4 ">
         <div

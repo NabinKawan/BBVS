@@ -1,23 +1,26 @@
-import React, { useContext, useRef, useState } from 'react';
-import AdminContext from '../../../context/admin/AdminContext';
-import CandidateContext from '../../../context/candidate/CandidateContext';
-import { AdminContextDto, CandidateContextDto } from '../../../models/dto/ContextDtos';
-import { CandidateDto } from '../../../models/dto/ServerOpDtos';
-import { TextFieldIdEnum } from '../../../models/enums/TextFieldEnums';
-import ServerOp from '../../../services/ServerOp';
-import RoundedTextBtn from '../../../shared/button/RoundedTextBtn';
-import TextInputField from '../TextInputField';
+import { useState, useRef, useContext } from 'react';
+import AdminContext from '../../context/admin/AdminContext';
+import CandidateContext from '../../context/candidate/CandidateContext';
+import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
+import { AdminContextDto, CandidateContextDto } from '../../models/dto/ContextDtos';
+import { EditCandidateDialogPropsDto } from '../../models/dto/DialogPropsDtos';
+import { CandidateDto } from '../../models/dto/ServerOpDtos';
+import { TextFieldIdEnum } from '../../models/enums/TextFieldEnums';
+import ServerOp from '../../services/ServerOp';
+import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
+import TextInputField from '../admin/TextInputField';
+import { useDialog } from '../dialog-view.tsx/context';
 
-interface EditCandidateFormProps {
-  candidate: CandidateDto;
-  setShowDialog: any;
-}
-
-export default function EditCandidateForm({ candidate, setShowDialog }: EditCandidateFormProps) {
-  const [image, setImage] = useState({ img_file: null, img_url: candidate.image });
+export default function EditCandidateView() {
+  const dialog = useDialog();
+  const dialogProps: EditCandidateDialogPropsDto | null = dialog.dialogProps;
+  //@ts-ignore
+  const candidate: CandidateDto = dialogProps && dialogProps.candidate;
+  const breakpoint = useBreakpoint();
+  const [image, setImage] = useState({ img_file: null, img_url: candidate?.image });
   const fileInput = useRef<HTMLInputElement>(null);
 
-  // @ts-ignore
+  //@ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
   //@ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
@@ -116,56 +119,78 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       setLoading(true);
 
       // upload image and set the url to editCandidateRef.current
-      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-        console.log({ value });
-        editCandidateInfo(TextFieldIdEnum.Image, value);
+      image.img_file !== null
+        ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
+            console.log({ value });
+            editCandidateInfo(TextFieldIdEnum.Image, value);
 
-        // changing saved post and id values to uppercase
-        editCandidateInfo(TextFieldIdEnum.Post, editCandidateRef.current.post.toUpperCase());
-        editCandidateInfo(
-          TextFieldIdEnum.CandidateID,
-          editCandidateRef.current.candidate_id.toUpperCase(),
-        );
+            // changing saved post and id values to uppercase
+            editCandidateInfo(TextFieldIdEnum.Post, editCandidateRef.current.post.toUpperCase());
+            editCandidateInfo(
+              TextFieldIdEnum.CandidateID,
+              editCandidateRef.current.candidate_id.toUpperCase(),
+            );
 
-        ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
-          (response) => {
-            if (response) {
-              const candidates = candidateProvider.candidates;
+            ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
+              (response) => {
+                if (response) {
+                  const candidates = candidateProvider.candidates;
 
-              const index = candidates.findIndex(
-                (e) => e.candidate_id === editCandidateRef.current.candidate_id,
-              );
+                  const index = candidates.findIndex(
+                    (e: any) => e.candidate_id === editCandidateRef.current.candidate_id,
+                  );
 
-              candidates[index] = editCandidateRef.current;
+                  candidates[index] = editCandidateRef.current;
 
-              setImage({ ...{ img_file: null, img_url: '' } });
-              candidateProvider.setCandidates([...candidates]);
+                  setImage({ ...{ img_file: null, img_url: '' } });
+                  candidateProvider.setCandidates([...candidates]);
 
-              // hide edit form dialog
-              setShowDialog(false);
-            } else {
-              ('error');
-              // setLoading(false);
-            }
-            setLoading(false);
-          },
-        );
-      });
+                  // hide edit form dialog
+                  dialog.closeDialog();
+                } else {
+                  ('error');
+                  // setLoading(false);
+                }
+                setLoading(false);
+              },
+            );
+          })
+        : ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
+            (response) => {
+              if (response) {
+                const candidates = candidateProvider.candidates;
+
+                const index = candidates.findIndex(
+                  (e: any) => e.candidate_id === editCandidateRef.current.candidate_id,
+                );
+
+                candidates[index] = editCandidateRef.current;
+
+                setImage({ ...{ img_file: null, img_url: '' } });
+                candidateProvider.setCandidates([...candidates]);
+
+                // hide edit form dialog
+                dialog.closeDialog();
+              } else {
+                ('error');
+                // setLoading(false);
+              }
+              setLoading(false);
+            },
+          );
     } else {
       console.log('error');
       console.log(errors);
       setFormErros({ ...errors });
     }
   };
-
-  console.log(editCandidateRef.current);
   return (
-    <div className="flex flex-col items-start space-y-8 my-10">
+    <div className="flex flex-col w-full items-start justify-center space-y-8 py-8 px-8 md:px-10 lg:px-12 ">
       {/* upload profile */}
-      <div className="flex flex-col items-center justify-start space-y-4">
+      <div className="flex flex-col w-full items-center lg:items-start  space-y-4">
         <img
           className="rounded-full"
-          style={{ objectFit: 'cover', height: 100, width: 100 }}
+          style={{ objectFit: 'fill', height: 100, width: 100 }}
           src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
         />
         <input
@@ -184,10 +209,11 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
       </div>
 
       {/* textfields */}
-      <div className="flex flex-col items-start space-y-8">
-        <div className="flex space-x-10 form-group">
+      <div className="flex flex-col w-full  items-start space-y-3 lg:space-y-8">
+        <div className="flex flex-col w-full space-y-2.5 lg:flex-row  lg:space-x-10 lg:space-y-0 form-group">
           <TextInputField
             id={TextFieldIdEnum.FirstName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'First Name'}
             defaultValue={editCandidateRef.current.first_name}
             isRequired={true}
@@ -197,6 +223,7 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
           />
           <TextInputField
             id={TextFieldIdEnum.MiddleName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'Middle Name'}
             defaultValue={editCandidateRef.current.middle_name}
             isRequired={false}
@@ -205,6 +232,7 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
           />
           <TextInputField
             id={TextFieldIdEnum.LastName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             defaultValue={editCandidateRef.current.last_name}
             title={'Last Name'}
             isRequired={true}
@@ -214,9 +242,10 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
           />
         </div>
 
-        <div className="flex space-x-10">
+        <div className="flex flex-col w-full space-y-3 lg:flex-row  lg:space-x-10 lg:space-y-0">
           <TextInputField
             id={TextFieldIdEnum.CandidateID}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'Candidate ID'}
             defaultValue={editCandidateRef.current.candidate_id}
             isRequired={true}
@@ -227,6 +256,7 @@ export default function EditCandidateForm({ candidate, setShowDialog }: EditCand
           />
           <TextInputField
             id={TextFieldIdEnum.Post}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'POST'}
             defaultValue={editCandidateRef.current.post}
             isRequired={true}

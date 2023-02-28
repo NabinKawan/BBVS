@@ -7,6 +7,8 @@ import AdminState from '../context/admin/AdminState';
 import VoterState from '../context/voter/VoterState';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Drawer from '../components/drawer-view/container';
+import DialogContainer from '../components/dialog-view.tsx/container';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,6 +18,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           <VoterState>
             <div>
               <ToastContainer />
+              <Drawer />
+              <DialogContainer />
               <Component {...pageProps} />
             </div>
           </VoterState>

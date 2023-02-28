@@ -1,28 +1,27 @@
 import React, { useContext, useRef, useState } from 'react';
-import AdminContext from '../../../context/admin/AdminContext';
-import CandidateContext from '../../../context/candidate/CandidateContext';
-import VoterContext from '../../../context/voter/VoterContext';
-import {
-  AdminContextDto,
-  CandidateContextDto,
-  VoterContextDto,
-} from '../../../models/dto/ContextDtos';
-import { CandidateDto, VoterDto } from '../../../models/dto/ServerOpDtos';
-import { TextFieldIdEnum } from '../../../models/enums/TextFieldEnums';
-import ServerOp from '../../../services/ServerOp';
-import RoundedTextBtn from '../../../shared/button/RoundedTextBtn';
-import TextInputField from '../TextInputField';
+import AdminContext from '../../context/admin/AdminContext';
+import VoterContext from '../../context/voter/VoterContext';
+import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
+import { AdminContextDto, VoterContextDto } from '../../models/dto/ContextDtos';
+import { EditVoterDialogPropsDto } from '../../models/dto/DialogPropsDtos';
+import { VoterDto } from '../../models/dto/ServerOpDtos';
+import { TextFieldIdEnum } from '../../models/enums/TextFieldEnums';
+import ServerOp from '../../services/ServerOp';
+import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
+import TextInputField from '../admin/TextInputField';
+import { useDialog } from '../dialog-view.tsx/context';
 
-interface EditVoterFormProps {
-  voter: VoterDto;
-  setShowDialog: any;
-}
+export default function EditVoterView() {
+  const dialog = useDialog();
+  const dialogProps: EditVoterDialogPropsDto | null = dialog.dialogProps;
+  //@ts-ignore
+  const voter: VoterDto = dialogProps && dialogProps.voter;
+  const breakpoint = useBreakpoint();
 
-export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormProps) {
-  const [image, setImage] = useState({ img_file: null, img_url: voter.image });
+  const [image, setImage] = useState({ img_file: null, img_url: voter?.image });
   const fileInput = useRef<HTMLInputElement>(null);
 
-  // @ts-ignore
+  //@ts-ignore
   const voterProvider = useContext(VoterContext) as VoterContextDto;
   //@ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
@@ -116,33 +115,63 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
       setLoading(true);
 
       // upload image and set the url to editVoterRef.current
-      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-        console.log({ value });
-        editCandidateInfo(TextFieldIdEnum.Image, value);
 
-        // changing saved post and id values to uppercase
-        editCandidateInfo(TextFieldIdEnum.CandidateID, editVoterRef.current.voter_id.toUpperCase());
+      image.img_file !== null
+        ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
+            console.log({ value });
+            editCandidateInfo(TextFieldIdEnum.Image, value);
 
-        ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then((response) => {
-          if (response) {
-            const voters = voterProvider.voters;
+            // changing saved post and id values to uppercase
+            editCandidateInfo(
+              TextFieldIdEnum.CandidateID,
+              editVoterRef.current.voter_id.toUpperCase(),
+            );
 
-            const index = voters.findIndex((e) => e.voter_id === editVoterRef.current.voter_id);
+            ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then(
+              (response) => {
+                if (response) {
+                  const voters = voterProvider.voters;
 
-            voters[index] = editVoterRef.current;
+                  const index = voters.findIndex(
+                    (e: any) => e.voter_id === editVoterRef.current.voter_id,
+                  );
 
-            setImage({ ...{ img_file: null, img_url: '' } });
-            voterProvider.setVoters([...voters]);
+                  voters[index] = editVoterRef.current;
 
-            // hide edit form dialog
-            setShowDialog(false);
-          } else {
-            ('error');
-            // setLoading(false);
-          }
-          setLoading(false);
-        });
-      });
+                  setImage({ ...{ img_file: null, img_url: '' } });
+                  voterProvider.setVoters([...voters]);
+
+                  // hide edit form dialog
+                  dialog.closeDialog();
+                } else {
+                  ('error');
+                  // setLoading(false);
+                }
+                setLoading(false);
+              },
+            );
+          })
+        : ServerOp.updateVoter(editVoterRef.current, adminProvider.accessToken).then((response) => {
+            if (response) {
+              const voters = voterProvider.voters;
+
+              const index = voters.findIndex(
+                (e: any) => e.voter_id === editVoterRef.current.voter_id,
+              );
+
+              voters[index] = editVoterRef.current;
+
+              setImage({ ...{ img_file: null, img_url: '' } });
+              voterProvider.setVoters([...voters]);
+
+              // hide edit form dialog
+              dialog.closeDialog();
+            } else {
+              ('error');
+              // setLoading(false);
+            }
+            setLoading(false);
+          });
     } else {
       console.log('error');
       console.log(errors);
@@ -152,9 +181,9 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
 
   console.log(editVoterRef.current);
   return (
-    <div className="flex flex-col items-start space-y-8 my-10">
+    <div className="flex flex-col w-full items-start justify-center space-y-8 py-8 px-8 md:px-10 lg:px-12 ">
       {/* upload profile */}
-      <div className="flex flex-col items-center justify-start space-y-4">
+      <div className="flex flex-col w-full items-center lg:items-start  space-y-4">
         <img
           className="rounded-full"
           style={{ objectFit: 'cover', height: 100, width: 100 }}
@@ -176,10 +205,11 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
       </div>
 
       {/* textfields */}
-      <div className="flex flex-col items-start space-y-8">
-        <div className="flex space-x-10 form-group">
+      <div className="flex flex-col w-full  items-start space-y-3 lg:space-y-8">
+        <div className="flex flex-col w-full space-y-2.5 lg:flex-row  lg:space-x-10 lg:space-y-0 form-group">
           <TextInputField
             id={TextFieldIdEnum.FirstName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'First Name'}
             defaultValue={editVoterRef.current.first_name}
             isRequired={true}
@@ -189,6 +219,7 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
           />
           <TextInputField
             id={TextFieldIdEnum.MiddleName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'Middle Name'}
             defaultValue={editVoterRef.current.middle_name}
             isRequired={false}
@@ -197,6 +228,7 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
           />
           <TextInputField
             id={TextFieldIdEnum.LastName}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             defaultValue={editVoterRef.current.last_name}
             title={'Last Name'}
             isRequired={true}
@@ -206,9 +238,10 @@ export default function EditVoterForm({ voter, setShowDialog }: EditVoterFormPro
           />
         </div>
 
-        <div className="flex space-x-10">
+        <div className="flex flex-col w-full space-y-3 lg:flex-row  lg:space-x-10 lg:space-y-0">
           <TextInputField
             id={TextFieldIdEnum.VoterID}
+            fullWidth={['xs', 'sm', 'md'].includes(breakpoint)}
             title={'Voter ID'}
             defaultValue={editVoterRef.current.voter_id}
             isRequired={true}

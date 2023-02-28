@@ -3,6 +3,7 @@ import React from 'react';
 
 interface ElectionCardProps {
   totalVotes: number;
+  candidateId: string;
   image: string;
   name: string;
   isElected?: boolean;
@@ -14,6 +15,7 @@ export default function ElectionCard({
   isElected = false,
   voteCount,
   totalVotes,
+  candidateId,
   image = '/images/noprofile.png',
 }: ElectionCardProps) {
   let pollColor = '';
@@ -50,7 +52,7 @@ export default function ElectionCard({
             <div className="flex justify-between">
               <div className="flex flex-col">
                 <p className="font-medium text-lg ">{name}</p>
-                <p className="text-sm text-gray-500">KCE075BCT020</p>
+                <p className="text-sm text-gray-500">{candidateId}</p>
                 {isElected && (
                   <div className="flex justify-center w-20 items-center py-1 px-1 mt-1 text-sm bg-green-600 text-white rounded-full">
                     Elected

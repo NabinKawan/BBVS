@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { candidates, posts } from '../../dummy/data';
 import VotingCard from './VotingCard';
 import VotingContext from '../../context/voting/VotingContext';
@@ -6,51 +6,222 @@ import CandidateContext from '../../context/candidate/CandidateContext';
 import { VotingContextDto, CandidateContextDto } from '../../models/dto/ContextDtos';
 import ServerOp from '../../services/ServerOp';
 import { CandidateDto } from '../../models/dto/ServerOpDtos';
+import DrawerButton from '../ui/drawer-button';
+import RoundedTextBtn from '../../shared/button/RoundedTextBtn';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { AnimatePresence } from 'framer-motion';
+import TransistionAnimation from '../animations/tansistion-animation';
+import VotingResultCard from './VotingResultCard';
+import { toast } from 'react-toastify';
+import Router from 'next/router';
+import Swal from 'sweetalert2';
+import { CachNamesEnum } from '../../models/enums/CacheEnums';
+import CachService from '../../services/CacheService';
+import ContractService from '../../services/ContractService';
+import { MdEditOff } from 'react-icons/md';
+import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
 
 export default function VotingContainer() {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isEdit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
   // @ts-ignore
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
   // @ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
+  const onVote = () => {
+    if (votingProvider.completedSteps.length === candidateProvider.posts.length) {
+      // router.push('/congratulations');
+      Swal.fire({
+        title: 'Please wait',
+        text: 'Your vote is being submitted',
+        allowOutsideClick: false,
+        allowEnterKey: false,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown',
+        },
+        didOpen: () => {
+          Swal.showLoading();
+          ContractService.vote(votingProvider.voter.voter_id, Object.values(votingProvider.votes))
+            .then((val) => {
+              if (val) {
+                toast.success('Voted successfully', { autoClose: 2000 });
+                Swal.close();
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Congratulations',
+                  text: 'Your vote has been submitted successfully',
+                  timer: 2000,
+                  allowOutsideClick: false,
+                  allowEnterKey: false,
+                  hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                  },
 
-  console.log(Object.values(votingProvider.votes));
-  console.log('voting container');
+                  showConfirmButton: false,
+                }).then((result) => {
+                  /* Read more about handling dismissals below */
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                    CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+                      if (value) {
+                        Router.push('/login');
+                        votingProvider.clearVotes();
+                      }
+                    });
+                  }
+                });
+              }
+            })
+            .catch((e) => {
+              toast.error(e.message, { autoClose: 2000 });
+              CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+                if (value) {
+                  Router.push('/login');
+                  votingProvider.clearVotes();
+                }
+              });
+              votingProvider.clearVotes();
+              Swal.close();
+            });
+        },
+
+        showConfirmButton: false,
+      });
+    }
+  };
+
+  const getSubmitComponent = () => {
+    return (
+      <div>
+        <p className="font-bold text-xl text-black mb-6">Your votes</p>
+
+        <div
+          onClick={onVote}
+          className={`flex w-28 mb-10 ${
+            votingProvider.completedSteps.length === candidateProvider.posts.length
+              ? 'cursor-pointer '
+              : 'cursor-not-allowed'
+          }`}
+        >
+          <RoundedTextBtn
+            text={'Submit'}
+            loading={loading}
+            bgColor={
+              votingProvider.completedSteps.length === candidateProvider.posts.length
+                ? 'bg-primary '
+                : 'bg-[#C6C6C6]'
+            }
+          />
+        </div>
+        <div className="space-y-8">
+          {Object.values(votingProvider.votes).map((candidate: CandidateDto, index) => {
+            return (
+              <div>
+                <p className="font-medium text-sm text-gray-700 mb-3">{candidate.post}</p>
+                <VotingResultCard
+                  candidate={candidate}
+                  handleEdit={() => {
+                    setCurrentPage(index);
+                    setEdit(true);
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const handleNext = () => {
+    if (currentPage < candidateProvider.posts.length) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
 
   return (
-    <div className="w-4/5 h-screen bg-AdminBg py-8 px-20  overflow-y-scroll">
-      {/* title */}
-      <div className=" font-medium text-[#575353] text-lg ">Class Election</div>
-
-      <div className="flex flex-col mb-20 divide-y-2 divide-gray-200">
-        {candidateProvider.posts.map((post) => (
-          <div key={post} className="flex flex-col py-32">
-            <div className="flex flex-col space-y-2">
-              <p className="font-bold text-xl text-black">{`Vote for ${post}`}</p>
-              <p className="font-medium text-sm text-[#717171]">{`Choose your ${post}?`}</p>
-            </div>
-
-            <div className="flex flex-wrap space-x-14 mt-20">
-              {
-                // @ts-ignore
-                candidateProvider.candidates.map(
-                  (e: CandidateDto) =>
-                    e.post === post && (
-                      <VotingCard
-                        key={e.candidate_id}
-                        candidate={e}
-                        isSelected={Object.values(votingProvider.votes).includes(e.candidate_id)}
-                        onClick={() => {
-                          votingProvider.addVote(post, e.candidate_id);
-                          votingProvider.addStep(post);
-                        }}
-                      />
-                    ),
-                )
-              }
-            </div>
+    <div className="w-full  min-h-screen overflow-y-auto bg-AdminBg px-6 md:px-16 py-8">
+      <DrawerButton drawerType="VOTING" />
+      <div className="w-full  bg-AdminBg ">
+        {/* title */}
+        <div className=" font-medium text-[#575353] text-lg ">Class Election </div>
+        <div className="flex justify-between my-12 -ml-1">
+          <div
+            className={`flex font-medium space-x-2 cursor-pointer ${
+              currentPage > 0 ? 'text-gray-700' : 'text-gray-300'
+            }`}
+            onClick={handlePrev}
+          >
+            <IoIosArrowBack size={24} /> <p>Previous</p>
           </div>
-        ))}
+
+          <div
+            className={`flex font-medium space-x-2 cursor-pointer ${
+              currentPage < candidateProvider.posts.length ? 'text-gray-700' : 'text-gray-300'
+            }`}
+            onClick={handleNext}
+          >
+            <p>Next</p> <IoIosArrowForward size={24} />
+          </div>
+        </div>
+        <AnimatePresence mode="wait">
+          <TransistionAnimation key={currentPage}>
+            {currentPage === candidateProvider.posts.length ? (
+              getSubmitComponent()
+            ) : (
+              <div className="flex flex-col mb-20 divide-y-2 divide-gray-200">
+                <div className="flex flex-col pb-32">
+                  <div className="flex flex-col ">
+                    <p className="font-bold text-xl text-black">{`Vote for ${candidateProvider.posts[currentPage]}`}</p>
+                    <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${candidateProvider.posts[currentPage]}?`}</p>
+                    <div className="w-32 mt-8">
+                      <RoundedIconBtn
+                        icon={<MdEditOff size={20} />}
+                        text={'No Vote'}
+                        // loading={loading}
+                        bgColor={'bg-red-300 '}
+                        onClick={() => {}}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-8 mt-14">
+                    {
+                      // @ts-ignore
+                      candidateProvider.candidates.map(
+                        (e: CandidateDto) =>
+                          e.post === candidateProvider.posts[currentPage] && (
+                            <VotingCard
+                              key={e.candidate_id}
+                              candidate={e}
+                              isSelected={Object.values(votingProvider.votes).includes(e)}
+                              onClick={() => {
+                                votingProvider.addVote(candidateProvider.posts[currentPage], e);
+                                votingProvider.addStep(candidateProvider.posts[currentPage]);
+                                setTimeout(() => {
+                                  console.log({ isEdit });
+                                  if (isEdit) {
+                                    console.log('hi');
+                                    setCurrentPage(candidateProvider.posts.length);
+                                    setEdit(!isEdit);
+                                  } else {
+                                    setCurrentPage(currentPage + 1);
+                                  }
+                                }, 1000);
+                              }}
+                            />
+                          ),
+                      )
+                    }
+                  </div>
+                </div>
+              </div>
+            )}
+          </TransistionAnimation>
+        </AnimatePresence>
       </div>
     </div>
   );

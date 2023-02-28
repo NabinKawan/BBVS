@@ -28,3 +28,42 @@ a {
     background: black;
   }
 }
+
+.product-box .product-image video,
+.product-box .product-image img {
+  -webkit-transition: 0.3s ease-in;
+  -o-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
+}
+
+.product-box:hover .product-image video,
+.product-box:hover .product-image img {
+  -webkit-transform: scale(1.05, 1.05);
+  -ms-transform: scale(1.05, 1.05);
+  transform: scale(1.05, 1.05);
+}
+
+.product-box:hover .product-image video,
+.product-box:hover .product-image img,
+.seller-box-table:hover .thumbnail a:hover img {
+  transform: scale(1.05, 1.05);
+}
+
+.product-box .product-meta {
+  -webkit-transform: translate(0, -10px);
+  -ms-transform: translate(0, -10px);
+  transform: translate(0, -10px);
+  -webkit-transition: 0.3s ease-in;
+  -o-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.product-box:hover .product-meta {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+  opacity: 1;
+  visibility: visible;
+}
