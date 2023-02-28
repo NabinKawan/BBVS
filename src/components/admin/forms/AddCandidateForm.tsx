@@ -7,6 +7,7 @@ import { TextFieldIdEnum } from '../../../models/enums/TextFieldEnums';
 import ServerOp from '../../../services/ServerOp';
 import RoundedTextBtn from '../../../shared/button/RoundedTextBtn';
 import TextInputField from '../TextInputField';
+import { TbColorPicker } from 'react-icons/tb';
 
 export default function AddCandidateForm() {
   //@ts-ignore
@@ -16,7 +17,9 @@ export default function AddCandidateForm() {
   const breakpoint = useBreakpoint();
   const addCandidateInfo = candidateProvider.getAddCandidateInfo();
   const [image, setImage] = useState({ img_file: null, img_url: addCandidateInfo.image });
-  const fileInput = useRef<HTMLInputElement>(null);
+  const [logo, setLogo] = useState({ img_file: null, img_url: addCandidateInfo.logo });
+  const imageInput = useRef<HTMLInputElement>(null);
+  const logoInput = useRef<HTMLInputElement>(null);
 
   const inputRef = useRef(null);
 
@@ -28,12 +31,11 @@ export default function AddCandidateForm() {
   });
   const [loading, setLoading] = useState(false);
 
-  const uploadFileHandler = (event: any) => {
-    console.log(event.target.files);
+  const uploadImageHandler = (event: any) => {
     // @ts-ignore
     // getting file
-    fileInput.current.click();
-    const img_file = fileInput.current?.files![0];
+    imageInput.current.click();
+    const img_file = imageInput.current?.files![0];
 
     if (img_file) {
       // @ts-ignore
@@ -45,8 +47,25 @@ export default function AddCandidateForm() {
 
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
+    }
+  };
 
-      console.log(img_url);
+  const uploadLogoHandler = (event: any) => {
+    // @ts-ignore
+    // getting file
+    logoInput.current.click();
+    const img_file = logoInput.current?.files![0];
+
+    if (img_file) {
+      // @ts-ignore
+      // creates object url
+      const img_url = window.URL.createObjectURL(img_file!);
+
+      // adding image into addCandidateInfo
+      candidateProvider.addCandidateInfo(TextFieldIdEnum.Logo, img_url);
+
+      // @ts-ignore becasue changing null value into string value
+      setLogo({ img_file, img_url });
     }
   };
 
@@ -107,69 +126,97 @@ export default function AddCandidateForm() {
       setLoading(true);
 
       // upload image and set the url to addCandidateInfo
-      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-        candidateProvider.addCandidateInfo(TextFieldIdEnum.Image, value);
+      ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((image) => {
+        candidateProvider.addCandidateInfo(TextFieldIdEnum.Image, image);
+        ServerOp.uploadLogo(logo.img_file, adminProvider.accessToken).then((logo) => {
+          candidateProvider.addCandidateInfo(TextFieldIdEnum.Logo, logo);
 
-        // changing saved post and id values to uppercase
-        candidateProvider.addCandidateInfo(
-          TextFieldIdEnum.Post,
-          addCandidateInfo.post.toUpperCase(),
-        );
-        candidateProvider.addCandidateInfo(
-          TextFieldIdEnum.CandidateID,
-          addCandidateInfo.candidate_id.toUpperCase(),
-        );
+          // changing saved post and id values to uppercase
+          candidateProvider.addCandidateInfo(
+            TextFieldIdEnum.Post,
+            addCandidateInfo.post.toUpperCase(),
+          );
+          candidateProvider.addCandidateInfo(
+            TextFieldIdEnum.CandidateID,
+            addCandidateInfo.candidate_id.toUpperCase(),
+          );
 
-        ServerOp.addCandidate(
-          candidateProvider.getAddCandidateInfo(),
-          adminProvider.accessToken,
-        ).then((response) => {
-          if (response) {
-            const candidates = candidateProvider.candidates;
-            candidates.unshift(candidateProvider.getAddCandidateInfo());
+          ServerOp.addCandidate(
+            candidateProvider.getAddCandidateInfo(),
+            adminProvider.accessToken,
+          ).then((response) => {
+            if (response) {
+              const candidates = candidateProvider.candidates;
+              candidates.unshift(candidateProvider.getAddCandidateInfo());
 
-            // clearing add candidate info
-            candidateProvider.clearAddCandidateInfo();
-            setImage({ ...{ img_file: null, img_url: '' } });
-            candidateProvider.setCandidates([...candidates]);
-          } else {
-            ('error');
-            // setLoading(false);
-          }
-          setLoading(false);
+              // clearing add candidate info
+              candidateProvider.clearAddCandidateInfo();
+              setImage({ ...{ img_file: null, img_url: '' } });
+              setLogo({ ...{ img_file: null, img_url: '' } });
+              candidateProvider.setCandidates([...candidates]);
+            } else {
+              ('error');
+              // setLoading(false);
+            }
+            setLoading(false);
+          });
         });
       });
     } else {
-      console.log('error');
-      console.log(errors);
       setFormErros({ ...errors });
     }
   };
 
-  console.log(addCandidateInfo);
   return (
-    <div className="flex flex-col items-start space-y-8 my-10">
-      <div className="flex flex-col 2xl:flex-row w-full  space-y-8 items-start 2xl:space-x-32  2xl:space-y-0">
+    <div className="flex flex-col items-start space-y-8 mt-10">
+      <div className="flex flex-col 3xl:flex-row w-full  space-y-8 items-start 3xl:space-x-32  3xl:space-y-0">
         {/* upload profile */}
-        <div className="flex flex-col items-center justify-start space-y-4 w-32">
-          <img
-            className="rounded-full"
-            style={{ objectFit: 'cover', height: 100, width: 100 }}
-            src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={uploadFileHandler}
-            ref={fileInput}
-            className="hidden rounded-xl outline-none  font-medium text-[#424040] text-base"
-          />
-          <p
-            onClick={uploadFileHandler}
-            className="cursor-pointer font-medium text-[#424040] hover:text-primary text-base"
-          >
-            Choose a file
-          </p>
+        <div className="flex flex-col items-start justify-start space-y-4 w-40 ">
+          <div className="relative">
+            <img
+              className="rounded-full"
+              style={{ objectFit: 'cover', height: 100, width: 100 }}
+              src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
+            />
+
+            {logo.img_url && (
+              <img className="absolute right-0 bottom-0 w-10 h-10" src={logo.img_url} />
+            )}
+          </div>
+
+          <div className="space-y-2 text-sm text-[#424040]">
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={uploadImageHandler}
+                ref={imageInput}
+                className="hidden rounded-xl outline-none  font-medium "
+              />
+              <div className="flex w-full cursor-pointer items-center justify-start space-x-1  hover:text-primary">
+                <p onClick={uploadImageHandler} className=" font-medium ">
+                  Choose an image
+                </p>
+                <TbColorPicker />
+              </div>
+            </div>
+
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={uploadLogoHandler}
+                ref={logoInput}
+                className="hidden rounded-xl outline-none  font-medium "
+              />
+              <div className=" flex w-full items-center cursor-pointer justify-start space-x-1  hover:text-primary">
+                <p onClick={uploadLogoHandler} className="font-medium ">
+                  Choose a logo
+                </p>
+                <TbColorPicker />
+              </div>
+            </div>
+          </div>
         </div>
         {/* textfields */}
         <div className="flex flex-col items-start space-y-4 w-full">
@@ -182,7 +229,7 @@ export default function AddCandidateForm() {
                 defaultValue={addCandidateInfo.first_name}
                 isRequired={true}
                 error={formErros.first_name}
-                placeHolder={'eg: Hari'}
+                placeHolder={'eg: Nabin'}
                 inputHandler={handleTextInput}
               />
               <TextInputField

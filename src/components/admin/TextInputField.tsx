@@ -44,7 +44,6 @@ export default function TextInputField({
     inputHandler(id, value);
     setValue(value);
   };
-
   return (
     <div
       className={cn(

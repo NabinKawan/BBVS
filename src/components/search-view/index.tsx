@@ -11,7 +11,7 @@ export default function SearchView({ handleSearch }: ISearchView) {
     handleSearch(value);
   };
   return (
-    <div className="flex h-content items-center my-6  space-x-2">
+    <div className="flex h-content items-center mt-6  space-x-2">
       <TextInputField
         id={'search'}
         fullWidth

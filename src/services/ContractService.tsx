@@ -32,9 +32,9 @@ export default class ContractService {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-      console.log(contract);
+
       const candidateList = await contract.getCandidateList();
-      console.log(candidateList);
+
       return candidateList;
     } catch (e: any) {
       let errorMessage = e.message;
@@ -48,9 +48,9 @@ export default class ContractService {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-      console.log(contract);
+
       const candidateCount: BigNumber = await contract.getCandidatesCount();
-      console.log(candidateCount.toNumber());
+
       return candidateCount.toNumber();
     } catch (e: any) {
       let errorMessage = e.message;
@@ -63,15 +63,14 @@ export default class ContractService {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-      console.log(contract);
+
       const result = await contract.getResults();
-      console.log(result);
+
       return result;
     } catch (e: any) {
       //@ts-ignore
       let errorMessage: string = e.message;
       if (errorMessage.indexOf('reason=') > 0) {
-        console.log('yeah');
         errorMessage = errorMessage.slice(errorMessage.indexOf('reason='), errorMessage.length);
         errorMessage = errorMessage.slice(8, errorMessage.indexOf('",'));
         throw new Error(errorMessage);
@@ -88,9 +87,9 @@ export default class ContractService {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-      console.log(contract);
+
       const voterCount: BigNumber = await contract.getVotersCount();
-      console.log(voterCount.toNumber());
+
       return voterCount.toNumber();
     } catch (e: any) {
       let errorMessage = e.message;
@@ -103,12 +102,9 @@ export default class ContractService {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-      console.log(contract);
-      console.log(provider);
 
       const votingEndTime: BigNumber = await contract.getVotingEndTime();
 
-      console.log(votingEndTime.toNumber());
       return votingEndTime.toNumber();
     } catch (e: any) {
       let errorMessage = e.message;
@@ -136,7 +132,7 @@ export default class ContractService {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
       const electionName: string = await contract.electionName();
-      console.log(electionName);
+
       return electionName;
     } catch (e: any) {
       let errorMessage = e.message;
@@ -152,7 +148,6 @@ export default class ContractService {
       const res: boolean = await contract.getVoterStatus(voterId);
       return res;
     } catch (e) {
-      console.log(e);
       //@ts-ignore
       let errorMessage = e.message;
       errorMessage = errorMessage.slice(errorMessage.indexOf('reason='), errorMessage.length);
@@ -165,9 +160,9 @@ export default class ContractService {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-      console.log(contract);
+
       const votingStartTime: BigNumber = await contract.getVotingEndTime();
-      console.log(votingStartTime.toNumber());
+
       return votingStartTime.toNumber();
     } catch (e: any) {
       let errorMessage = e.message;
@@ -201,8 +196,7 @@ export default class ContractService {
 
       const candidateTuple = contractService.generateTuple(candidates);
       const voterTuple = contractService.generateTuple(voters);
-      console.log(candidateTuple);
-      console.log(voterTuple);
+
       const res = await contract.startElection(
         electionName,
         endTimeSec,
@@ -210,7 +204,7 @@ export default class ContractService {
         voterTuple,
         posts,
       );
-      console.log(res);
+
       if (res) {
         toast.info('Transaction in progress', { autoClose: 2000 });
       }
@@ -232,18 +226,16 @@ export default class ContractService {
       const signerAddress = await signer.getAddress();
       const contract = this.getContract(signer);
       const res = await contract.vote(voterId, candidateIds);
-      console.log(res);
+
       if (res) {
         toast.info('Transaction in progress', { autoClose: 2000 });
       }
       const miningResult = provider.waitForTransaction(res.hash);
       return miningResult;
     } catch (e: any) {
-      console.log(e);
       //@ts-ignore
       let errorMessage: string = e.message;
       if (errorMessage.indexOf('reason=') > 0) {
-        console.log('yeah');
         errorMessage = errorMessage.slice(errorMessage.indexOf('reason='), errorMessage.length);
         errorMessage = errorMessage.slice(8, errorMessage.indexOf('",'));
         throw new Error(errorMessage);

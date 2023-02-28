@@ -14,7 +14,6 @@ import ContractService from '../services/ContractService';
 import { toast } from 'react-toastify';
 
 export default function Login() {
-  console.log('login');
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({ voter_id: '', password: '' });
   const [error, setError] = useState(false);
@@ -23,13 +22,13 @@ export default function Login() {
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
   useEffect(() => {
-    // checking cache for admin
-    CachService.getCacheData(CachNamesEnum.Voter).then((value) => {
-      if (value) {
-        votingProvider.setAccessToken(value.access_token);
-        Router.push('/voting');
-      }
-    });
+    // // checking cache for admin
+    // CachService.getCacheData(CachNamesEnum.Voter).then((value) => {
+    //   if (value) {
+    //     votingProvider.setAccessToken(value.access_token);
+    //     Router.push('/voting');
+    //   }
+    // });
   }, []);
 
   const onLogin = () => {
@@ -48,7 +47,6 @@ export default function Login() {
             const voterId = formValues.voter_id.toUpperCase();
             ContractService.getVoterStatus(voterId)
               .then((val) => {
-                console.log({ val });
                 if (val === false) {
                   CachService.addDataIntoCache(CachNamesEnum.Voter, cacheData);
                   setTimeout(() => {

@@ -12,10 +12,12 @@ import { TextFieldIdEnum } from '../../../models/enums/TextFieldEnums';
 import ServerOp from '../../../services/ServerOp';
 import RoundedTextBtn from '../../../shared/button/RoundedTextBtn';
 import TextInputField from '../TextInputField';
+import { TbColorPicker } from 'react-icons/tb';
 
 export default function AddVoterForm() {
   //@ts-ignore
   const voterProvider = useContext(VoterContext) as VoterContextDto;
+  const [submitted, setSubmitted] = useState(false);
   // @ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
   const breakpoint = useBreakpoint();
@@ -26,7 +28,7 @@ export default function AddVoterForm() {
   const inputRef = useRef(null);
 
   const [formErros, setFormErros] = useState({
-    candidate_id: '',
+    voter_id: '',
     first_name: '',
     last_name: '',
     post: '',
@@ -34,7 +36,6 @@ export default function AddVoterForm() {
   const [loading, setLoading] = useState(false);
 
   const uploadFileHandler = (event: any) => {
-    console.log(event.target.files);
     // @ts-ignore
     // getting file
     fileInput.current.click();
@@ -50,8 +51,6 @@ export default function AddVoterForm() {
 
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
-
-      console.log(img_url);
     }
   };
 
@@ -81,9 +80,9 @@ export default function AddVoterForm() {
 
     function validateForm() {
       if (voter_id === '') {
-        errors.candidate_id = 'Voter ID is required';
+        errors.voter_id = 'Voter ID is required';
       } else {
-        errors.candidate_id = '';
+        errors.voter_id = '';
       }
       if (first_name === '') {
         errors.first_name = 'First Name is required';
@@ -124,7 +123,6 @@ export default function AddVoterForm() {
               // clearing add candidate info
               voterProvider.clearAddVoterInfo();
               setImage({ ...{ img_file: null, img_url: '' } });
-              voterProvider.setVoters([...voters]);
             } else {
               ('error');
               // setLoading(false);
@@ -134,18 +132,15 @@ export default function AddVoterForm() {
         );
       });
     } else {
-      console.log('error');
-      console.log(errors);
       setFormErros({ ...errors });
     }
   };
 
-  console.log(addVoterInfo);
   return (
-    <div className="flex flex-col items-start space-y-8 my-10">
+    <div className="flex flex-col items-start space-y-8 mt-10">
       <div className="flex flex-col xl:flex-row w-full  space-y-8 items-start xl:space-x-28  xl:space-y-0">
         {/* upload profile */}
-        <div className="flex flex-col items-center justify-start space-y-4 w-32">
+        <div className="flex flex-col items-start justify-start space-y-4 w-44 text-[#424040] text-sm">
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 100, width: 100 }}
@@ -156,14 +151,14 @@ export default function AddVoterForm() {
             accept="image/*"
             onChange={uploadFileHandler}
             ref={fileInput}
-            className="hidden rounded-xl outline-none  font-medium text-[#424040] text-base"
+            className="hidden rounded-xl outline-none  font-medium "
           />
-          <p
-            onClick={uploadFileHandler}
-            className="cursor-pointer font-medium text-[#424040] hover:text-primary text-base "
-          >
-            Choose a file
-          </p>
+          <div className="flex w-full cursor-pointer items-center justify-start space-x-1  hover:text-primary">
+            <p onClick={uploadFileHandler} className=" font-medium ">
+              Choose an image
+            </p>
+            <TbColorPicker />
+          </div>
         </div>
         {/* textfields */}
         <div className="flex flex-col items-start space-y-4 w-full">
@@ -175,7 +170,7 @@ export default function AddVoterForm() {
               defaultValue={addVoterInfo.first_name}
               isRequired={true}
               error={formErros.first_name}
-              placeHolder={'eg: Hari'}
+              placeHolder={'eg: Nabin'}
               inputHandler={handleTextInput}
             />
             <TextInputField
@@ -206,7 +201,7 @@ export default function AddVoterForm() {
               title={'Voter ID'}
               defaultValue={addVoterInfo.voter_id}
               isRequired={true}
-              error={formErros.candidate_id}
+              error={formErros.voter_id}
               placeHolder={'eg: KCE075BCT020'}
               inputHandler={handleTextInput}
             />

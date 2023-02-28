@@ -12,7 +12,6 @@ import VoterContext from '../context/voter/VoterContext';
 import { AdminDto } from '../models/dto/ServerOpDtos';
 
 export default function admin() {
-  console.log('admin');
   // @ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
   //@ts-ignore
@@ -30,7 +29,6 @@ export default function admin() {
           if (value) {
             if (value !== 'unauthorized') {
               candidateProvider.setCandidates([...value.content]);
-              console.log(value.content);
             } else {
               CachService.deleteCache(CachNamesEnum.Admin).then((value) => {
                 if (value) {
@@ -46,7 +44,6 @@ export default function admin() {
           if (value) {
             if (value !== 'unauthorized') {
               voterProvider.setVoters([...value.content]);
-              console.log(value.content);
             } else {
               CachService.deleteCache(CachNamesEnum.Admin).then((value) => {
                 if (value) {

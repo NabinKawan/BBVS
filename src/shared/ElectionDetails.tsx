@@ -37,7 +37,7 @@ export default function ElectionDetails({
 
   const startTimer = () => {
     let { total, hours, minutes, seconds } = getTimeRemaining();
-    console.log(total);
+
     if (total >= 0) {
       setTimer(
         (hours > 9 ? hours : '0' + hours) +

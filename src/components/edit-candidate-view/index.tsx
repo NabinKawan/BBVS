@@ -30,7 +30,6 @@ export default function EditCandidateView() {
   const editCandidateInfo = (key: string, value: string) => {
     // @ts-ignore
     editCandidateRef.current[`${key}`] = value;
-    // console.log(addCandidateRef.current);
   };
 
   const [formErros, setFormErros] = useState({
@@ -42,7 +41,6 @@ export default function EditCandidateView() {
   const [loading, setLoading] = useState(false);
 
   const uploadFileHandler = (event: any) => {
-    console.log(event.target.files);
     // @ts-ignore
     // getting file
     fileInput.current.click();
@@ -58,8 +56,6 @@ export default function EditCandidateView() {
 
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
-
-      console.log(img_url);
     }
   };
 
@@ -121,7 +117,6 @@ export default function EditCandidateView() {
       // upload image and set the url to editCandidateRef.current
       image.img_file !== null
         ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-            console.log({ value });
             editCandidateInfo(TextFieldIdEnum.Image, value);
 
             // changing saved post and id values to uppercase
@@ -179,8 +174,6 @@ export default function EditCandidateView() {
             },
           );
     } else {
-      console.log('error');
-      console.log(errors);
       setFormErros({ ...errors });
     }
   };

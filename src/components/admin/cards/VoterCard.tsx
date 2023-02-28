@@ -15,13 +15,13 @@ import {
 import VoterContext from '../../../context/voter/VoterContext';
 import AdminContext from '../../../context/admin/AdminContext';
 import { useDialog } from '../../dialog-view.tsx/context';
+import Swal from 'sweetalert2';
 
 interface VoterCardProps {
   voter: VoterDto;
 }
 
 export default function VoterCard({ voter }: VoterCardProps) {
-  console.log(voter.image);
   const { openDialog } = useDialog();
   const [loading, setLoading] = useState(false);
 
@@ -34,18 +34,29 @@ export default function VoterCard({ voter }: VoterCardProps) {
   };
 
   const handleDelete = () => {
-    setLoading(true);
-    ServerOp.deleteCandidate(voter.voter_id, adminProvider.accessToken).then((value) => {
-      if (value) {
-        const voters = voterProvider.voters;
-
-        const index = voters.findIndex((e) => e.voter_id === voter.voter_id);
-        if (index > -1) {
-          // only splice array when item is found
-          voters.splice(index, 1); // 2nd parameter means remove one item only
-          voterProvider.setVoters([...voters]);
-        }
-        setLoading(false);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#1c4e80',
+      cancelButtonColor: '#F76464',
+      confirmButtonText: 'Yes, Remove it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        ServerOp.deleteVoter(voter.voter_id, adminProvider.accessToken).then((value) => {
+          if (value) {
+            const voters = voterProvider.voters;
+            const index = voters.findIndex((e) => e.voter_id === voter.voter_id);
+            if (index > -1) {
+              // only splice array when item is found
+              voters.splice(index, 1); // 2nd parameter means remove one item only
+              voterProvider.setVoters([...voters]);
+            }
+            setLoading(false);
+          }
+        });
       }
     });
   };

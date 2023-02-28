@@ -10,6 +10,7 @@ import CandidateContext from '../../../context/candidate/CandidateContext';
 import { AdminContextDto, CandidateContextDto } from '../../../models/dto/ContextDtos';
 import AdminContext from '../../../context/admin/AdminContext';
 import { useDialog } from '../../dialog-view.tsx/context';
+import Swal from 'sweetalert2';
 
 interface CandidateCardProps {
   candidate: CandidateDto;
@@ -28,25 +29,39 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
   };
 
   const handleDelete = () => {
-    setLoading(true);
-    ServerOp.deleteCandidate(candidate.candidate_id, adminProvider.accessToken).then((value) => {
-      if (value) {
-        const candidates = candidateProvider.candidates;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#1c4e80',
+      cancelButtonColor: '#F76464',
+      confirmButtonText: 'Yes, Remove it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        ServerOp.deleteCandidate(candidate.candidate_id, adminProvider.accessToken).then(
+          (value) => {
+            if (value) {
+              const candidates = candidateProvider.candidates;
 
-        const index = candidates.findIndex((e) => e.candidate_id === candidate.candidate_id);
-        if (index > -1) {
-          // only splice array when item is found
-          candidates.splice(index, 1); // 2nd parameter means remove one item only
-          candidateProvider.setCandidates([...candidates]);
-        }
-        setLoading(false);
+              const index = candidates.findIndex((e) => e.candidate_id === candidate.candidate_id);
+              if (index > -1) {
+                // only splice array when item is found
+                candidates.splice(index, 1); // 2nd parameter means remove one item only
+                candidateProvider.setCandidates([...candidates]);
+              }
+              setLoading(false);
+            }
+          },
+        );
       }
     });
   };
 
   return (
     <div className="flex items-center justify-between py-4">
-      {/* profile details */}
+      {/* profile details */}{' '}
       <div className="flex  space-x-4">
         <div className="flex flex-col items-center">
           <img
@@ -63,8 +78,12 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
           </p>
           <p className="font-medium text-sm text-[#686868]">{candidate.candidate_id}</p>
         </div>
+        {candidate.logo && (
+          <div className="hidden md:flex pt-4 pl-8">
+            <img className="w-10 h-10" src={candidate.logo} />{' '}
+          </div>
+        )}
       </div>
-
       {/* edit delete buttons */}
       <div className="flex space-x-4 text-white font-bold text-base ">
         {/* edit dialog */}

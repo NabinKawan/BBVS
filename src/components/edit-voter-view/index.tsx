@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
+import { TbColorPicker } from 'react-icons/tb';
 import AdminContext from '../../context/admin/AdminContext';
 import VoterContext from '../../context/voter/VoterContext';
 import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
@@ -31,7 +32,6 @@ export default function EditVoterView() {
   const editCandidateInfo = (key: string, value: string) => {
     // @ts-ignore
     editVoterRef.current[`${key}`] = value;
-    // console.log(addCandidateRef.current);
   };
 
   const [formErros, setFormErros] = useState({
@@ -43,7 +43,6 @@ export default function EditVoterView() {
   const [loading, setLoading] = useState(false);
 
   const uploadFileHandler = (event: any) => {
-    console.log(event.target.files);
     // @ts-ignore
     // getting file
     fileInput.current.click();
@@ -59,8 +58,6 @@ export default function EditVoterView() {
 
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
-
-      console.log(img_url);
     }
   };
 
@@ -118,7 +115,6 @@ export default function EditVoterView() {
 
       image.img_file !== null
         ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-            console.log({ value });
             editCandidateInfo(TextFieldIdEnum.Image, value);
 
             // changing saved post and id values to uppercase
@@ -138,8 +134,8 @@ export default function EditVoterView() {
 
                   voters[index] = editVoterRef.current;
 
-                  setImage({ ...{ img_file: null, img_url: '' } });
-                  voterProvider.setVoters([...voters]);
+                  // setImage({ ...{ img_file: null, img_url: '' } });
+                  // voterProvider.setVoters([...voters]);
 
                   // hide edit form dialog
                   dialog.closeDialog();
@@ -161,8 +157,8 @@ export default function EditVoterView() {
 
               voters[index] = editVoterRef.current;
 
-              setImage({ ...{ img_file: null, img_url: '' } });
-              voterProvider.setVoters([...voters]);
+              // setImage({ ...{ img_file: null, img_url: '' } });
+              // voterProvider.setVoters([...voters]);
 
               // hide edit form dialog
               dialog.closeDialog();
@@ -173,17 +169,14 @@ export default function EditVoterView() {
             setLoading(false);
           });
     } else {
-      console.log('error');
-      console.log(errors);
       setFormErros({ ...errors });
     }
   };
 
-  console.log(editVoterRef.current);
   return (
     <div className="flex flex-col w-full items-start justify-center space-y-8 py-8 px-8 md:px-10 lg:px-12 ">
       {/* upload profile */}
-      <div className="flex flex-col w-full items-center lg:items-start  space-y-4">
+      <div className="flex ext-[#424040] text-sm flex-col w-full items-center lg:items-start  space-y-4">
         <img
           className="rounded-full"
           style={{ objectFit: 'cover', height: 100, width: 100 }}
@@ -194,14 +187,14 @@ export default function EditVoterView() {
           accept="image/*"
           onChange={uploadFileHandler}
           ref={fileInput}
-          className="hidden rounded-xl outline-none  font-medium text-[#424040] text-base"
+          className="hidden rounded-xl outline-none  font-medium t"
         />
-        <p
-          onClick={uploadFileHandler}
-          className="cursor-pointer font-medium text-[#424040] hover:text-primary text-base"
-        >
-          Choose a file
-        </p>
+        <div className="flex w-full cursor-pointer items-center justify-start space-x-1  hover:text-primary">
+          <p onClick={uploadFileHandler} className=" font-medium ">
+            Choose a image
+          </p>
+          <TbColorPicker />
+        </div>
       </div>
 
       {/* textfields */}

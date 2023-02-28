@@ -33,7 +33,6 @@ export default function VoterState({ children }: VoterstateProps) {
     setClearAddVoterRef(false);
     // @ts-ignore
     addVoterRef.current[`${key}`] = value;
-    // console.log(addVoterRef.current);
   };
 
   const clearAddVoterInfo = () => {
