@@ -1,4 +1,5 @@
 import { useState, useRef, useContext } from 'react';
+import { TbColorPicker } from 'react-icons/tb';
 import AdminContext from '../../context/admin/AdminContext';
 import CandidateContext from '../../context/candidate/CandidateContext';
 import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
@@ -18,7 +19,9 @@ export default function EditCandidateView() {
   const candidate: CandidateDto = dialogProps && dialogProps.candidate;
   const breakpoint = useBreakpoint();
   const [image, setImage] = useState({ img_file: null, img_url: candidate?.image });
-  const fileInput = useRef<HTMLInputElement>(null);
+  const [logo, setLogo] = useState({ img_file: null, img_url: candidate?.logo });
+  const imageInput = useRef<HTMLInputElement>(null);
+  const logoInput = useRef<HTMLInputElement>(null);
 
   //@ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
@@ -40,22 +43,41 @@ export default function EditCandidateView() {
   });
   const [loading, setLoading] = useState(false);
 
-  const uploadFileHandler = (event: any) => {
+  const uploadImageHandler = (event: any) => {
     // @ts-ignore
     // getting file
-    fileInput.current.click();
-    const img_file = fileInput.current?.files![0];
+    imageInput.current.click();
+    const img_file = imageInput.current?.files![0];
 
     if (img_file) {
       // @ts-ignore
       // creates object url
       const img_url = window.URL.createObjectURL(img_file!);
 
-      // adding image into editCandidateRef.current
-      editCandidateInfo(TextFieldIdEnum.Image, img_url);
+      // adding image into addCandidateInfo
+      candidateProvider.addCandidateInfo(TextFieldIdEnum.Image, img_url);
 
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
+    }
+  };
+
+  const uploadLogoHandler = (event: any) => {
+    // @ts-ignore
+    // getting file
+    logoInput.current.click();
+    const img_file = logoInput.current?.files![0];
+
+    if (img_file) {
+      // @ts-ignore
+      // creates object url
+      const img_url = window.URL.createObjectURL(img_file!);
+
+      // adding image into addCandidateInfo
+      candidateProvider.addCandidateInfo(TextFieldIdEnum.Logo, img_url);
+
+      // @ts-ignore becasue changing null value into string value
+      setLogo({ img_file, img_url });
     }
   };
 
@@ -63,7 +85,7 @@ export default function EditCandidateView() {
     editCandidateInfo(candidate_id, inputValue);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault(); // preventing default redirection
 
     const { candidate_id, first_name, middle_name, last_name, post } = editCandidateRef.current;
@@ -115,64 +137,47 @@ export default function EditCandidateView() {
       setLoading(true);
 
       // upload image and set the url to editCandidateRef.current
-      image.img_file !== null
-        ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-            editCandidateInfo(TextFieldIdEnum.Image, value);
+      if (image.img_file !== null) {
+        await ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
+          editCandidateInfo(TextFieldIdEnum.Image, value);
+        });
+      }
+      if (logo.img_file !== null) {
+        await ServerOp.uploadLogo(logo.img_file, adminProvider.accessToken).then((value) => {
+          editCandidateInfo(TextFieldIdEnum.Logo, value);
+        });
+      }
+      // changing saved post and id values to uppercase
+      editCandidateInfo(TextFieldIdEnum.Post, editCandidateRef.current.post.toUpperCase());
+      editCandidateInfo(
+        TextFieldIdEnum.CandidateID,
+        editCandidateRef.current.candidate_id.toUpperCase(),
+      );
 
-            // changing saved post and id values to uppercase
-            editCandidateInfo(TextFieldIdEnum.Post, editCandidateRef.current.post.toUpperCase());
-            editCandidateInfo(
-              TextFieldIdEnum.CandidateID,
-              editCandidateRef.current.candidate_id.toUpperCase(),
+      ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
+        (response) => {
+          if (response) {
+            const candidates = candidateProvider.candidates;
+
+            const index = candidates.findIndex(
+              (e: any) => e.candidate_id === editCandidateRef.current.candidate_id,
             );
 
-            ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
-              (response) => {
-                if (response) {
-                  const candidates = candidateProvider.candidates;
+            candidates[index] = editCandidateRef.current;
 
-                  const index = candidates.findIndex(
-                    (e: any) => e.candidate_id === editCandidateRef.current.candidate_id,
-                  );
+            setImage({ ...{ img_file: null, img_url: '' } });
+            setLogo({ ...{ img_file: null, img_url: '' } });
+            candidateProvider.setCandidates([...candidates]);
 
-                  candidates[index] = editCandidateRef.current;
-
-                  setImage({ ...{ img_file: null, img_url: '' } });
-                  candidateProvider.setCandidates([...candidates]);
-
-                  // hide edit form dialog
-                  dialog.closeDialog();
-                } else {
-                  ('error');
-                  // setLoading(false);
-                }
-                setLoading(false);
-              },
-            );
-          })
-        : ServerOp.updateCandidate(editCandidateRef.current, adminProvider.accessToken).then(
-            (response) => {
-              if (response) {
-                const candidates = candidateProvider.candidates;
-
-                const index = candidates.findIndex(
-                  (e: any) => e.candidate_id === editCandidateRef.current.candidate_id,
-                );
-
-                candidates[index] = editCandidateRef.current;
-
-                setImage({ ...{ img_file: null, img_url: '' } });
-                candidateProvider.setCandidates([...candidates]);
-
-                // hide edit form dialog
-                dialog.closeDialog();
-              } else {
-                ('error');
-                // setLoading(false);
-              }
-              setLoading(false);
-            },
-          );
+            // hide edit form dialog
+            dialog.closeDialog();
+          } else {
+            ('error');
+            // setLoading(false);
+          }
+          setLoading(false);
+        },
+      );
     } else {
       setFormErros({ ...errors });
     }
@@ -181,24 +186,49 @@ export default function EditCandidateView() {
     <div className="flex flex-col w-full items-start justify-center space-y-8 py-8 px-8 md:px-10 lg:px-12 ">
       {/* upload profile */}
       <div className="flex flex-col w-full items-center lg:items-start  space-y-4">
-        <img
-          className="rounded-full"
-          style={{ objectFit: 'fill', height: 100, width: 100 }}
-          src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={uploadFileHandler}
-          ref={fileInput}
-          className="hidden rounded-xl outline-none  font-medium text-[#424040] text-base"
-        />
-        <p
-          onClick={uploadFileHandler}
-          className="cursor-pointer font-medium text-[#424040] hover:text-primary text-base"
-        >
-          Choose a file
-        </p>
+        <div className="relative">
+          <img
+            className="rounded-full"
+            style={{ objectFit: 'cover', height: 100, width: 100 }}
+            src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
+          />
+
+          {logo.img_url && <img className="absolute right-0 bottom-0  h-9" src={logo.img_url} />}
+        </div>
+
+        <div className="space-y-2 text-sm text-[#424040]">
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={uploadImageHandler}
+              ref={imageInput}
+              className="hidden rounded-xl outline-none  font-medium "
+            />
+            <div className="flex w-full cursor-pointer items-center justify-start space-x-1  hover:text-primary">
+              <p onClick={uploadImageHandler} className=" font-medium ">
+                Choose an image
+              </p>
+              <TbColorPicker />
+            </div>
+          </div>
+
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={uploadLogoHandler}
+              ref={logoInput}
+              className="hidden rounded-xl outline-none  font-medium "
+            />
+            <div className=" flex w-full items-center cursor-pointer justify-start space-x-1  hover:text-primary">
+              <p onClick={uploadLogoHandler} className="font-medium ">
+                Choose a logo
+              </p>
+              <TbColorPicker />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* textfields */}

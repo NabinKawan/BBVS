@@ -89,10 +89,7 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
             </div>
           </div>
         </div>
-        <img
-          className="hidden lg:block h-8"
-          src={candidate.image === '' ? 'images/party_sign.png' : candidate.logo}
-        />
+        {candidate.logo && <img className="hidden lg:block h-8" src={candidate.logo!} />}
       </div>
       {/* edit delete buttons */}
       <div className="hidden sm:flex space-x-4 text-white font-bold text-base ">
