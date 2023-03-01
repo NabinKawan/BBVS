@@ -4,8 +4,9 @@ function checkForElectedCandidates(candidates: any) {
   const voteCounts = removeDuplicates(candidates.map((candidate: any) => candidate.voteCount));
 
   const hasSameVotes = hasDuplicates(voteCounts);
-
   if (hasSameVotes) {
+    return null;
+  } else if (voteCounts[0] === 0) {
     return null;
   }
 

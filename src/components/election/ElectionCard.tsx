@@ -8,6 +8,7 @@ interface ElectionCardProps {
   name: string;
   isElected?: boolean;
   voteCount: number;
+  logo: string;
 }
 
 export default function ElectionCard({
@@ -17,7 +18,9 @@ export default function ElectionCard({
   totalVotes,
   candidateId,
   image = '/images/noprofile.png',
+  logo,
 }: ElectionCardProps) {
+  console.log(logo);
   let pollColor = '';
   const votePercent = (voteCount / totalVotes) * 100;
   if (votePercent >= 80) {
@@ -42,7 +45,7 @@ export default function ElectionCard({
       className="flex flex-col bg- font-sans items-start bg-white justify-center p-4 space-y-3  w-full"
     >
       <div className="flex w-full justify-between  items-start text-gray-900">
-        <div className="flex  items-center  space-x-6 ">
+        <div className="flex  items-start  space-x-6 ">
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 50, width: 50 }}
@@ -54,7 +57,7 @@ export default function ElectionCard({
                 <p className="font-medium text-lg ">{name}</p>
                 <p className="text-sm text-gray-500">{candidateId}</p>
                 {isElected && (
-                  <div className="flex justify-center w-20 items-center py-1 px-1 mt-1 text-sm bg-green-600 text-white rounded-full">
+                  <div className="flex justify-center w-20 items-center py-1 px-1 mt-1 text-sm bg-green-600 text-white rounded-lg">
                     Elected
                   </div>
                 )}
@@ -63,7 +66,10 @@ export default function ElectionCard({
           </div>
         </div>
 
-        <p className="font-medium">{voteCount} votes</p>
+        <div className="flex space-x-2 items-start">
+          <p className="font-medium">{voteCount} votes</p>
+          {logo && <img className=" h-8" src={logo} />}
+        </div>
       </div>
       <div className="flex rounded-lg mt-3 bg-gray-200 w-full h-2 ">
         <div className={`rounded-md ${pollColor} h-2`} style={{ width: `${votePercent}%` }}></div>

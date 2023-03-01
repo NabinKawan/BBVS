@@ -51,6 +51,7 @@ export default function ElectionResult() {
             candidateId: '',
             post: '',
             voteCount: 0,
+            logo: '',
           };
           posts_.push(e.post);
           result.name = e.name;
@@ -58,6 +59,7 @@ export default function ElectionResult() {
           result.imageUrl = e.imageUrl;
           result.candidateId = e.candidateId;
           result.voteCount = e.voteCount.toNumber();
+          result.logo = e.logo;
           formattedResults.push(result);
         });
         const postSet = new Set(posts_);
@@ -131,6 +133,7 @@ export default function ElectionResult() {
                                   voteCount={result.voteCount}
                                   totalVotes={totalVotes}
                                   image={result.imageUrl}
+                                  logo={result.logo}
                                 />
                               ),
                           )}

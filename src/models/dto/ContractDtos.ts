@@ -21,4 +21,5 @@ export type ElectionResultDto = {
   voteCount: BigNumber;
   candidateId: string;
   post: string;
+  logo: string;
 };
