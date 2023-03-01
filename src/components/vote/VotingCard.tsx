@@ -25,10 +25,9 @@ export default function VotingCard({ candidate, isSelected, onClick }: VotingCar
             src={candidate.image === '' ? 'images/noprofile.png' : candidate.image}
             style={{ objectFit: 'cover' }}
           />
-          <img
-            className="absolute right-0 bottom-0 h-10"
-            src={candidate.image === '' ? 'images/party_sign.png' : candidate.logo}
-          />
+          {candidate.logo && (
+            <img className="absolute right-0 bottom-0 h-10" src={candidate.logo} />
+          )}
         </div>
 
         <div className="flex w-full overflow-x-clip flex-col items-center space-y-1">

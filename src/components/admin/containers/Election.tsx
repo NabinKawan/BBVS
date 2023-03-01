@@ -142,7 +142,7 @@ export default function Election() {
           <div className="flex flex-col  divide-gray-50  px-12 pb-8">
             {/* election card */}
             <div className="flex md:space-x-12">
-              <div className="flex flex-col w-1/2 pt-4  font-medium text-sm justify-start space-y-2">
+              <div className="flex flex-col w-1/2 pt-4  text-sm justify-start space-y-2">
                 <p className="text-[#424040] text-base mb-2">
                   Election<span className="text-red-500">*</span>
                 </p>

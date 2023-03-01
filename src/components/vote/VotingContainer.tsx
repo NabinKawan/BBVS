@@ -115,20 +115,23 @@ export default function VotingContainer() {
           />
         </div>
         <div className="space-y-8">
-          {Object.values(votingProvider.votes).map((candidate: CandidateDto, index) => {
-            return (
-              <div>
-                <p className="font-medium text-sm text-gray-700 mb-3">{candidate.post}</p>
-                <VotingResultCard
-                  candidate={candidate}
-                  handleEdit={() => {
-                    setCurrentPage(index);
-                    setEdit(true);
-                  }}
-                />
-              </div>
-            );
-          })}
+          {
+            // @ts-ignore
+            Object.values(votingProvider.votes).map((candidate: CandidateDto, index) => {
+              return (
+                <div>
+                  {/* <p className="font-medium text-sm text-gray-700 mb-3">{candidate.post}</p> */}
+                  <VotingResultCard
+                    candidate={candidate}
+                    handleEdit={() => {
+                      setCurrentPage(index);
+                      setEdit(true);
+                    }}
+                  />
+                </div>
+              );
+            })
+          }
         </div>
       </div>
     );
@@ -142,6 +145,19 @@ export default function VotingContainer() {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
 
+  const handleVote = (candidate: CandidateDto | null) => {
+    votingProvider.addVote(candidateProvider.posts[currentPage], candidate);
+
+    votingProvider.addStep(candidateProvider.posts[currentPage]);
+    setTimeout(() => {
+      if (isEdit) {
+        setCurrentPage(candidateProvider.posts.length);
+        setEdit(!isEdit);
+      } else {
+        setCurrentPage(currentPage + 1);
+      }
+    }, 500);
+  };
   return (
     <div className="w-full  min-h-screen overflow-y-auto bg-AdminBg px-6 md:px-16 py-8">
       <DrawerButton drawerType="VOTING" />
@@ -183,7 +199,9 @@ export default function VotingContainer() {
                         text={'No Vote'}
                         // loading={loading}
                         bgColor={'bg-red-300 '}
-                        onClick={() => {}}
+                        onClick={() => {
+                          handleVote(null);
+                        }}
                       />
                     </div>
                   </div>
@@ -199,16 +217,7 @@ export default function VotingContainer() {
                               candidate={e}
                               isSelected={Object.values(votingProvider.votes).includes(e)}
                               onClick={() => {
-                                votingProvider.addVote(candidateProvider.posts[currentPage], e);
-                                votingProvider.addStep(candidateProvider.posts[currentPage]);
-                                setTimeout(() => {
-                                  if (isEdit) {
-                                    setCurrentPage(candidateProvider.posts.length);
-                                    setEdit(!isEdit);
-                                  } else {
-                                    setCurrentPage(currentPage + 1);
-                                  }
-                                }, 1000);
+                                handleVote(e);
                               }}
                             />
                           ),
