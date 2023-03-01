@@ -62,30 +62,40 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
   return (
     <div className="flex items-center justify-between py-4">
       {/* profile details */}{' '}
-      <div className="flex  space-x-6">
-        <div className="flex flex-col items-center  w-fit xl:w-40">
+      <div className="flex space-x-8 items-center">
+        <div className="relative">
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 60, width: 60 }}
             src={candidate.image === '' ? 'images/noprofile.png' : `${candidate.image}`}
           />
-          <p className="font-medium text-sm text-green-500">{candidate.post}</p>
+          <img
+            className="absolute lg:hidden bottom-0 right-0 h-6"
+            src={candidate.image === '' ? 'images/party_sign.png' : candidate.logo}
+          />
         </div>
 
-        <div className="flex flex-col space-y-1 pt-2 w-fit xl:w-52">
+        <div className="flex flex-col space-y-2 w-64">
           <p className="font-medium text-base text-black">
             {candidate.first_name} {candidate.middle_name} {candidate.last_name}
           </p>
-          <p className="font-medium text-sm text-[#686868]">{candidate.candidate_id}</p>
-        </div>
-        {candidate.logo && (
-          <div className="hidden md:flex pt-4 pl-8">
-            <img className="h-9" src={candidate.logo} />{' '}
+
+          <div className="flex flex-col space-x-0 space-y-2 md:flex-row md:space-x-2 md:space-y-1">
+            <div className="flex w-fit rounded-xl bg-green-100 px-2 py-1 justify-center items-center">
+              <p className="font-medium text-xs text-green-500 ">{candidate.post}</p>
+            </div>
+            <div className="flex w-fit rounded-xl bg-gray-100 px-2 py-1 justify-center items-center">
+              <p className="font-medium text-xs text-[#686868]">{candidate.candidate_id}</p>
+            </div>
           </div>
-        )}
+        </div>
+        <img
+          className="hidden lg:block h-8"
+          src={candidate.image === '' ? 'images/party_sign.png' : candidate.logo}
+        />
       </div>
       {/* edit delete buttons */}
-      <div className="flex space-x-4 text-white font-bold text-base ">
+      <div className="hidden sm:flex space-x-4 text-white font-bold text-base ">
         {/* edit dialog */}
 
         <div className="flex  space-x-4">
