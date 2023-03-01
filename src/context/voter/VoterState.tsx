@@ -46,7 +46,9 @@ export default function VoterState({ children }: VoterstateProps) {
     setClearAddVoterRef(true);
   };
 
-  const getAddVoterInfo = () => addVoterRef.current;
+  const getAddVoterInfo = () => {
+    return addVoterRef.current;
+  };
 
   return (
     <VoterContext.Provider
