@@ -27,7 +27,8 @@ export default function AdminLogin() {
     });
   }, []);
 
-  const onLogin = () => {
+  const onLogin = (e: any) => {
+    e.preventDefault();
     setLoading(true);
     if (validate(formValues)) {
       ServerOp.adminLogin(formValues).then((value) => {
@@ -63,7 +64,10 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-loginBg h-screen font-sans ">
+    <form
+      className="flex justify-center items-center bg-loginBg h-screen font-sans"
+      onSubmit={onLogin}
+    >
       <div className="flex flex-col items-center px-8 sm:px-10 py-12 space-y-5  rounded-xl bg-white shadow-lg">
         <div className="flex flex-col items-center ">
           <img src="logos/logo.png" />
@@ -102,14 +106,13 @@ export default function AdminLogin() {
             <p className="text-xs font-normal text-red-400  ">Invalid Credential.</p>
           </div>
         )}
-        <div
-          onClick={onLogin}
+        <button
+          type="submit"
           className="flex cursor-pointer   p-3 text-base font-medium justify-center bg-primary text-white rounded-lg w-[350px]"
         >
-          {' '}
           {loading ? <CircularProgress size={24} color="inherit" /> : <p>Login In</p>}
-        </div>
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
