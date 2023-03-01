@@ -55,12 +55,14 @@ export default function Voting() {
                   const formatedCandidates: CandidateDto[] = [];
                   candidates.forEach((candidate: ContractCandidateDto) => {
                     const names = candidate.name.split(' ');
+                    debugger;
                     const candidate_: CandidateDto = {
                       candidate_id: '',
                       first_name: '',
                       middle_name: '',
                       last_name: '',
                       post: '',
+                      logo: '',
                       image: '',
                     };
                     posts.push(candidate.post);
@@ -74,6 +76,7 @@ export default function Voting() {
                       candidate_.last_name = names[2];
                     }
                     candidate_.post = candidate.post;
+                    candidate_.logo = candidate.logo;
                     candidate_.candidate_id = candidate.candidateId;
                     candidate_.image = candidate.imageUrl;
                     formatedCandidates.push(candidate_);

@@ -5,6 +5,7 @@ export type ContractCandidateDto = {
   name: string;
   imageUrl: string;
   post: string;
+  logo: string;
 };
 
 export type ContractVoterDto = {

@@ -62,7 +62,9 @@ export default function VotingMenu({ className }: VotingMenuProps) {
 
       {/* progress details */}
       <div className="flex flex-col items-start my-8">
-        <p className="font-medium text-sm text-[#717171] mb-2">2 steps to complete the vote.</p>
+        <p className="font-medium text-sm text-[#717171] mb-2">
+          {candidateProvider.posts.length} steps to complete the vote.
+        </p>
         <RoundedProgressBar
           barColor={'bg-primary'}
           fillPercentage={

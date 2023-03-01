@@ -62,8 +62,8 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
   return (
     <div className="flex items-center justify-between py-4">
       {/* profile details */}{' '}
-      <div className="flex  space-x-4">
-        <div className="flex flex-col items-center">
+      <div className="flex  space-x-6">
+        <div className="flex flex-col items-center  w-fit xl:w-40">
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 60, width: 60 }}
@@ -72,7 +72,7 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
           <p className="font-medium text-sm text-green-500">{candidate.post}</p>
         </div>
 
-        <div className="flex flex-col space-y-1 pt-2">
+        <div className="flex flex-col space-y-1 pt-2 w-fit xl:w-52">
           <p className="font-medium text-base text-black">
             {candidate.first_name} {candidate.middle_name} {candidate.last_name}
           </p>
@@ -80,7 +80,7 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
         </div>
         {candidate.logo && (
           <div className="hidden md:flex pt-4 pl-8">
-            <img className="w-10 h-10" src={candidate.logo} />{' '}
+            <img className="h-9" src={candidate.logo} />{' '}
           </div>
         )}
       </div>

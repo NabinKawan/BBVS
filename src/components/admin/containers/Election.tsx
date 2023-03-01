@@ -63,10 +63,11 @@ export default function Election() {
       const posts: string[] = [];
 
       candidateProvider.candidates.forEach((candidate) => {
-        const contractCandidate = { candidateId: '', name: '', imageUrl: '', post: '' };
+        const contractCandidate = { candidateId: '', name: '', imageUrl: '', post: '', logo: '' };
         contractCandidate.name =
           candidate.first_name + ' ' + candidate.middle_name + ' ' + candidate.last_name;
-        contractCandidate.imageUrl = candidate.image;
+        contractCandidate.imageUrl = candidate.image!;
+        contractCandidate.logo = candidate.logo!;
         contractCandidate.post = candidate.post;
         contractCandidate.candidateId = candidate.candidate_id;
         contractCandidates.push(contractCandidate);
@@ -81,7 +82,7 @@ export default function Election() {
       });
       const postsSet = new Set(posts);
       const posts_ = Array.from(postsSet);
-
+      debugger;
       ContractService.startElection(
         electionName,
         parseInt(electionEndTime) * 60,

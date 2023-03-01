@@ -73,7 +73,7 @@ export default function admin() {
       }
     });
   }, []);
-
+  console.log({ candidates: candidateProvider.candidates });
   return (
     adminProvider.accessToken !== '' && (
       <div className="w-full h-screen font-sans">

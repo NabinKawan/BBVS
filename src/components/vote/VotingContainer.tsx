@@ -147,7 +147,7 @@ export default function VotingContainer() {
       <DrawerButton drawerType="VOTING" />
       <div className="w-full  bg-AdminBg ">
         {/* title */}
-        <div className=" font-medium text-[#575353] text-lg ">Class Election </div>
+        <div className=" font-medium text-[#575353] text-lg "> class election </div>
         <div className="flex justify-between my-12 -ml-1">
           <div
             className={`flex font-medium space-x-2 cursor-pointer ${
@@ -176,7 +176,7 @@ export default function VotingContainer() {
                 <div className="flex flex-col pb-32">
                   <div className="flex flex-col ">
                     <p className="font-bold text-xl text-black">{`Vote for ${candidateProvider.posts[currentPage]}`}</p>
-                    <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${candidateProvider.posts[currentPage]}?`}</p>
+                    <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${candidateProvider.posts[currentPage]}`}</p>
                     <div className="w-32 mt-8">
                       <RoundedIconBtn
                         icon={<MdEditOff size={20} />}

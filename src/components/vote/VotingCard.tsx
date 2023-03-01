@@ -21,11 +21,14 @@ export default function VotingCard({ candidate, isSelected, onClick }: VotingCar
       <div className={`flex flex-col product-image items-center justify-center space-y-7`}>
         <div className="relative">
           <img
-            className="rounded-full w-28 h-28"
+            className="rounded-full h-28"
             src={candidate.image === '' ? 'images/noprofile.png' : candidate.image}
             style={{ objectFit: 'cover' }}
           />
-          <img className="absolute right-0 bottom-0 w-10 h-10" src="/images/party_sign.png" />
+          <img
+            className="absolute right-0 bottom-0 h-10"
+            src={candidate.image === '' ? 'images/party_sign.png' : candidate.logo}
+          />
         </div>
 
         <div className="flex w-full overflow-x-clip flex-col items-center space-y-1">

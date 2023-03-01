@@ -32,6 +32,11 @@
             "internalType": "string",
             "name": "post",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "logo",
+            "type": "string"
           }
         ],
         "internalType": "struct Bbvs.Candidate[]",
@@ -168,6 +173,11 @@
             "internalType": "string",
             "name": "post",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "logo",
+            "type": "string"
           }
         ],
         "internalType": "struct Bbvs.Candidate[]",
@@ -233,6 +243,11 @@
           {
             "internalType": "string",
             "name": "post",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "logo",
             "type": "string"
           }
         ],

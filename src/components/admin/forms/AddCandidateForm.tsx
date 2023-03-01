@@ -45,6 +45,7 @@ export default function AddCandidateForm() {
       // adding image into addCandidateInfo
       candidateProvider.addCandidateInfo(TextFieldIdEnum.Image, img_url);
 
+
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
     }
@@ -179,9 +180,7 @@ export default function AddCandidateForm() {
               src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
             />
 
-            {logo.img_url && (
-              <img className="absolute right-0 bottom-0 w-10 h-10" src={logo.img_url} />
-            )}
+            {logo.img_url && <img className="absolute right-0 bottom-0  h-9" src={logo.img_url} />}
           </div>
 
           <div className="space-y-2 text-sm text-[#424040]">
