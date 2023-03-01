@@ -196,7 +196,7 @@ export default class ContractService {
 
       const candidateTuple = contractService.generateTuple(candidates);
       const voterTuple = contractService.generateTuple(voters);
-
+      debugger;
       const res = await contract.startElection(
         electionName,
         endTimeSec,

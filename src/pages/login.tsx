@@ -22,13 +22,13 @@ export default function Login() {
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
   useEffect(() => {
-    // // checking cache for admin
-    // CachService.getCacheData(CachNamesEnum.Voter).then((value) => {
-    //   if (value) {
-    //     votingProvider.setAccessToken(value.access_token);
-    //     Router.push('/voting');
-    //   }
-    // });
+    // checking cache for admin
+    CachService.getCacheData(CachNamesEnum.Voter).then((value) => {
+      if (value) {
+        votingProvider.setAccessToken(value.access_token);
+        Router.push('/voting');
+      }
+    });
   }, []);
 
   const onLogin = (e: any) => {

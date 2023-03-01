@@ -14,6 +14,8 @@ import { CachNamesEnum } from '../../models/enums/CacheEnums';
 import CachService from '../../services/CacheService';
 import ContractService from '../../services/ContractService';
 import { toast } from 'react-toastify';
+import { CircularProgress } from '@mui/material';
+import { FiLogOut } from 'react-icons/fi';
 
 interface VotingMenuProps {
   className?: string;
@@ -25,6 +27,18 @@ export default function VotingMenu({ className }: VotingMenuProps) {
   const votingProvider = useContext(VotingContext) as VotingContextDto;
   // @ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
+
+  const handleLogout = () => {
+    setLoading(true);
+    setTimeout(() => {
+      CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+        if (value) {
+          Router.push('/login');
+        }
+      });
+      setLoading(false);
+    }, 1200);
+  };
 
   return (
     <div className={className}>
@@ -40,24 +54,35 @@ export default function VotingMenu({ className }: VotingMenuProps) {
       </div>
 
       {/* profile details */}
-      <div className="flex w-full rounded-xl items-center bg-[#1c4e80] space-x-4 p-4 my-8">
-        <img
-          className="rounded-full"
-          style={{ objectFit: 'cover', height: 60, width: 60 }}
-          src={
-            votingProvider.voter.image !== ''
-              ? `${votingProvider.voter.image}`
-              : 'images/noprofile.png'
-          }
-        />
-        <div className="flex flex-col space-y-1">
-          <p className="font-medium text-base text-white">
-            {`${votingProvider.voter.first_name} ${votingProvider.voter.middle_name} ${votingProvider.voter.last_name}`}
-          </p>
-          <p className="font-medium text-xs text-gray-400 bg-red">
-            {`Voter_ID: ${votingProvider.voter.voter_id}`}
-          </p>
+      <div className="flex rounded-xl items-center justify-between bg-[#1c4e80] space-x-4 p-4 my-8">
+        <div className="flex items-center space-x-4">
+          <img
+            className="rounded-full"
+            style={{ objectFit: 'cover', height: 60, width: 60 }}
+            src={
+              votingProvider.voter.image !== ''
+                ? `${votingProvider.voter.image}`
+                : 'images/noprofile.png'
+            }
+          />
+          <div className="flex flex-col space-y-1">
+            <p className="font-medium text-base text-white">
+              {`${votingProvider.voter.first_name} ${votingProvider.voter.middle_name} ${votingProvider.voter.last_name}`}
+            </p>
+            <p className="font-medium text-xs text-gray-400 bg-red">
+              {`Voter_ID: ${votingProvider.voter.voter_id}`}
+            </p>
+          </div>
         </div>
+        {loading ? (
+          <CircularProgress color="inherit" size={22} />
+        ) : (
+          <FiLogOut
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-white cursor-pointer ml-4"
+            size={22}
+          />
+        )}
       </div>
 
       {/* progress details */}

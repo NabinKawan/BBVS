@@ -35,6 +35,19 @@ export default function VotingState({ children }: { children: any }) {
     setCompletedSteps([]);
   };
 
+  const getVotes = () => {
+    const votesList = Object.values(votes);
+    const votings: string[] = [];
+    votesList.map((e: any) => {
+      if (e) {
+        votings.push(e.candidate_id);
+      } else {
+        votings.push('');
+      }
+    });
+    return votings;
+  };
+
   return (
     // @ts-ignore
     <VotingContext.Provider
@@ -48,6 +61,7 @@ export default function VotingState({ children }: { children: any }) {
         setAccessToken,
         addVote,
         addStep,
+        getVotes,
         clearVotes,
       }}
     >

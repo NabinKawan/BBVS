@@ -45,4 +45,5 @@ export type VotingContextDto = {
   addVote: (post: string, candidate: CandidateDto | null) => null;
   addStep: (step: string) => null;
   clearVotes: () => null;
+  getVotes: () => string[];
 };

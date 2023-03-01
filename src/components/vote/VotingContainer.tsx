@@ -24,14 +24,18 @@ import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
 export default function VotingContainer() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isEdit, setEdit] = useState(false);
+  const [electionName, setElectionName] = useState('');
   const [loading, setLoading] = useState(false);
   // @ts-ignore
   const votingProvider = useContext(VotingContext) as VotingContextDto;
 
   // @ts-ignore
   const candidateProvider = useContext(CandidateContext) as CandidateContextDto;
+
   const onVote = () => {
     if (votingProvider.completedSteps.length === candidateProvider.posts.length) {
+      const votes = votingProvider.getVotes();
+      debugger;
       // router.push('/congratulations');
       Swal.fire({
         title: 'Please wait',
@@ -43,7 +47,7 @@ export default function VotingContainer() {
         },
         didOpen: () => {
           Swal.showLoading();
-          ContractService.vote(votingProvider.voter.voter_id, Object.values(votingProvider.votes))
+          ContractService.vote(votingProvider.voter.voter_id, votingProvider.getVotes())
             .then((val) => {
               if (val) {
                 toast.success('Voted successfully', { autoClose: 2000 });
@@ -158,12 +162,24 @@ export default function VotingContainer() {
       }
     }, 500);
   };
+
+  useEffect(() => {
+    ContractService.getElectionName()
+      .then((val) => {
+        if (val) {
+          if (electionName !== val) setElectionName(val);
+        }
+      })
+      .catch((e) => {
+        toast.error(e.message, { autoClose: 2000 });
+      });
+  });
   return (
     <div className="w-full  min-h-screen overflow-y-auto bg-AdminBg px-6 md:px-16 py-8">
       <DrawerButton drawerType="VOTING" />
       <div className="w-full  bg-AdminBg ">
         {/* title */}
-        <div className=" font-medium text-[#575353] text-lg "> class election </div>
+        <div className=" font-medium text-[#575353] text-lg ">{electionName}</div>
         <div className="flex justify-between my-12 -ml-1">
           <div
             className={`flex font-medium space-x-2 cursor-pointer ${
@@ -198,7 +214,7 @@ export default function VotingContainer() {
                         icon={<MdEditOff size={20} />}
                         text={'No Vote'}
                         // loading={loading}
-                        bgColor={'bg-red-300 '}
+                        bgColor={'bg-red-300 hover:bg-red-400 '}
                         onClick={() => {
                           handleVote(null);
                         }}
