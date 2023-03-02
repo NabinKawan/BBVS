@@ -45,7 +45,6 @@ export default function AddCandidateForm() {
       // adding image into addCandidateInfo
       candidateProvider.addCandidateInfo(TextFieldIdEnum.Image, img_url);
 
-
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
     }
@@ -169,7 +168,7 @@ export default function AddCandidateForm() {
   };
 
   return (
-    <div className="flex flex-col items-start space-y-8 mt-10">
+    <form className="flex flex-col items-start space-y-8 mt-10" onSubmit={handleSubmit}>
       <div className="flex flex-col 3xl:flex-row w-full  space-y-8 items-start 3xl:space-x-32  3xl:space-y-0">
         {/* upload profile */}
         <div className="flex flex-col items-start justify-start space-y-4 w-40 ">
@@ -281,11 +280,12 @@ export default function AddCandidateForm() {
       <div className="flex">
         <RoundedTextBtn
           text={'ADD'}
+          type="submit"
           bgColor={'bg-primary'}
           onClick={handleSubmit}
           loading={loading}
         />
       </div>
-    </div>
+    </form>
   );
 }

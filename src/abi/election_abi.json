@@ -202,6 +202,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "candidateId",
+        "type": "string"
+      }
+    ],
+    "name": "getCandidateStatus",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "userVoted_",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "getRemainingTime",
     "outputs": [

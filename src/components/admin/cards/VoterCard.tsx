@@ -64,7 +64,7 @@ export default function VoterCard({ voter }: VoterCardProps) {
   return (
     <div className="flex items-center justify-between py-4">
       {/* profile details */}
-      <div className="flex  space-x-4">
+      <div className="flex  space-x-8">
         <div className="flex flex-col items-center">
           <img
             className="rounded-full"

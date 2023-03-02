@@ -16,7 +16,7 @@ export default function CandidateTabs({ candidates }: ICandidateTabs) {
     <div className="flex w-full justify-between">
       <div className="w-full">
         <Tab.Group>
-          <Tab.List className="flex space-x-4 font-inter text-sm mt-6">
+          <Tab.List className="flex space-x-4 font-inter text-xs md:text-sm mt-6 overflow-x-auto">
             {Object.keys(categories).map((category) => (
               <Tab
                 key={category}

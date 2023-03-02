@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CandidateContext from '../../context/candidate/CandidateContext';
-import { CandidateContextDto } from '../../models/dto/ContextDtos';
+import { CandidateContextDto, VoterContextDto } from '../../models/dto/ContextDtos';
 import cn from 'classnames';
+import VoterContext from '../../context/voter/VoterContext';
 
 interface TextInputFieldProps {
   id: string;
@@ -31,12 +32,14 @@ export default function TextInputField({
 
   // @ts-ignore
   const adminProvider = useContext(CandidateContext) as CandidateContextDto;
+  //@ts-ignore
+  const voterProvider = useContext(VoterContext) as VoterContextDto;
 
   useEffect(() => {
-    if (adminProvider.clearAddCandidateRef) {
+    if (adminProvider.clearAddCandidateRef || voterProvider.clearAddVoterRef) {
       setValue('');
     }
-  }, [adminProvider.clearAddCandidateRef]);
+  }, [adminProvider.clearAddCandidateRef, voterProvider.clearAddVoterRef]);
 
   const handleChange = (event: any) => {
     // adding value with their id

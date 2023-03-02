@@ -137,7 +137,7 @@ export default function AddVoterForm() {
   };
 
   return (
-    <div className="flex flex-col items-start space-y-8 mt-10">
+    <form className="flex flex-col items-start space-y-8 mt-10" onSubmit={handleSubmit}>
       <div className="flex flex-col xl:flex-row w-full  space-y-8 items-start xl:space-x-28  xl:space-y-0">
         {/* upload profile */}
         <div className="flex flex-col items-start justify-start space-y-4 w-44 text-[#424040] text-sm">
@@ -209,13 +209,8 @@ export default function AddVoterForm() {
         </div>
       </div>
       <div className="flex">
-        <RoundedTextBtn
-          text={'ADD'}
-          bgColor={'bg-primary'}
-          onClick={handleSubmit}
-          loading={loading}
-        />
+        <RoundedTextBtn text={'ADD'} type="submit" bgColor={'bg-primary'} loading={loading} />
       </div>
-    </div>
+    </form>
   );
 }

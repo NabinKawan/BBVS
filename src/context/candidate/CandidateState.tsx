@@ -44,6 +44,7 @@ export default function CandidateState({ children }: CandidateStateProps) {
       last_name: '',
       post: '',
       image: '',
+      logo: '',
     };
     setClearAddCandidateRef(true);
   };
