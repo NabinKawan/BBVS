@@ -11,6 +11,7 @@ import ContractService from '../../../services/ContractService';
 import { ContractCandidateDto, ContractVoterDto } from '../../../models/dto/ContractDtos';
 import { toast } from 'react-toastify';
 import { AiOutlineLink } from 'react-icons/ai';
+import CompilerService from '../../../services/CompilerService';
 
 export default function Election() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
@@ -83,7 +84,8 @@ export default function Election() {
       const postsSet = new Set(posts);
       const posts_ = Array.from(postsSet);
       debugger;
-      ContractService.startElection(
+
+      CompilerService.startElection(
         electionName,
         parseInt(electionEndTime) * 60,
         contractCandidates,
