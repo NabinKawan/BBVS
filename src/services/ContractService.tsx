@@ -1,21 +1,12 @@
-import { BigNumber, Contract, ethers } from 'ethers';
-import ownerAbi from '../abi/owner_abi.json';
-import storageAbi from '../abi/storage_abi.json';
+import { utils, Contract, ethers, BigNumber, providers } from 'ethers';
 import electionAbi from '../abi/election_abi.json';
-import {
-  ElectionContractAddrs,
-  OwnerContractAddrs,
-  StorageContractAddrs,
-} from '../models/constants';
-import { Address } from 'cluster';
+import { ElectionContractAddrs } from '../models/constants';
 
-import { CandidateDto, VoterDto } from '../models/dto/ServerOpDtos';
-import {
-  ContractCandidateDto,
-  ElectionResultDto,
-  ContractVoterDto,
-} from '../models/dto/ContractDtos';
+import { ContractCandidateDto, ContractVoterDto } from '../models/dto/ContractDtos';
 import { toast } from 'react-toastify';
+const InputDataDecoder = require('ethereum-input-data-decoder');
+
+const decoder = new InputDataDecoder(electionAbi);
 
 export default class ContractService {
   static getProvider() {
@@ -226,12 +217,12 @@ export default class ContractService {
       const signerAddress = await signer.getAddress();
       const contract = this.getContract(signer);
       const res = await contract.vote(voterId, candidateIds);
-
+      console.log(res);
       if (res) {
         toast.info('Transaction in progress', { autoClose: 2000 });
       }
-      const miningResult = provider.waitForTransaction(res.hash);
-      return miningResult;
+      const miningResult = await provider.waitForTransaction(res.hash);
+      return miningResult.transactionHash;
     } catch (e: any) {
       //@ts-ignore
       let errorMessage: string = e.message;
@@ -246,5 +237,20 @@ export default class ContractService {
         throw new Error(errorMessage[0].toUpperCase() + errorMessage.slice(1));
       }
     }
+  }
+
+  static async getTransaction(txHash: string): Promise<providers.TransactionResponse> {
+    const provider: ethers.providers.Provider = this.getProvider();
+    return await provider.getTransaction(txHash);
+  }
+
+  static async getBlock(blockNumber: number): Promise<providers.Block> {
+    const provider: ethers.providers.Provider = this.getProvider();
+    return await provider.getBlock(blockNumber);
+  }
+
+  static decodeData(data: string) {
+    const result = decoder.decodeData(data);
+    return result;
   }
 }

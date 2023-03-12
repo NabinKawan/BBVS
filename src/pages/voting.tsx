@@ -55,7 +55,6 @@ export default function Voting() {
                   const formatedCandidates: CandidateDto[] = [];
                   candidates.forEach((candidate: ContractCandidateDto) => {
                     const names = candidate.name.split(' ');
-                    debugger;
                     const candidate_: CandidateDto = {
                       candidate_id: '',
                       first_name: '',
