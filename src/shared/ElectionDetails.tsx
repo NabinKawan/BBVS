@@ -47,7 +47,7 @@ export default function ElectionDetails({
           ' : ' +
           (seconds > 9 ? seconds : '0' + seconds),
       );
-      // getDetails();
+      getDetails();
     } else {
       //@ts-ignore
       clearInterval(refreshIntervalId);

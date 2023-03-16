@@ -55,13 +55,15 @@ export default class CompilerService {
     }
   }
 
-  static async vote(voter_id: string, candidates_id: string[]) {
+  static async vote(voter_id: string, candidates: string[]) {
+    let candidates_request = JSON.stringify(candidates).replace('"', '"');
+    debugger;
     const request: ExecuteDto = {
       contract_address: ElectionContractAddrs,
       command_params: {
         command: 'do-vote',
         option_name: '--vote',
-        args: [voter_id, JSON.stringify(candidates_id)],
+        args: [voter_id, candidates_request],
       },
     };
     try {
@@ -88,14 +90,15 @@ export default class CompilerService {
     };
     try {
       const response = await compilerClient(request);
-
+      const data = await response.json();
       if (response.status === 200) {
-        const data = await response.json();
         if (data.contract_response.toLowerCase() == 'false') {
           return false;
         } else if (data.contract_response.toLowerCase() == 'true') {
           return true;
         }
+      } else if (response.status === 400) {
+        throw Error(data.detail);
       }
     } catch (e: any) {
       throw e;
