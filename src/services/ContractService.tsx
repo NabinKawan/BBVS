@@ -132,7 +132,7 @@ export default class ContractService {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
       const electionName: string = await contract.electionName();
-
+      
       return electionName;
     } catch (e: any) {
       let errorMessage = e.message;

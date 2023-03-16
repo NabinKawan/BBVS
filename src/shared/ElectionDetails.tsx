@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import CompilerService from '../services/CompilerService';
 import ContractService from '../services/ContractService';
 
 interface ElectionDetailsProps {
@@ -46,7 +47,7 @@ export default function ElectionDetails({
           ' : ' +
           (seconds > 9 ? seconds : '0' + seconds),
       );
-      getDetails();
+      // getDetails();
     } else {
       //@ts-ignore
       clearInterval(refreshIntervalId);
@@ -56,19 +57,22 @@ export default function ElectionDetails({
 
   const getDetails = () => {
     try {
-      ContractService.getTotalVotes().then((val) => {
+      // CompilerService.getTotalVotes().then((val) => {
+      //   debugger;
+      // });
+      CompilerService.getTotalVotes().then((val) => {
         if (val) {
           if (totalVotes !== val) setTotalVotes(val);
         }
       });
 
-      ContractService.getVotersCount().then((val) => {
+      CompilerService.getVotersCount().then((val) => {
         if (val) {
           if (totalVoters !== val) setTotalVoters(val);
         }
       });
 
-      ContractService.getCandidatesCount().then((val) => {
+      CompilerService.getCandidatesCount().then((val) => {
         if (val) {
           if (totalCandidates !== val) setTotalCandidates(val);
         }
@@ -84,7 +88,7 @@ export default function ElectionDetails({
     }, 1000);
     getDetails();
 
-    ContractService.getElectionName()
+    CompilerService.getElectionName()
       .then((val) => {
         if (val) {
           if (electionName !== val) setElectionName(val);

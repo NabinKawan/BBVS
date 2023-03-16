@@ -11,6 +11,7 @@ import ContractService from '../../../services/ContractService';
 import { ContractCandidateDto, ContractVoterDto } from '../../../models/dto/ContractDtos';
 import { toast } from 'react-toastify';
 import { AiOutlineLink } from 'react-icons/ai';
+import CompilerService from '../../../services/CompilerService';
 
 export default function Election() {
   // const [candidates, setCandidates] = useState<CandidateDto[]>([]);
@@ -63,10 +64,10 @@ export default function Election() {
       const posts: string[] = [];
 
       candidateProvider.candidates.forEach((candidate) => {
-        const contractCandidate = { candidateId: '', name: '', imageUrl: '', post: '', logo: '' };
+        const contractCandidate = { candidateId: '', name: '', image_url: '', post: '', logo: '' };
         contractCandidate.name =
           candidate.first_name + ' ' + candidate.middle_name + ' ' + candidate.last_name;
-        contractCandidate.imageUrl = candidate.image!;
+        contractCandidate.image_url = candidate.image!;
         contractCandidate.logo = candidate.logo!;
         contractCandidate.post = candidate.post;
         contractCandidate.candidateId = candidate.candidate_id;
@@ -82,10 +83,10 @@ export default function Election() {
       });
       const postsSet = new Set(posts);
       const posts_ = Array.from(postsSet);
-      debugger;
-      ContractService.startElection(
+
+      CompilerService.startElection(
         electionName,
-        parseInt(electionEndTime) * 60,
+        parseInt(electionEndTime),
         contractCandidates,
         contractVoters,
         posts_,
@@ -105,7 +106,7 @@ export default function Election() {
   };
 
   useEffect(() => {
-    ContractService.getVotingEndTime()
+    CompilerService.getVotingEndTime()
       .then((val) => {
         if (val) {
           const date = new Date();
