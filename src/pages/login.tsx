@@ -12,6 +12,7 @@ import { VotingContextDto } from '../models/dto/ContextDtos';
 import { CacheDto } from '../models/dto/CacheDtos';
 import ContractService from '../services/ContractService';
 import { toast } from 'react-toastify';
+import CompilerService from '../services/CompilerService';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -46,9 +47,10 @@ export default function Login() {
               access_token: value,
             };
             const voterId = formValues.voter_id.toUpperCase();
-            ContractService.getVoterStatus(voterId)
+            CompilerService.getVoterStatus(voterId)
               .then((val) => {
-                if (val === false) {
+                debugger;
+                if (!val) {
                   CachService.addDataIntoCache(CachNamesEnum.Voter, cacheData);
                   setTimeout(() => {
                     Router.push('/voting');

@@ -22,28 +22,214 @@ export default class CompilerService {
     voters: ContractVoterDto[],
     posts: string[],
   ) {
-    candidates.map(async (candidate) => {
-      const request: ExecuteDto = {
-        contract_address: ElectionContractAddrs,
-        command_params: {
-          command: 'initialize-candidates',
-          option_name: '--details',
-          args: [
-            candidate.candidateId,
-            candidate.name,
-            candidate.imageUrl,
-            candidate.logo,
-            candidate.post,
-          ],
-        },
-      };
-      debugger;
-      await compilerClient(request);
-    });
-    return 'success';
-    // return compilerClient()
-  }
-  static addCandidates() {}
+    function formatList(arr: ContractCandidateDto[] | ContractVoterDto[]) {
+      let formatedList: any[] = [];
+      arr.map((ob) => formatedList.push(Object.values(ob)));
+      return JSON.stringify(formatedList);
+    }
 
-  static addVoters() {}
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'start-election',
+        option_name: '--election',
+        args: [
+          electionName,
+          endTimeSec.toString(),
+          formatList(candidates),
+          formatList(voters),
+          JSON.stringify(posts),
+        ],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+
+        return data;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async vote(voter_id: string, candidates_id: string[]) {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'do-vote',
+        option_name: '--vote',
+        args: [voter_id, JSON.stringify(candidates_id)],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data);
+        return data;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getVoterStatus(voter_id: string) {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-voter-status',
+        option_name: '--voter',
+        args: [voter_id],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        if (data.contract_response.toLowerCase() == 'false') {
+          return false;
+        } else if (data.contract_response.toLowerCase() == 'true') {
+          return true;
+        }
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getCandidateList() {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-candidate-list',
+        option_name: '',
+        args: [''],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const listData = JSON.parse(data.contract_response.replace(/'/g, '"'));
+        return listData;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getTotalVotes() {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-total-votes',
+        option_name: '',
+        args: [''],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const contract_response = Number(data.contract_response);
+        return contract_response;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getCandidatesCount() {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-candidates-count',
+        option_name: '',
+        args: [''],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const contract_response = Number(data.contract_response);
+        return contract_response;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getVotersCount() {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-voters-count',
+        option_name: '',
+        args: [''],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const contract_response = Number(data.contract_response);
+        return contract_response;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getVotingEndTime() {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-end-time',
+        option_name: '',
+        args: [''],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const contract_response = Number(data.contract_response);
+        return contract_response;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getElectionName() {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-election-name',
+        option_name: '',
+        args: [''],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        return data.contract_response;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
 }

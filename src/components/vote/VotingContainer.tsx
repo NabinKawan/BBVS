@@ -17,9 +17,9 @@ import Router from 'next/router';
 import Swal from 'sweetalert2';
 import { CachNamesEnum } from '../../models/enums/CacheEnums';
 import CachService from '../../services/CacheService';
-import ContractService from '../../services/ContractService';
 import { MdEditOff } from 'react-icons/md';
 import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
+import CompilerService from '../../services/CompilerService';
 
 export default function VotingContainer() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -47,7 +47,7 @@ export default function VotingContainer() {
         },
         didOpen: () => {
           Swal.showLoading();
-          ContractService.vote(votingProvider.voter.voter_id, votingProvider.getVotes())
+          CompilerService.vote(votingProvider.voter.voter_id, votingProvider.getVotes())
             .then((val) => {
               if (val) {
                 toast.success('Voted successfully', { autoClose: 2000 });
@@ -164,7 +164,7 @@ export default function VotingContainer() {
   };
 
   useEffect(() => {
-    ContractService.getElectionName()
+    CompilerService.getElectionName()
       .then((val) => {
         if (val) {
           if (electionName !== val) setElectionName(val);

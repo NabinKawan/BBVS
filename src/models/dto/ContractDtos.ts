@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 export type ContractCandidateDto = {
   candidateId: string;
   name: string;
-  imageUrl: string;
+  image_url: string;
   post: string;
   logo: string;
 };
