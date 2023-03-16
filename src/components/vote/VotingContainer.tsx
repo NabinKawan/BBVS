@@ -123,16 +123,14 @@ export default function VotingContainer() {
             // @ts-ignore
             Object.values(votingProvider.votes).map((candidate: CandidateDto, index) => {
               return (
-                <div>
-                  {/* <p className="font-medium text-sm text-gray-700 mb-3">{candidate.post}</p> */}
-                  <VotingResultCard
-                    candidate={candidate}
-                    handleEdit={() => {
-                      setCurrentPage(index);
-                      setEdit(true);
-                    }}
-                  />
-                </div>
+                <VotingResultCard
+                  key={candidate.candidate_id}
+                  candidate={candidate}
+                  handleEdit={() => {
+                    setCurrentPage(index);
+                    setEdit(true);
+                  }}
+                />
               );
             })
           }

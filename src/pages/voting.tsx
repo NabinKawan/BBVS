@@ -76,7 +76,7 @@ export default function Voting() {
                     }
                     candidate_.post = candidate.post;
                     candidate_.logo = candidate.logo;
-                    candidate_.candidate_id = candidate.candidateId;
+                    candidate_.candidate_id = candidate.candidate_id;
                     candidate_.image = candidate.image_url;
                     formatedCandidates.push(candidate_);
                   });

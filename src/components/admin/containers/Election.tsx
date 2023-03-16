@@ -64,13 +64,13 @@ export default function Election() {
       const posts: string[] = [];
 
       candidateProvider.candidates.forEach((candidate) => {
-        const contractCandidate = { candidateId: '', name: '', image_url: '', post: '', logo: '' };
+        const contractCandidate = { candidate_id: '', name: '', image_url: '', post: '', logo: '' };
         contractCandidate.name =
           candidate.first_name + ' ' + candidate.middle_name + ' ' + candidate.last_name;
         contractCandidate.image_url = candidate.image!;
         contractCandidate.logo = candidate.logo!;
         contractCandidate.post = candidate.post;
-        contractCandidate.candidateId = candidate.candidate_id;
+        contractCandidate.candidate_id = candidate.candidate_id;
         contractCandidates.push(contractCandidate);
         posts.push(candidate.post);
       });
