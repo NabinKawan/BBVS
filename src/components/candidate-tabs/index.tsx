@@ -24,8 +24,8 @@ export default function CandidateTabs({ candidates }: ICandidateTabs) {
                   cn(
                     'px-4 rounded-xl py-1  border leading-5 text-white bg-white',
                     selected
-                      ? 'bg-primary text-white focus:ring-0'
-                      : 'text-gray-500 hover:bg-gray-400 hover:text-white ',
+                      ? '!bg-primary text-white focus:ring-0'
+                      : '!text-gray-500 hover:bg-gray-300 hover:text-white ',
                   )
                 }
               >
