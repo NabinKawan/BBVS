@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ElectionResultDto } from '../../models/dto/ContractDtos';
+import CompilerService from '../../services/CompilerService';
 import ContractService from '../../services/ContractService';
 import { getElectedCandidates } from '../../utils/electionUtils';
 import ElectionCard from './ElectionCard';
@@ -15,19 +16,19 @@ export default function ElectionResult() {
 
   const getElectionDetails = () => {
     try {
-      ContractService.getTotalVotes().then((val) => {
+      CompilerService.getTotalVotes().then((val) => {
         if (val) {
           if (totalVotes !== val) setTotalVotes(val);
         }
       });
 
-      ContractService.getVotersCount().then((val) => {
+      CompilerService.getVotersCount().then((val) => {
         if (val) {
           if (totalVoters !== val) setTotalVoters(val);
         }
       });
 
-      ContractService.getElectionName().then((val) => {
+      CompilerService.getElectionName().then((val) => {
         if (val) {
           if (electionName !== val) setElectionName(val);
         }
@@ -40,7 +41,7 @@ export default function ElectionResult() {
   const getFormatVotingResults = () => {
     getElectionDetails();
 
-    ContractService.getResults()
+    CompilerService.getResults()
       .then((results: []) => {
         let posts_: string[] = [];
         let formattedResults: any[] = [];
@@ -56,9 +57,9 @@ export default function ElectionResult() {
           posts_.push(e.post);
           result.name = e.name;
           result.post = e.post;
-          result.imageUrl = e.imageUrl;
-          result.candidateId = e.candidateId;
-          result.voteCount = e.voteCount.toNumber();
+          result.imageUrl = e.image_url;
+          result.candidateId = e.candidate_id;
+          result.voteCount = e.votecount;
           result.logo = e.logo;
           formattedResults.push(result);
         });

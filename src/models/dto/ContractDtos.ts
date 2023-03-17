@@ -17,9 +17,9 @@ export type ContractVoterDto = {
 
 export type ElectionResultDto = {
   name: string;
-  imageUrl: string;
-  voteCount: BigNumber;
-  candidateId: string;
+  image_url: string;
+  votecount: number;
+  candidate_id: string;
   post: string;
   logo: string;
 };

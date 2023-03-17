@@ -8,6 +8,7 @@ import ContractService from '../services/ContractService';
 import { toast } from 'react-toastify';
 import ElectionResult from '../components/election/ElectionResult';
 import Swal from 'sweetalert2';
+import CompilerService from '../services/CompilerService';
 
 export default function Election() {
   const [votersPercent, setVotePercent] = useState(0);
@@ -38,7 +39,7 @@ export default function Election() {
 
   // const votersRef = useRef({ votersPercent: 0, incVoters: 0 });
   useEffect(() => {
-    ContractService.getVotingEndTime()
+    CompilerService.getVotingEndTime()
       .then((val) => {
         if (val) {
           if (val !== endTime) {
@@ -48,6 +49,7 @@ export default function Election() {
               setElectionStatus(true);
               setEndTime(val);
             }
+            debugger;
             setIsFetched(true);
           }
         }
@@ -55,14 +57,12 @@ export default function Election() {
       .catch((e) => {
         toast.error(e.message, { autoClose: 2000 });
       });
-
     // if (votersPercent === 0) {
     //   const votePercent = (totalVoted / totalVoters) * 100;
     //   const incVoters = totalVoters / totalVoted / 10;
     //   votersRef.current.votersPercent = votePercent;
     //   votersRef.current.incVoters = incVoters;
     // }
-
     // if (votersPercent === 0 || votersPercent < votersRef.current.votersPercent) {
     //   setVotePercent(votersPercent + 0.1);
     //   setVotersCount(votersCount + votersRef.current.incVoters);

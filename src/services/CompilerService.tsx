@@ -68,11 +68,13 @@ export default class CompilerService {
     };
     try {
       const response = await compilerClient(request);
+      const data = await response.json();
 
       if (response.status === 200) {
-        const data = await response.json();
         console.log(data);
         return data;
+      } else if (response.status === 400) {
+        throw Error(data.detail);
       }
     } catch (e: any) {
       throw e;
@@ -110,6 +112,28 @@ export default class CompilerService {
       contract_address: ElectionContractAddrs,
       command_params: {
         command: 'get-candidate-list',
+        option_name: '',
+        args: [''],
+      },
+    };
+    try {
+      const response = await compilerClient(request);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const listData = JSON.parse(data.contract_response.replace(/'/g, '"'));
+        return listData;
+      }
+    } catch (e: any) {
+      throw e;
+    }
+  }
+
+  static async getResults() {
+    const request: ExecuteDto = {
+      contract_address: ElectionContractAddrs,
+      command_params: {
+        command: 'get-results',
         option_name: '',
         args: [''],
       },
