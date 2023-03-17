@@ -55,18 +55,17 @@ export default function VotingContainer() {
                 Swal.fire({
                   icon: 'success',
                   title: 'Congratulations',
-                  text: 'Your vote has been submitted successfully',
-                  timer: 2000,
+                  html: `Your vote has been submitted successfully.<br/><br/><b>Transaction hash:</b><br/>${val}`,
                   allowOutsideClick: false,
                   allowEnterKey: false,
                   hideClass: {
                     popup: 'animate__animated animate__fadeOutUp',
                   },
-
-                  showConfirmButton: false,
+                  showConfirmButton: true,
+                  confirmButtonText: 'Done',
                 }).then((result) => {
                   /* Read more about handling dismissals below */
-                  if (result.dismiss === Swal.DismissReason.timer) {
+                  if (result.isConfirmed) {
                     CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
                       if (value) {
                         Router.push('/login');

@@ -72,7 +72,7 @@ export default class CompilerService {
 
       if (response.status === 200) {
         console.log(data);
-        return data;
+        return data.blockchain_response['tx_hash'];
       } else if (response.status === 400) {
         throw Error(data.detail);
       }
