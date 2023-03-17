@@ -49,7 +49,6 @@ export default function Election() {
               setElectionStatus(true);
               setEndTime(val);
             }
-            debugger;
             setIsFetched(true);
           }
         }

@@ -1,32 +1,44 @@
 import { providers } from 'ethers';
 import React, { useEffect, useRef, useState } from 'react';
 import TransactionView from '../components/transaction-view';
-import ContractService from '../services/ContractService';
+import { BlockDto } from '../models/dto/BlockchainDtos';
+import BlockchainService from '../services/BlockchainService';
 import RoundedTextBtn from '../shared/button/RoundedTextBtn';
 
 export default function CheckVote() {
   const [searchText, setSearchText] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const [result, setResult] = useState<providers.TransactionResponse | null>(null);
+  const [result, setResult] = useState<BlockDto | null>(null);
   const [error, setError] = useState(false);
 
   const onSearch = () => {
     if (searchText) {
       setLoading(true);
       setError(false);
-      //   ContractService.getTransaction(searchText)
-      //     .then((val) => {
-      //       if (val) {
-      //         setResult({ ...val });
-      //         setLoading(false);
-      //       }
-      //     })
-      //     .catch((e) => {
-      //       setLoading(false);
-      //       setResult(null);
-      //       setError(true);
-      //     });
-    } 
+      BlockchainService.getTransaction(searchText)
+        .then((val) => {
+          debugger;
+          if (val) {
+            const formattedInputs = JSON.parse(val.tx.metadata.inputs);
+            const voter = formattedInputs.args[0];
+            const votes = JSON.parse(formattedInputs.args[1]);
+            const blockValue: BlockDto = {
+              block_hash: val.block_hash,
+              timestamp: val.timestamp,
+              prev_hash: val.prev_hash,
+              tx: { address: val.tx.metadata.address, inputs: { voter: voter, votes: votes } },
+            };
+            debugger;
+            setResult({ ...blockValue });
+            setLoading(false);
+          }
+        })
+        .catch((e) => {
+          setLoading(false);
+          setResult(null);
+          setError(true);
+        });
+    }
   };
 
   return (
@@ -65,7 +77,7 @@ export default function CheckVote() {
             <p className="text-gray-700">No result found</p>
           </div>
         )}
-        {result && <TransactionView tx={result} className="mt-12" />}
+        {result && <TransactionView txData={result} className="mt-12" />}
       </div>
     </div>
   );

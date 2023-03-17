@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import ContractService from '../../services/ContractService';
 import Moment from 'react-moment';
-import { providers } from 'ethers';
+import { providers, Transaction } from 'ethers';
 import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
 import { useIsMounted } from '../../lib/hooks/use-is-mounted';
 import { isEmpty } from '../../utils/helperUtils';
+import { BlockDto } from '../../models/dto/BlockchainDtos';
 
 interface ITransactionView {
-  tx: providers.TransactionResponse;
+  txData: BlockDto;
   className?: string;
 }
-export default function TransactionView({ tx, className }: ITransactionView) {
-  const [block, setBlock] = useState<providers.Block | null>(null);
-  const [votes, setVotes] = useState({ voterId: '', votedTo: [] });
+export default function TransactionView({ txData, className }: ITransactionView) {
   const breakpoint = useBreakpoint();
   const isMounted = useIsMounted();
   const getTitleDescription = (
@@ -62,33 +61,28 @@ export default function TransactionView({ tx, className }: ITransactionView) {
         className,
       )}
     >
-      {getTitleDescription('Block Hash', tx.blockHash)}
+      {getTitleDescription('Block Hash', txData.block_hash)}
       <div className="flex flex-col space-y-6 lg:space-y-0 lg:flex-row justify-between pt-6">
-        <div>{getTitleDescription('To (contract address)', tx.to)}</div>
-        <div>{getTitleDescription('Block Number', tx.blockNumber, 'text-right')}</div>
+        <div>{getTitleDescription('To (contract address)', txData.tx.address)}</div>
       </div>
+
       <div className="flex flex-col space-y-6 lg:space-y-0 lg:flex-row justify-between pt-6">
-        <div>{getTitleDescription('From', tx.from)}</div>
-        <div>{getTitleDescription('Confirmation', tx.confirmations, 'text-right')}</div>
-      </div>
-      <div className="flex flex-col space-y-6 lg:space-y-0 lg:flex-row justify-between pt-6">
-        <div>{getTitleDescription('Voter ID', votes.voterId, '', 'bg-pink-300')}</div>
-        {block && (
-          <div>
-            {getTitleDescription(
-              'Voted on',
-              <Moment format="dddd, MMMM Do YYYY, h:mm:ss a">{block.timestamp * 1000}</Moment>,
-              'text-right',
-              'bg-yellow-300',
-            )}
-          </div>
-        )}
+        <div>{getTitleDescription('Voter ID', txData.tx.inputs.voter, '', 'bg-pink-300')}</div>
+
+        <div>
+          {getTitleDescription(
+            'Voted on',
+            <Moment format="dddd, MMMM Do YYYY, h:mm:ss a">{txData.timestamp * 1000}</Moment>,
+            'text-right',
+            'bg-yellow-300',
+          )}
+        </div>
       </div>
       <div className="flex flex-col space-y-6 lg:space-y-0 lg:flex-row justify-between pt-6">
         <div className="flex flex-col space-y-3">
           <p className={cn('font-medium text-md text-gray-800')}>Votes</p>
           <div className="flex space-x-3">
-            {votes.votedTo.map(
+            {txData.tx.inputs.votes.map(
               (candidateId: string) =>
                 !isEmpty(candidateId) && (
                   <p
