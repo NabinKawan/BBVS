@@ -18,7 +18,7 @@
     "classnames": "^2.3.2",
     "ethereum-input-data-decoder": "^0.4.2",
     "ethers": "^5.7.1",
-    "framer-motion": "^9.0.4",
+    "framer-motion": "^8.1.8",
     "jotai": "^2.0.2",
     "moment": "^2.29.4",
     "next": "12.2.3",
