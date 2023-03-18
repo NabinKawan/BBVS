@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // reactStrictMode: true,
+  images: {
+    domains: ['localhost'],
+  },
   swcMinify: true,
   publicRuntimeConfig: {
     BBVS_API_URL: process.env.BBVS_API_URL,
