@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "deployment"]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 17.1.0
+        cache: 'yarn'
+    - name: Build the Docker image
+      run: docker build -t ${{ vars.CI_REGISTRY_IMAGE }}:$GITHUB_SHA -t ${{ vars.CI_REGISTRY_IMAGE }}:latest .
+    - run: docker login -u ${{ vars.CI_REGISTRY_USER }} -p ${{ vars.CI_REGISTRY_PASSWORD }} ${{ vars.CI_REGISTRY }}
+    - run: docker push ${{ vars.CI_REGISTRY_IMAGE }}:$GITHUB_SHA
+    - run: docker push ${{ vars.CI_REGISTRY_IMAGE }}:latest
