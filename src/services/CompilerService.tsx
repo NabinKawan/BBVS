@@ -1,9 +1,10 @@
+import environments from '../configs/environments';
 import { ElectionContractAddrs } from '../models/constants';
 import { ExecuteDto } from '../models/dto/CompilerDto';
 import { ContractCandidateDto, ContractVoterDto } from '../models/dto/ContractDtos';
 
 export const compilerClient = (body: any) => {
-  const apiUrl = `${process.env.NEXT_PUBLIC_COMPILER_URL}/execute`;
+  const apiUrl = `${environments.COMPILER_URL}/execute`;
   return fetch(apiUrl, {
     method: 'POST',
     headers: {
@@ -259,7 +260,4 @@ export default class CompilerService {
       throw e;
     }
   }
-
-
-  
 }

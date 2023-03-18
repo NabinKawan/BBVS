@@ -1,10 +1,7 @@
-import axios from 'axios';
-import { ElectionContractAddrs } from '../models/constants';
-import { ExecuteDto } from '../models/dto/CompilerDto';
-import { ContractCandidateDto, ContractVoterDto } from '../models/dto/ContractDtos';
+import environments from '../configs/environments';
 
 const blockchainClient = (blockHash: string) => {
-  const apiUrl = `${process.env.NEXT_PUBLIC_BLOCKCHAIN_URL}/blocks/${blockHash}`;
+  const apiUrl = `${environments.BLOCKCHAIN_URL}/blocks/${blockHash}`;
   return fetch(apiUrl);
 };
 

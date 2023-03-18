@@ -3,7 +3,10 @@ const nextConfig = {
   // reactStrictMode: true,
   swcMinify: true,
   publicRuntimeConfig: {
-    apiUrl: process.env.API_URL | 'http://localhost:5000/api',
+    BBVS_API_URL: process.env.BBVS_API_URL,
+    COMPILER_URL: process.env.COMPILER_URL,
+    BLOCKCHAIN_URL: process.env.BLOCKCHAIN_URL,
+    HOST_URL: process.env.HOST_URL,
   },
 };
 

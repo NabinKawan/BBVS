@@ -1,7 +1,8 @@
+import environments from '../configs/environments';
 import { CacheDto } from '../models/dto/CacheDtos';
 
 export default class CachService {
-  static url = 'http://localhost:3000/';
+  static url = environments.HOST_URL;
 
   static addDataIntoCache(cacheName: string, cacheData: CacheDto) {
     const data = new Response(JSON.stringify(cacheData));
