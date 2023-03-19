@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import CompilerService from '../services/CompilerService';
 import ContractService from '../services/ContractService';
@@ -21,8 +21,8 @@ export default function ElectionDetails({
   const [totalVotes, setTotalVotes] = useState(0);
   const [electionName, setElectionName] = useState('');
   const [timer, setTimer] = useState('00 : 00 : 00');
-  // @ts-ignore
-  var refreshIntervalId;
+  const refreshIntervalId = useRef<NodeJS.Timer | null>(null);
+  const detailsIntervalId = useRef<NodeJS.Timer | null>(null);
   const getTimeRemaining = () => {
     const total = endTime * 1000 - Date.now();
     const seconds = Math.floor((total / 1000) % 60);
@@ -49,8 +49,8 @@ export default function ElectionDetails({
       );
       // getDetails();
     } else {
-      //@ts-ignore
-      clearInterval(refreshIntervalId);
+      clearInterval(refreshIntervalId.current!);
+      clearInterval(detailsIntervalId.current!);
       onElectionEnd();
     }
   };
@@ -83,10 +83,13 @@ export default function ElectionDetails({
   };
 
   useEffect(() => {
-    refreshIntervalId = setInterval(() => {
+    refreshIntervalId.current = setInterval(() => {
       startTimer();
     }, 1000);
-    getDetails();
+
+    detailsIntervalId.current = setInterval(() => {
+      getDetails();
+    }, 4000);
 
     CompilerService.getElectionName()
       .then((val) => {
