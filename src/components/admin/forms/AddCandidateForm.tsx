@@ -70,7 +70,7 @@ export default function AddCandidateForm() {
   };
 
   const handleTextInput = (candidate_id: string, inputValue: string) => {
-    candidateProvider.addCandidateInfo(candidate_id, inputValue.toUpperCase());
+    candidateProvider.addCandidateInfo(candidate_id, inputValue);
   };
 
   const handleSubmit = (event: any) => {
