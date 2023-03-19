@@ -11,7 +11,7 @@ import ServerOp from '../services/ServerOp';
 import VoterContext from '../context/voter/VoterContext';
 import { AdminDto } from '../models/dto/ServerOpDtos';
 
-export default function admin() {
+export default function Admin() {
   // @ts-ignore
   const adminProvider = useContext(AdminContext) as AdminContextDto;
   //@ts-ignore

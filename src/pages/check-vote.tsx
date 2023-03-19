@@ -4,12 +4,15 @@ import TransactionView from '../components/transaction-view';
 import { BlockDto } from '../models/dto/BlockchainDtos';
 import BlockchainService from '../services/BlockchainService';
 import RoundedTextBtn from '../shared/button/RoundedTextBtn';
+import { TbDownload } from 'react-icons/tb';
+import { generateDownloadLink } from '../utils/transactionUtils';
 
 export default function CheckVote() {
   const [searchText, setSearchText] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [result, setResult] = useState<BlockDto | null>(null);
   const [error, setError] = useState(false);
+  const [downloadLink, setDownloadLink] = useState('');
 
   const onSearch = () => {
     if (searchText) {
@@ -28,8 +31,9 @@ export default function CheckVote() {
               prev_hash: val.prev_hash,
               tx: { address: val.tx.metadata.address, inputs: { voter: voter, votes: votes } },
             };
-            debugger;
             setResult({ ...blockValue });
+            const link = generateDownloadLink(blockValue);
+            setDownloadLink(link);
             setLoading(false);
           }
         })
@@ -77,7 +81,20 @@ export default function CheckVote() {
             <p className="text-gray-700">No result found</p>
           </div>
         )}
-        {result && <TransactionView txData={result} className="mt-12" />}
+        {result && (
+          <div className="mt-12">
+            <div className="flex justify-end">
+              <a href={downloadLink} download="Bbbvs_Vote_Tx.json">
+                <div className="inline-flex space-x-1 items-center justify-center px-2 py-1 rounded-md text-gray-700 cursor-pointer hover:bg-gray-400 hover:text-white  mb-2 bg-gray-300">
+                  <p>Download</p>
+                  <TbDownload />
+                </div>
+              </a>
+            </div>
+
+            <TransactionView txData={result} />
+          </div>
+        )}
       </div>
     </div>
   );

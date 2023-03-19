@@ -20,6 +20,7 @@ import CachService from '../../services/CacheService';
 import { MdEditOff } from 'react-icons/md';
 import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
 import CompilerService from '../../services/CompilerService';
+import { copyToClipboard } from '../../utils/transactionUtils';
 
 export default function VotingContainer() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -62,7 +63,11 @@ export default function VotingContainer() {
                     popup: 'animate__animated animate__fadeOutUp',
                   },
                   showConfirmButton: true,
+                  showDenyButton: true,
+                  denyButtonText: 'CopyTxHash',
+                  denyButtonColor: '#9c9c9c',
                   confirmButtonText: 'Done',
+                  confirmButtonColor: '#1c4e80',
                 }).then((result) => {
                   /* Read more about handling dismissals below */
                   if (result.isConfirmed) {
@@ -72,6 +77,16 @@ export default function VotingContainer() {
                         votingProvider.clearVotes();
                       }
                     });
+                  } else if (result.isDenied) {
+                    copyToClipboard(val);
+                    setTimeout(() => {
+                      CachService.deleteCache(CachNamesEnum.Voter).then((value) => {
+                        if (value) {
+                          Router.push('/login');
+                          votingProvider.clearVotes();
+                        }
+                      });
+                    }, 1000);
                   }
                 });
               }

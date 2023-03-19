@@ -150,7 +150,7 @@ export default function ElectionDetails({
       </div>
 
       <div className="flex  items-center flex-col space-y-8 mx-12 py-4 text-gray-600 bg-white ">
-        <p className=" text-sm pt-2  text-gray-500">{message}</p>
+        <p className=" text-sm pt-2  text-gray-500 text-center">{message}</p>
 
         <div className="flex space-x-12">
           <div className="flex flex-col space-y-4 items-center pt-4">
