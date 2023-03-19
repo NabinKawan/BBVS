@@ -46,16 +46,7 @@ export default function AdminMenu({ className }: AdminMenuProps) {
       {/* profile details */}
       <div className="flex rounded-xl items-center justify-between bg-[#1c4e80] space-x-4 p-4 my-8">
         <div className="flex space-x-4">
-          <img
-            className="rounded-full"
-            height={60}
-            width={60}
-            src={
-              adminProvider.admin.image !== ''
-                ? `http://${adminProvider.admin.image}`
-                : 'images/profile_img.png'
-            }
-          />
+          <img className="rounded-full" height={60} width={60} src={'images/avatar.jpeg'} />
           <div className="flex justify-center flex-col space-y-1">
             <p className="font-medium text-base text-white">
               {`${adminProvider.admin.first_name} ${adminProvider.admin.middle_name} ${adminProvider.admin.last_name}`}

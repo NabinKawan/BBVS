@@ -10,6 +10,7 @@ import { CachNamesEnum } from '../models/enums/CacheEnums';
 import AdminContext from '../context/admin/AdminContext';
 import { AdminContextDto } from '../models/dto/ContextDtos';
 import { CacheDto } from '../models/dto/CacheDtos';
+import { toast } from 'react-toastify';
 
 export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
@@ -31,19 +32,24 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     if (validate(formValues)) {
-      ServerOp.adminLogin(formValues).then((value) => {
-        if (value) {
-          const cacheData: CacheDto = {
-            user_id: 'admin',
-            access_token: value,
-          };
-          CachService.addDataIntoCache(CachNamesEnum.Admin, cacheData);
-          setTimeout(() => {
-            Router.push('/admin');
-            setLoading(false);
-          }, 2000);
-        }
-      });
+      ServerOp.adminLogin(formValues)
+        .then((value) => {
+          if (value) {
+            const cacheData: CacheDto = {
+              user_id: 'admin',
+              access_token: value,
+            };
+            CachService.addDataIntoCache(CachNamesEnum.Admin, cacheData);
+            setTimeout(() => {
+              Router.push('/admin');
+              setLoading(false);
+            }, 2000);
+          }
+        })
+        .catch((e) => {
+          toast.error(e.message, { autoClose: 2000 });
+          setLoading(false);
+        });
     } else {
       setError(true);
       setLoading(false);

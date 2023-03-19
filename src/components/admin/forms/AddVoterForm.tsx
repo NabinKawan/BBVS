@@ -55,7 +55,7 @@ export default function AddVoterForm() {
   };
 
   const handleTextInput = (candidate_id: string, inputValue: string) => {
-    voterProvider.addVoterInfo(candidate_id, inputValue);
+    voterProvider.addVoterInfo(candidate_id, inputValue.toUpperCase());
   };
 
   const handleSubmit = (event: any) => {
