@@ -206,7 +206,7 @@ export default function VotingContainer() {
                   <div className="flex flex-col ">
                     <p className="font-bold text-xl text-black">{`Vote for ${candidateProvider.posts[currentPage]}`}</p>
                     <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${candidateProvider.posts[currentPage]}`}</p>
-                    <div className="w-32 mt-8">
+                    {/* <div className="w-32 mt-8">
                       <RoundedIconBtn
                         icon={<MdEditOff size={20} />}
                         text={'No Vote'}
@@ -216,7 +216,7 @@ export default function VotingContainer() {
                           handleVote(null);
                         }}
                       />
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-8 mt-14">

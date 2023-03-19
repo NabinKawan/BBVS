@@ -2,11 +2,7 @@ import { BigNumber, Contract, ethers } from 'ethers';
 import ownerAbi from '../abi/owner_abi.json';
 import storageAbi from '../abi/storage_abi.json';
 import electionAbi from '../abi/election_abi.json';
-import {
-  ElectionContractAddrs,
-  OwnerContractAddrs,
-  StorageContractAddrs,
-} from '../models/constants';
+import { OwnerContractAddrs, StorageContractAddrs } from '../models/constants';
 import { Address } from 'cluster';
 
 import { CandidateDto, VoterDto } from '../models/dto/ServerOpDtos';
@@ -16,6 +12,7 @@ import {
   ContractVoterDto,
 } from '../models/dto/ContractDtos';
 import { toast } from 'react-toastify';
+import environments from '../configs/environments';
 
 export default class ContractService {
   static getProvider() {
@@ -24,7 +21,11 @@ export default class ContractService {
   }
 
   static getContract(provider: ethers.providers.Provider | ethers.Signer) {
-    const contract = new ethers.Contract(ElectionContractAddrs, electionAbi, provider);
+    const contract = new ethers.Contract(
+      environments.ELECTION_CONTRACT_ADDRESS,
+      electionAbi,
+      provider,
+    );
     return contract;
   }
 
@@ -132,7 +133,7 @@ export default class ContractService {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
       const electionName: string = await contract.electionName();
-      
+
       return electionName;
     } catch (e: any) {
       let errorMessage = e.message;

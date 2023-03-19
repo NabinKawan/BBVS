@@ -9,6 +9,7 @@ const environments = {
   BBVS_API_URL: publicRuntimeConfig.BBVS_API_URL,
   COMPILER_URL: publicRuntimeConfig.COMPILER_URL,
   BLOCKCHAIN_URL: publicRuntimeConfig.BLOCKCHAIN_URL,
+  ELECTION_CONTRACT_ADDRESS: publicRuntimeConfig.ELECTION_CONTRACT_ADDRESS,
 };
 
 console.log({
@@ -17,6 +18,7 @@ console.log({
   host_url: environments.HOST_URL,
   blockchain_url: environments.BLOCKCHAIN_URL,
   compiler_url: environments.COMPILER_URL,
+  contract_address: environments.ELECTION_CONTRACT_ADDRESS,
 });
 
 export default environments;

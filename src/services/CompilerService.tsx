@@ -1,5 +1,4 @@
 import environments from '../configs/environments';
-import { ElectionContractAddrs } from '../models/constants';
 import { ExecuteDto } from '../models/dto/CompilerDto';
 import { ContractCandidateDto, ContractVoterDto } from '../models/dto/ContractDtos';
 
@@ -30,7 +29,7 @@ export default class CompilerService {
     }
 
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'start-election',
         option_name: '--election',
@@ -60,7 +59,7 @@ export default class CompilerService {
     let candidates_request = JSON.stringify(candidates).replace('"', '"');
     debugger;
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'do-vote',
         option_name: '--vote',
@@ -84,7 +83,7 @@ export default class CompilerService {
 
   static async getVoterStatus(voter_id: string) {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-voter-status',
         option_name: '--voter',
@@ -110,7 +109,7 @@ export default class CompilerService {
 
   static async getCandidateList() {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-candidate-list',
         option_name: '',
@@ -132,7 +131,7 @@ export default class CompilerService {
 
   static async getResults() {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-results',
         option_name: '',
@@ -154,7 +153,7 @@ export default class CompilerService {
 
   static async getTotalVotes() {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-total-votes',
         option_name: '',
@@ -176,7 +175,7 @@ export default class CompilerService {
 
   static async getCandidatesCount() {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-candidates-count',
         option_name: '',
@@ -198,7 +197,7 @@ export default class CompilerService {
 
   static async getVotersCount() {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-voters-count',
         option_name: '',
@@ -220,7 +219,7 @@ export default class CompilerService {
 
   static async getVotingEndTime() {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-end-time',
         option_name: '',
@@ -242,7 +241,7 @@ export default class CompilerService {
 
   static async getElectionName() {
     const request: ExecuteDto = {
-      contract_address: ElectionContractAddrs,
+      contract_address: environments.ELECTION_CONTRACT_ADDRESS,
       command_params: {
         command: 'get-election-name',
         option_name: '',
