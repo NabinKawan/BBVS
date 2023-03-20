@@ -16,6 +16,7 @@ import ContractService from '../../services/ContractService';
 import { toast } from 'react-toastify';
 import { CircularProgress } from '@mui/material';
 import { FiLogOut } from 'react-icons/fi';
+import environments from '../../configs/environments';
 
 interface VotingMenuProps {
   className?: string;
@@ -61,7 +62,7 @@ export default function VotingMenu({ className }: VotingMenuProps) {
             style={{ objectFit: 'cover', height: 60, width: 60 }}
             src={
               votingProvider.voter.image !== ''
-                ? `${votingProvider.voter.image}`
+                ? `${environments.BBVS_API_URL}/${votingProvider.voter.image}`
                 : 'images/noprofile.png'
             }
           />

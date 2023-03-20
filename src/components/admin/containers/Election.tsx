@@ -142,8 +142,8 @@ export default function Election() {
         {!isElectionStarted ? (
           <div className="flex flex-col  divide-gray-50  px-12 pb-8">
             {/* election card */}
-            <div className="flex md:space-x-12">
-              <div className="flex flex-col w-1/2 pt-4  text-sm justify-start space-y-2">
+            <div className="flex flex-col md:flex-row md:space-x-12">
+              <div className="flex flex-col w-full md:w-1/2 pt-4  text-sm justify-start space-y-2">
                 <p className="text-[#424040] text-base mb-2">
                   Election<span className="text-red-500">*</span>
                 </p>
@@ -159,7 +159,7 @@ export default function Election() {
                 {<p className="font-normal text-xs text-red-500">{formErrors.electionName}</p>}
               </div>
 
-              <div className="flex flex-col w-64 pt-4  font-medium text-sm justify-start space-y-2">
+              <div className="flex flex-col w-full md:w-64 pt-4  text-sm justify-start space-y-2">
                 <p className="text-[#424040] text-base mb-2">
                   End time (minutes)<span className="text-red-500">*</span>
                 </p>

@@ -3,6 +3,7 @@ import VotingContext from '../../context/voting/VotingContext';
 import { VotingContextDto } from '../../models/dto/ContextDtos';
 import { MdCheckCircle } from 'react-icons/md';
 import { CandidateDto } from '../../models/dto/ServerOpDtos';
+import environments from '../../configs/environments';
 
 interface VotingCardProps {
   candidate: CandidateDto;
@@ -22,11 +23,18 @@ export default function VotingCard({ candidate, isSelected, onClick }: VotingCar
         <div className="relative">
           <img
             className="rounded-full h-28"
-            src={candidate.image === '' ? 'images/noprofile.png' : candidate.image}
+            src={
+              candidate.image === ''
+                ? 'images/noprofile.png'
+                : `${environments.BBVS_API_URL}/${candidate.image}`
+            }
             style={{ objectFit: 'cover' }}
           />
           {candidate.logo && (
-            <img className="absolute right-0 bottom-0 h-10" src={candidate.logo} />
+            <img
+              className="absolute right-0 bottom-0 h-10"
+              src={`${environments.BBVS_API_URL}/${candidate.logo}`}
+            />
           )}
         </div>
 
