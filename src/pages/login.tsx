@@ -152,9 +152,9 @@ export default function Login() {
           <p className="font-medium text-base">Go to Election</p>
         </div>
         <p className="text-sm text-gray-600">
-          Already voted?{' '}
+          Already voted?
           <span
-            className="font-medium text-primary text-sm cursor-pointer"
+            className="font-medium text-primary text-sm cursor-pointer ml-1"
             onClick={() => {
               Router.push('/check-vote');
             }}
