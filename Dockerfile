@@ -16,6 +16,8 @@ FROM node:17.1.0-alpine3.12 AS builder
 ENV NODE_ENV=development
 WORKDIR /app
 COPY . .
+# COPY ./public ./data ./src ./
+# COPY package.json yarn.lock  tailwind.config.js next.config.js postcss.config.js ./
 RUN yarn install --frozen-lockfile && NODE_ENV=production yarn build
 
 FROM node:17.1.0-alpine3.12 AS production
