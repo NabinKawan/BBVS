@@ -12,8 +12,8 @@ const nextConfig = {
   swcMinify: true,
   publicRuntimeConfig: {
     BBVS_API_URL: process.env.BBVS_API_URL || 'https://bbvs-api.sireto.dev',
-    COMPILER_URL: process.env.COMPILER_URL || 'http://compiler:80',
-    BLOCKCHAIN_URL: process.env.BLOCKCHAIN_URL || 'http://satyatathya:80',
+    COMPILER_URL: process.env.COMPILER_URL || 'https://bbvs-compiler.sireto.dev',
+    BLOCKCHAIN_URL: process.env.BLOCKCHAIN_URL || 'https://satyatathya.sireto.dev',
     HOST_URL: process.env.HOST_URL || 'https://bbvs.sireto.dev',
     ELECTION_CONTRACT_ADDRESS:
       process.env.ELECTION_CONTRACT_ADDRESS ||
