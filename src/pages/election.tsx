@@ -69,9 +69,8 @@ export default function Election() {
     // }
   }, []);
 
-  return (
-    isFetched &&
-    (isElectionStarted ? (
+  return isFetched ? (
+    isElectionStarted ? (
       <div className="flex flex-col w-screen h-screen justify-start font-sans bg-white">
         <ElectionDetails
           onElectionEnd={getElectionResult}
@@ -82,6 +81,8 @@ export default function Election() {
       </div>
     ) : (
       <ElectionResult />
-    ))
+    )
+  ) : (
+    <div className="w-screen h-screen bg-white"></div>
   );
 }
