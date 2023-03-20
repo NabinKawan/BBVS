@@ -16,6 +16,7 @@ import VoterContext from '../../../context/voter/VoterContext';
 import AdminContext from '../../../context/admin/AdminContext';
 import { useDialog } from '../../dialog-view.tsx/context';
 import Swal from 'sweetalert2';
+import environments from '../../../configs/environments';
 
 interface VoterCardProps {
   voter: VoterDto;
@@ -69,7 +70,11 @@ export default function VoterCard({ voter }: VoterCardProps) {
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 60, width: 60 }}
-            src={voter.image === '' ? 'images/noprofile.png' : voter.image}
+            src={
+              voter.image === ''
+                ? 'images/noprofile.png'
+                : `${environments.BBVS_API_URL}/${voter.image}`
+            }
           />
         </div>
 

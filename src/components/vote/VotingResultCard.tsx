@@ -8,6 +8,7 @@ import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
 import { CandidateContextDto } from '../../models/dto/ContextDtos';
 import CandidateContext from '../../context/candidate/CandidateContext';
 import AdminContext from '../../context/admin/AdminContext';
+import environments from '../../configs/environments';
 
 interface VotingResultCardProps {
   candidate: CandidateDto;
@@ -30,7 +31,11 @@ export default function VotingResultCard({ candidate, handleEdit }: VotingResult
             <img
               className="rounded-full"
               style={{ objectFit: 'cover', height: 60, width: 60 }}
-              src={candidate.image === '' ? 'images/noprofile.png' : `${candidate.image}`}
+              src={
+                candidate.image === ''
+                  ? 'images/noprofile.png'
+                  : `${environments.BBVS_API_URL}/${candidate.image}`
+              }
             />
           ) : (
             <img
@@ -57,7 +62,10 @@ export default function VotingResultCard({ candidate, handleEdit }: VotingResult
         )}
         <div className="flex space-x-8">
           {candidate && candidate.logo && (
-            <img className="hidden sm:block w-8 h-8" src={candidate.logo} />
+            <img
+              className="hidden sm:block w-8 h-8"
+              src={`${environments.BBVS_API_URL}/${candidate.logo}`}
+            />
           )}
           {!candidate ? (
             <div className="hidden sm:flex w-fit rounded-xl bg-red-100 px-2 py-1 justify-center items-center">

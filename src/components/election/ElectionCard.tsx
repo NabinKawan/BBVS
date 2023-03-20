@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import environments from '../../configs/environments';
 
 interface ElectionCardProps {
   totalVotes: number;
@@ -49,7 +50,7 @@ export default function ElectionCard({
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 50, width: 50 }}
-            src={image === '' ? 'images/noprofile.png' : `${image}`}
+            src={image === '' ? 'images/noprofile.png' : `${environments.BBVS_API_URL}/${image}`}
           />
           <div className="flex flex-col  text-base text-gray-900">
             <div className="flex justify-between">
@@ -68,7 +69,7 @@ export default function ElectionCard({
 
         <div className="flex space-x-2 items-start">
           <p className="font-medium">{voteCount} votes</p>
-          {logo && <img className=" h-8" src={logo} />}
+          {logo && <img className=" h-8" src={`${environments.BBVS_API_URL}/${logo}`} />}
         </div>
       </div>
       <div className="flex rounded-lg mt-3 bg-gray-200 w-full h-2 ">

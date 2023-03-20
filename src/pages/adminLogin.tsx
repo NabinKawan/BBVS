@@ -71,7 +71,7 @@ export default function AdminLogin() {
 
   return (
     <form
-      className="flex justify-center items-center bg-loginBg h-screen font-sans"
+      className="flex justify-center items-center bg-loginBg min-h-screen font-sans"
       onSubmit={onLogin}
     >
       <div className="flex flex-col items-center px-8 sm:px-10 py-12 space-y-5  rounded-xl bg-white shadow-lg">
