@@ -11,6 +11,7 @@ import { AdminContextDto, CandidateContextDto } from '../../../models/dto/Contex
 import AdminContext from '../../../context/admin/AdminContext';
 import { useDialog } from '../../dialog-view.tsx/context';
 import Swal from 'sweetalert2';
+import environments from '../../../configs/environments';
 
 interface CandidateCardProps {
   candidate: CandidateDto;
@@ -67,7 +68,11 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 60, width: 60 }}
-            src={candidate.image === '' ? 'images/noprofile.png' : `${candidate.image}`}
+            src={
+              candidate.image === ''
+                ? 'images/noprofile.png'
+                : `${environments.BBVS_API_URL}/${candidate.image}`
+            }
           />
           <img
             className="absolute lg:hidden bottom-0 right-0 h-6"
@@ -89,7 +94,12 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
             </div>
           </div>
         </div>
-        {candidate.logo && <img className="hidden lg:block h-8" src={candidate.logo!} />}
+        {candidate.logo && (
+          <img
+            className="hidden lg:block h-8"
+            src={`${environments.BBVS_API_URL}/${candidate.logo!}`}
+          />
+        )}
       </div>
       {/* edit delete buttons */}
       <div className="hidden sm:flex space-x-4 text-white font-bold text-base ">

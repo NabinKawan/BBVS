@@ -17,9 +17,9 @@ const nextConfig = {
     HOST_URL: process.env.HOST_URL,
     ELECTION_CONTRACT_ADDRESS: process.env.ELECTION_CONTRACT_ADDRESS,
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
+  // compiler: {
+  //   removeConsole: process.env.NODE_ENV === 'production',
+  // },
 };
 
 module.exports = nextConfig;

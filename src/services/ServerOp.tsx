@@ -17,7 +17,7 @@ export default class ServerOp {
   static async getAllCandidates(accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/candidates`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/candidates`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -56,7 +56,7 @@ export default class ServerOp {
         // });
         const response = await axios.post(
           // `${minterUrl}/policies?request=${JSON.stringify(request)}`,
-          `${environments.BBVS_API_URL}/file/uploadImage`,
+          `${environments.BBVS_API_URL}/api/file/uploadImage`,
           formData,
           {
             headers: {
@@ -69,7 +69,7 @@ export default class ServerOp {
 
         if (response.status === 200) {
           const img_url = await response.data;
-          return img_url;
+          return `${environments.BBVS_API_URL}/api/${img_url}`;
         } else if (response.status === 403) {
           return 'unauthorized';
         }
@@ -98,7 +98,7 @@ export default class ServerOp {
         // });
         const response = await axios.post(
           // `${minterUrl}/policies?request=${JSON.stringify(request)}`,
-          `${environments.BBVS_API_URL}/file/uploadImage`,
+          `${environments.BBVS_API_URL}/api/file/uploadImage`,
           formData,
           {
             headers: {
@@ -111,7 +111,7 @@ export default class ServerOp {
 
         if (response.status === 200) {
           const img_url = await response.data;
-          return img_url;
+          return `${environments.BBVS_API_URL}/api/${img_url}`;
         } else if (response.status === 403) {
           return 'unauthorized';
         }
@@ -127,7 +127,7 @@ export default class ServerOp {
   static async addCandidate(candidate: CandidateDto, accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/candidates/addCandidate`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/candidates/addCandidate`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -159,7 +159,7 @@ export default class ServerOp {
   static async updateCandidate(candidate: CandidateDto, accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/candidates/updateCandidate`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/candidates/updateCandidate`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
@@ -185,7 +185,7 @@ export default class ServerOp {
     //
     try {
       const response = await fetch(
-        `${environments.BBVS_API_URL}/candidates/deleteCandidate/${candidateId}`,
+        `${environments.BBVS_API_URL}/api/candidates/deleteCandidate/${candidateId}`,
         {
           method: 'DELETE',
           headers: {
@@ -210,7 +210,7 @@ export default class ServerOp {
   static async getAllVoters(accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/voters`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/voters`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -236,7 +236,7 @@ export default class ServerOp {
   static async addVoter(voter: VoterDto, accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/voters/addVoter`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/voters/addVoter`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -268,7 +268,7 @@ export default class ServerOp {
   static async getVoter(voter_id: string, accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/voters/${voter_id}`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/voters/${voter_id}`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -294,7 +294,7 @@ export default class ServerOp {
   static async updateVoter(voter: VoterDto, accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/voters/updateVoter`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/voters/updateVoter`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
@@ -319,14 +319,17 @@ export default class ServerOp {
   static async deleteVoter(voterId: string, accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/voters/deleteVoter/${voterId}`, {
-        method: 'DELETE',
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${environments.BBVS_API_URL}/api/voters/deleteVoter/${voterId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'content-type': 'application/json',
+            accept: 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       if (response.status === 200) {
         // throw Error(`Unexpected response: code [${response.status}]`);
@@ -343,7 +346,7 @@ export default class ServerOp {
   static async getAdmin(adminId: string, accessToken: string) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/admin/${adminId}`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/admin/${adminId}`, {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
@@ -370,7 +373,7 @@ export default class ServerOp {
     //
     try {
       const response = await fetch(
-        `${environments.BBVS_API_URL}/admin/adminCredential/${adminId}`,
+        `${environments.BBVS_API_URL}/api/admin/adminCredential/${adminId}`,
         {
           method: 'GET',
           headers: {
@@ -396,7 +399,7 @@ export default class ServerOp {
   static async adminLogin(adminCredential: AdminCredentialDto) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/login/adminLogin`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/login/adminLogin`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -421,7 +424,7 @@ export default class ServerOp {
   static async login(voterCredential: VoterCredentialDto) {
     //
     try {
-      const response = await fetch(`${environments.BBVS_API_URL}/login`, {
+      const response = await fetch(`${environments.BBVS_API_URL}/api/login`, {
         mode: 'cors',
         method: 'POST',
         headers: {
