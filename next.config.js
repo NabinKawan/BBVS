@@ -17,11 +17,11 @@ const nextConfig = {
     HOST_URL: process.env.HOST_URL || 'https://bbvs.sireto.dev',
     ELECTION_CONTRACT_ADDRESS:
       process.env.ELECTION_CONTRACT_ADDRESS ||
-      '3c4094f0849fae61fc3c8c782e5d08392d3a52ef05f4cb7c6293e95808311012',
+      '2568376c23d44fba61a0758712352c43a422b160d77990cb43741ea7b70cc7ec',
   },
-  // compiler: {
-  //   removeConsole: process.env.NODE_ENV === 'production',
-  // },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
 };
 
 console.log(process.env);
