@@ -115,7 +115,7 @@ export default function EditVoterView() {
 
       image.img_file !== null
         ? ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-            editCandidateInfo(TextFieldIdEnum.Image, value);
+            editCandidateInfo(TextFieldIdEnum.Image, value!);
 
             // changing saved post and id values to uppercase
             editCandidateInfo(

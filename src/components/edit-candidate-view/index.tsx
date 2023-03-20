@@ -139,12 +139,12 @@ export default function EditCandidateView() {
       // upload image and set the url to editCandidateRef.current
       if (image.img_file !== null) {
         await ServerOp.uploadImage(image.img_file, adminProvider.accessToken).then((value) => {
-          editCandidateInfo(TextFieldIdEnum.Image, value);
+          editCandidateInfo(TextFieldIdEnum.Image, value!);
         });
       }
       if (logo.img_file !== null) {
         await ServerOp.uploadLogo(logo.img_file, adminProvider.accessToken).then((value) => {
-          editCandidateInfo(TextFieldIdEnum.Logo, value);
+          editCandidateInfo(TextFieldIdEnum.Logo, value!);
         });
       }
       // changing saved post and id values to uppercase
