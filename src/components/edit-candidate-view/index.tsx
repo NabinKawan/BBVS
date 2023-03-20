@@ -1,5 +1,6 @@
 import { useState, useRef, useContext } from 'react';
 import { TbColorPicker } from 'react-icons/tb';
+import environments from '../../configs/environments';
 import AdminContext from '../../context/admin/AdminContext';
 import CandidateContext from '../../context/candidate/CandidateContext';
 import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
@@ -18,8 +19,14 @@ export default function EditCandidateView() {
   //@ts-ignore
   const candidate: CandidateDto = dialogProps && dialogProps.candidate;
   const breakpoint = useBreakpoint();
-  const [image, setImage] = useState({ img_file: null, img_url: candidate?.image });
-  const [logo, setLogo] = useState({ img_file: null, img_url: candidate?.logo });
+  const [image, setImage] = useState({
+    img_file: null,
+    img_url: candidate ? `${environments.BBVS_API_URL}/${candidate.image}` : '',
+  });
+  const [logo, setLogo] = useState({
+    img_file: null,
+    img_url: candidate ? `${environments.BBVS_API_URL}/${candidate.logo}` : '',
+  });
   const imageInput = useRef<HTMLInputElement>(null);
   const logoInput = useRef<HTMLInputElement>(null);
 
@@ -190,10 +197,12 @@ export default function EditCandidateView() {
           <img
             className="rounded-full"
             style={{ objectFit: 'cover', height: 100, width: 100 }}
-            src={image.img_url !== '' ? image.img_url : '/images/noprofile.png'}
+            src={image.img_file !== '' ? image.img_url : '/images/noprofile.png'}
           />
 
-          {logo.img_url && <img className="absolute right-0 bottom-0  h-9" src={logo.img_url} />}
+          {logo.img_url !== '' && (
+            <img className="absolute right-0 bottom-0  h-9" src={logo.img_url} />
+          )}
         </div>
 
         <div className="space-y-2 text-sm text-[#424040]">

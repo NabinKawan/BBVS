@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { TbColorPicker } from 'react-icons/tb';
+import environments from '../../configs/environments';
 import AdminContext from '../../context/admin/AdminContext';
 import VoterContext from '../../context/voter/VoterContext';
 import { useBreakpoint } from '../../lib/hooks/use-breakpoint';
@@ -19,7 +20,10 @@ export default function EditVoterView() {
   const voter: VoterDto = dialogProps && dialogProps.voter;
   const breakpoint = useBreakpoint();
 
-  const [image, setImage] = useState({ img_file: null, img_url: voter?.image });
+  const [image, setImage] = useState({
+    img_file: null,
+    img_url: voter ? `${environments.BBVS_API_URL}/${voter.image}` : '',
+  });
   const fileInput = useRef<HTMLInputElement>(null);
 
   //@ts-ignore

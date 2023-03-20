@@ -76,7 +76,11 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
           />
           <img
             className="absolute lg:hidden bottom-0 right-0 h-6"
-            src={candidate.image === '' ? 'images/party_sign.png' : candidate.logo}
+            src={
+              candidate.image === ''
+                ? 'images/party_sign.png'
+                : `${environments.BBVS_API_URL}/${candidate.logo}`
+            }
           />
         </div>
 

@@ -66,10 +66,11 @@ export default class ServerOp {
             },
           },
         );
-
         if (response.status === 200) {
+          debugger;
           const img_url = await response.data;
-          return `${environments.BBVS_API_URL}/${img_url}`;
+          console.log(img_url);
+          return `${img_url}`;
         } else if (response.status === 403) {
           return 'unauthorized';
         }
@@ -111,7 +112,7 @@ export default class ServerOp {
 
         if (response.status === 200) {
           const img_url = await response.data;
-          return `${environments.BBVS_API_URL}/${img_url}`;
+          return `${img_url}`;
         } else if (response.status === 403) {
           return 'unauthorized';
         }
