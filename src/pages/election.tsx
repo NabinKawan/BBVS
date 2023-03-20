@@ -24,7 +24,7 @@ export default function Election() {
       text: 'We are navigating you to election result. This may take a while.',
       allowOutsideClick: false,
       allowEnterKey: false,
-      timer: 30000,
+      timer: 5000,
       showClass: {
         popup: 'animate__animated animate__fadeInDown',
       },

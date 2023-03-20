@@ -102,7 +102,7 @@ export default function ElectionDetails({
       });
   }, []);
   return (
-    <div className="flex flex-col w-full items-center justify-start text-gray-700">
+    <div className="flex flex-col w-full items-center justify-start text-gray-700 min-h-screen bg-white">
       {isElectionPage && (
         <div className="flex w-full  items-start justify-start pb-24 px-8 pt-8">
           <div className="flex items-center">
