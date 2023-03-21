@@ -51,6 +51,7 @@ export default function AddVoterForm() {
 
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
+      event.target.value = null;
     }
   };
 

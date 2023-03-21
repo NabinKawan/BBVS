@@ -130,9 +130,9 @@ export default function Election() {
       <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 ">
         {!isElectionStarted && (
           <div className="flex flex-col ">
-            <p className="font-bold text-lg pt-7 px-11 text-black">Election</p>
+            <p className="font-bold text-lg pt-7 px-6 sm:px-11 text-black">Election</p>
 
-            <p className=" text-sm pt-2 pb-7 px-11 text-gray-500">
+            <p className=" text-sm pt-2 pb-7 px-6  sm:px-11 text-gray-500">
               All the candidates and voters inside the database will be uploaded into smartcontract.
             </p>
           </div>
@@ -140,7 +140,7 @@ export default function Election() {
 
         {/* election form */}
         {!isElectionStarted ? (
-          <div className="flex flex-col  divide-gray-50  px-12 pb-8">
+          <div className="flex flex-col  divide-gray-50  px-6 sm:px-12 pb-8">
             {/* election card */}
             <div className="flex flex-col md:flex-row md:space-x-12">
               <div className="flex flex-col w-full md:w-1/2 pt-4  text-sm justify-start space-y-2">

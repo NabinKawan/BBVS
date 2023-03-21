@@ -155,7 +155,7 @@ export default function ElectionDetails({
         </div>
       </div>
 
-      <div className="flex  items-center flex-col space-y-8 mx-12 py-4 text-gray-600 !bg-white ">
+      <div className="flex  items-center flex-col space-y-8 mx-12 py-4 text-gray-600 bg-white ">
         <p className=" text-sm pt-2  text-gray-500 text-center">{message}</p>
 
         <div className="flex space-x-12 bg-white">
@@ -164,7 +164,7 @@ export default function ElectionDetails({
               {/* <CountUp startVal={0} end={255} duration={1.5} /> */}
               {timer}
             </p>
-            <div className="flex space-x-10 justify-center pl-3">
+            <div className="flex space-x-10 justify-center pl-3 bg-white">
               <p className="font-normal text-sm text-gray-700 ">hours</p>
               <p className="font-normal text-sm text-gray-700 ">minutes</p>
               <p className="font-normal text-sm text-gray-700 ">seconds</p>

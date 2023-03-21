@@ -66,6 +66,7 @@ export default function EditCandidateView() {
 
       // @ts-ignore becasue changing null value into string value
       setImage({ img_file, img_url });
+      event.target.value = null;
     }
   };
 
@@ -85,6 +86,7 @@ export default function EditCandidateView() {
 
       // @ts-ignore becasue changing null value into string value
       setLogo({ img_file, img_url });
+      event.target.value = null;
     }
   };
 
