@@ -203,7 +203,7 @@ export default function AddVoterForm() {
               defaultValue={addVoterInfo.voter_id}
               isRequired={true}
               error={formErros.voter_id}
-              placeHolder={'eg: KCE075BCT020'}
+              placeHolder={'eg: BBVS_V01'}
               inputHandler={handleTextInput}
             />
           </div>

@@ -285,7 +285,7 @@ export default function EditCandidateView() {
             isRequired={true}
             disabled
             error={formErros.candidate_id}
-            placeHolder={'eg: KCE075BCT020'}
+            placeHolder={'eg: BBVS01'}
             inputHandler={handleTextInput}
           />
           <TextInputField

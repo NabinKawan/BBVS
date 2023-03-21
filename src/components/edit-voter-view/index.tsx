@@ -245,7 +245,7 @@ export default function EditVoterView() {
             isRequired={true}
             disabled
             error={formErros.voter_id}
-            placeHolder={'eg: KCE075BCT020'}
+            placeHolder={'eg: BBVS_V01'}
             inputHandler={handleTextInput}
           />
         </div>

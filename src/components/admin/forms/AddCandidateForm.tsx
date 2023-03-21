@@ -263,7 +263,7 @@ export default function AddCandidateForm() {
               defaultValue={addCandidateInfo.candidate_id}
               isRequired={true}
               error={formErros.candidate_id}
-              placeHolder={'eg: KCE075BCT020'}
+              placeHolder={'eg: BBVS01'}
               inputHandler={handleTextInput}
             />
             <TextInputField
