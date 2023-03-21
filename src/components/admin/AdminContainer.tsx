@@ -35,7 +35,7 @@ export default function AdminContainer() {
     // default
   }
   return (
-    <div className="w-full  h-screen overflow-y-auto bg-AdminBg p-8">
+    <div className="w-full  h-screen overflow-y-auto bg-AdminBg p-2 sm:p-8">
       <DrawerButton drawerType="ADMIN" />
       {container}
     </div>

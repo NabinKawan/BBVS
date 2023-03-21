@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ElectionResultDto } from '../../models/dto/ContractDtos';
@@ -92,7 +93,12 @@ export default function ElectionResult() {
   return (
     <div className="flex flex-col h-screen overflow-y-auto items-start py-20 font-sans  bg-white  xl:px-20 2xl:px-64">
       <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 px-4 sm:px-12 w-full justify-between items-start lg:items-center lg:px-20  2xl:px-20 3xl:px-44">
-        <div className="flex items-center ml-0 md:-ml-4 ">
+        <div
+          className="flex items-center ml-0 md:-ml-4 cursor-pointer "
+          onClick={() => {
+            Router.push('/login');
+          }}
+        >
           <img src="logos/logo.png" />
           <div className="flex flex-col justify-center">
             <p className="font-bold  text-2xl text-[#202020]">BBVS</p>

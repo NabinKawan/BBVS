@@ -106,7 +106,7 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
         )}
       </div>
       {/* edit delete buttons */}
-      <div className="hidden sm:flex space-x-4 text-white font-bold text-base ">
+      <div className="flex space-x-4 text-white font-bold text-base ">
         {/* edit dialog */}
 
         <div className="flex  space-x-4">
@@ -116,13 +116,15 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
             text={'Edit'}
             onClick={handleEdit}
           />
-          <RoundedIconBtn
-            icon={<MdDelete size={20} />}
-            loading={loading}
-            bgColor={'bg-removeBtn'}
-            text={'Remove'}
-            onClick={handleDelete}
-          />
+          <div className="hidden sm:block">
+            <RoundedIconBtn
+              icon={<MdDelete size={20} />}
+              loading={loading}
+              bgColor={'bg-removeBtn'}
+              text={'Remove'}
+              onClick={handleDelete}
+            />
+          </div>
         </div>
       </div>
     </div>

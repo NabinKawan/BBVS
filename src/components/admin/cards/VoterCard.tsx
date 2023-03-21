@@ -96,13 +96,15 @@ export default function VoterCard({ voter }: VoterCardProps) {
           text={'Edit'}
           onClick={handleEdit}
         />
-        <RoundedIconBtn
-          icon={<MdDelete size={20} />}
-          loading={loading}
-          bgColor={'bg-removeBtn'}
-          text={'Remove'}
-          onClick={handleDelete}
-        />
+        <div className="hidden sm:block">
+          <RoundedIconBtn
+            icon={<MdDelete size={20} />}
+            loading={loading}
+            bgColor={'bg-removeBtn'}
+            text={'Remove'}
+            onClick={handleDelete}
+          />
+        </div>
       </div>
     </div>
   );

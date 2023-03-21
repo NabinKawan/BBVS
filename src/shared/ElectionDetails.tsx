@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import CompilerService from '../services/CompilerService';
@@ -105,7 +106,12 @@ export default function ElectionDetails({
     <div className="flex flex-col w-full items-center justify-start text-gray-700 min-h-screen bg-white">
       {isElectionPage && (
         <div className="flex w-full  items-start justify-start pb-24 px-8 pt-8">
-          <div className="flex items-center">
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => {
+              Router.push('/login');
+            }}
+          >
             <img src="logos/logo.png" />
             <div className="flex flex-col justify-center">
               <p className="font-bold  text-2xl text-[#202020]">BBVS</p>
@@ -123,7 +129,7 @@ export default function ElectionDetails({
         <p className="font-bold text-2xl  text-gray-700">{electionName}</p>
       )}
 
-      <div className="flex flex-col items-center space-x-0 space-y-8 sm:flex-row mx-12 w-full justify-center sm:space-x-4 md:space-x-24 sm:space-y-0 my-20 ">
+      <div className="flex flex-col items-center space-x-0 space-y-8 sm:flex-row mx-12 w-full justify-center sm:space-x-4 md:space-x-24 sm:space-y-0 my-20 bg-white ">
         <div className="flex w-44 flex-col space-y-4  border-t-4 border-green-600 shadow-lg px-8 py-4 bg-white ">
           <p className="font-normal text-sm text-gray-700 ">Total Votes</p>
           <p className="font-bold text-5xl">
@@ -149,10 +155,10 @@ export default function ElectionDetails({
         </div>
       </div>
 
-      <div className="flex  items-center flex-col space-y-8 mx-12 py-4 text-gray-600 bg-white ">
+      <div className="flex  items-center flex-col space-y-8 mx-12 py-4 text-gray-600 !bg-white ">
         <p className=" text-sm pt-2  text-gray-500 text-center">{message}</p>
 
-        <div className="flex space-x-12">
+        <div className="flex space-x-12 bg-white">
           <div className="flex flex-col space-y-4 items-center pt-4">
             <p className="font-normal text-5xl">
               {/* <CountUp startVal={0} end={255} duration={1.5} /> */}

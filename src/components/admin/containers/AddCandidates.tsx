@@ -17,7 +17,7 @@ export default function AddCandidates() {
       <p className="font-medium text-[#575353] text-lg ">Add Candidates</p>
 
       {/* container card */}
-      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-11 pt-7">
+      <div className="flex flex-col bg-white rounded-xl shadow-md mt-20 px-6 sm:px-11 pt-7">
         <p className="font-bold text-lg text-black">Add Candidates Information</p>
 
         {/* form */}

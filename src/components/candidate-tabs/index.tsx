@@ -16,13 +16,13 @@ export default function CandidateTabs({ candidates }: ICandidateTabs) {
     <div className="flex w-full justify-between">
       <div className="w-full">
         <Tab.Group>
-          <Tab.List className="flex space-x-4 font-inter text-xs md:text-sm mt-6 overflow-x-auto">
+          <Tab.List className="flex space-x-4 font-inter text-xs md:text-sm mt-6 overflow-x-auto ">
             {Object.keys(categories).map((category) => (
               <Tab
                 key={category}
                 className={({ selected }) =>
                   cn(
-                    'px-4 rounded-xl py-1  border leading-5 text-white bg-white',
+                    'px-4 rounded-xl py-1  border leading-5 text-white bg-white whitespace-nowrap',
                     selected
                       ? '!bg-primary text-white focus:ring-0'
                       : '!text-gray-500 hover:bg-gray-300 hover:text-white ',
