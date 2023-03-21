@@ -135,7 +135,7 @@ export default function Login() {
           type="submit"
           className="flex cursor-pointer   p-3 text-base font-medium justify-center bg-primary text-white rounded-lg w-full"
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : <p>Login In</p>}
+          {loading ? <CircularProgress size={24} color="inherit" /> : <p>Login</p>}
         </button>
         <p className="text-sm text-gray-600">OR</p>
 

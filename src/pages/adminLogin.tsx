@@ -116,7 +116,7 @@ export default function AdminLogin() {
           type="submit"
           className="flex cursor-pointer   p-3 text-base font-medium justify-center bg-primary text-white rounded-lg w-[350px]"
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : <p>Login In</p>}
+          {loading ? <CircularProgress size={24} color="inherit" /> : <p>Login</p>}
         </button>
       </div>
     </form>
