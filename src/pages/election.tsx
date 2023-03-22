@@ -76,7 +76,7 @@ export default function Election() {
           onElectionEnd={getElectionResult}
           endTime={endTime}
           isElectionPage
-          message="Class Election is going on. You can see the results after the election session is ended."
+          message="Election is going on. You can see the results after the election session is ended."
         />
       </div>
     ) : (

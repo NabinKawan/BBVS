@@ -159,7 +159,7 @@ export default function ElectionDetails({
         <p className=" text-sm pt-2  text-gray-500 text-center">{message}</p>
 
         <div className="flex space-x-12 bg-white">
-          <div className="flex flex-col space-y-4 items-center pt-4">
+          <div className="flex flex-col space-y-4 items-center pt-4 bg-white">
             <p className="font-normal text-5xl">
               {/* <CountUp startVal={0} end={255} duration={1.5} /> */}
               {timer}
