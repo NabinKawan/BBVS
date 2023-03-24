@@ -21,6 +21,7 @@ import { MdEditOff } from 'react-icons/md';
 import RoundedIconBtn from '../../shared/button/RoundedIconBtn';
 import CompilerService from '../../services/CompilerService';
 import { copyToClipboard } from '../../utils/transactionUtils';
+import ContractService from '../../services/ContractService';
 
 export default function VotingContainer() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -35,8 +36,6 @@ export default function VotingContainer() {
 
   const onVote = () => {
     if (votingProvider.completedSteps.length === candidateProvider.posts.length) {
-      const votes = votingProvider.getVotes();
-      debugger;
       // router.push('/congratulations');
       Swal.fire({
         title: 'Please wait',
@@ -48,7 +47,7 @@ export default function VotingContainer() {
         },
         didOpen: () => {
           Swal.showLoading();
-          CompilerService.vote(votingProvider.voter.voter_id, votingProvider.getVotes())
+          ContractService.vote(votingProvider.voter.voter_id, votingProvider.getVotes())
             .then((val) => {
               if (val) {
                 toast.success('Voted successfully', { autoClose: 2000 });
@@ -138,7 +137,7 @@ export default function VotingContainer() {
             Object.values(votingProvider.votes).map((candidate: CandidateDto, index) => {
               return (
                 <VotingResultCard
-                  key={candidate.candidate_id}
+                  key={index}
                   candidate={candidate}
                   handleEdit={() => {
                     setCurrentPage(index);
@@ -162,8 +161,8 @@ export default function VotingContainer() {
   };
 
   const handleVote = (candidate: CandidateDto | null) => {
+    debugger;
     votingProvider.addVote(candidateProvider.posts[currentPage], candidate);
-
     votingProvider.addStep(candidateProvider.posts[currentPage]);
     setTimeout(() => {
       if (isEdit) {
@@ -174,9 +173,8 @@ export default function VotingContainer() {
       }
     }, 500);
   };
-
   useEffect(() => {
-    CompilerService.getElectionName()
+    ContractService.getElectionName()
       .then((val) => {
         if (val) {
           if (electionName !== val) setElectionName(val);
@@ -187,7 +185,7 @@ export default function VotingContainer() {
       });
   });
   return (
-    <div className="w-full  min-h-screen overflow-y-auto bg-AdminBg px-6 md:px-16 py-8">
+    <div className="w-full  min-h-full overflow-y-auto bg-AdminBg px-6 md:px-16 py-8">
       <DrawerButton drawerType="VOTING" />
       <div className="w-full  bg-AdminBg ">
         {/* title */}
@@ -221,7 +219,7 @@ export default function VotingContainer() {
                   <div className="flex flex-col ">
                     <p className="font-bold text-xl text-black">{`Vote for ${candidateProvider.posts[currentPage]}`}</p>
                     <p className="font-medium text-sm text-[#717171] mt-2">{`Choose your ${candidateProvider.posts[currentPage]}`}</p>
-                    {/* <div className="w-32 mt-8">
+                    <div className="w-32 mt-8">
                       <RoundedIconBtn
                         icon={<MdEditOff size={20} />}
                         text={'No Vote'}
@@ -231,7 +229,7 @@ export default function VotingContainer() {
                           handleVote(null);
                         }}
                       />
-                    </div> */}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-8 mt-14">

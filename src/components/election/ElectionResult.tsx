@@ -17,19 +17,19 @@ export default function ElectionResult() {
 
   const getElectionDetails = () => {
     try {
-      CompilerService.getTotalVotes().then((val) => {
+      ContractService.getTotalVotes().then((val) => {
         if (val) {
           if (totalVotes !== val) setTotalVotes(val);
         }
       });
 
-      CompilerService.getVotersCount().then((val) => {
+      ContractService.getVotersCount().then((val) => {
         if (val) {
           if (totalVoters !== val) setTotalVoters(val);
         }
       });
 
-      CompilerService.getElectionName().then((val) => {
+      ContractService.getElectionName().then((val) => {
         if (val) {
           if (electionName !== val) setElectionName(val);
         }
@@ -42,7 +42,7 @@ export default function ElectionResult() {
   const getFormatVotingResults = () => {
     getElectionDetails();
 
-    CompilerService.getResults()
+    ContractService.getResults()
       .then((results: []) => {
         let posts_: string[] = [];
         let formattedResults: any[] = [];
@@ -55,13 +55,15 @@ export default function ElectionResult() {
             voteCount: 0,
             logo: '',
           };
+
           posts_.push(e.post);
           result.name = e.name;
           result.post = e.post;
-          result.imageUrl = e.image_url;
-          result.candidateId = e.candidate_id;
-          result.voteCount = e.votecount;
+          result.imageUrl = e.imageUrl;
+          result.candidateId = e.candidateId;
+          result.voteCount = e.voteCount.toNumber();
           result.logo = e.logo;
+          debugger;
           formattedResults.push(result);
         });
         const postSet = new Set(posts_);

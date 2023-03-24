@@ -15,6 +15,7 @@ import CandidateContext from '../context/candidate/CandidateContext';
 import { CandidateDto, VoterDto } from '../models/dto/ServerOpDtos';
 import { ContractCandidateDto } from '../models/dto/ContractDtos';
 import CompilerService from '../services/CompilerService';
+import ContractService from '../services/ContractService';
 
 export default function Voting() {
   // @ts-ignore
@@ -49,7 +50,7 @@ export default function Voting() {
           if (value) {
             if (value !== 'unauthorized') {
               votingProvider.setVoter({ ...value[0] });
-              CompilerService.getCandidateList().then((candidates) => {
+              ContractService.getCandidateList().then((candidates) => {
                 if (candidates) {
                   const posts: string[] = [];
                   const formatedCandidates: CandidateDto[] = [];
@@ -76,8 +77,8 @@ export default function Voting() {
                     }
                     candidate_.post = candidate.post;
                     candidate_.logo = candidate.logo;
-                    candidate_.candidate_id = candidate.candidate_id;
-                    candidate_.image = candidate.image_url;
+                    candidate_.candidate_id = candidate.candidateId;
+                    candidate_.image = candidate.imageUrl;
                     formatedCandidates.push(candidate_);
                   });
                   const postsSet = new Set(posts);

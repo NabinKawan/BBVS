@@ -19,6 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "src/services/*.tsx",
     "src/components/admin/Admin.jsx",
     "src/context/candidate/CandidateContext.js",
     "src/pages/_app.jsx",

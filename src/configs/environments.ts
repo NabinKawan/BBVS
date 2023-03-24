@@ -3,7 +3,6 @@ import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 const env = process.env.NODE_ENV;
 
-console.log(publicRuntimeConfig);
 const environments = {
   HOST_URL: publicRuntimeConfig.HOST_URL,
   BBVS_API_URL: publicRuntimeConfig.BBVS_API_URL,

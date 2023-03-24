@@ -48,7 +48,7 @@ export default function Login() {
               access_token: value,
             };
             const voterId = formValues.voter_id.toUpperCase();
-            CompilerService.getVoterStatus(voterId)
+            ContractService.getVoterStatus(voterId)
               .then((val) => {
                 debugger;
                 if (!val) {

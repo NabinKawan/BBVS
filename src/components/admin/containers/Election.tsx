@@ -64,13 +64,13 @@ export default function Election() {
       const posts: string[] = [];
 
       candidateProvider.candidates.forEach((candidate) => {
-        const contractCandidate = { candidate_id: '', name: '', image_url: '', post: '', logo: '' };
+        const contractCandidate = { candidateId: '', name: '', imageUrl: '', post: '', logo: '' };
         contractCandidate.name =
           candidate.first_name + ' ' + candidate.middle_name + ' ' + candidate.last_name;
-        contractCandidate.image_url = candidate.image!;
+        contractCandidate.imageUrl = candidate.image!;
         contractCandidate.logo = candidate.logo!;
         contractCandidate.post = candidate.post;
-        contractCandidate.candidate_id = candidate.candidate_id;
+        contractCandidate.candidateId = candidate.candidate_id;
         contractCandidates.push(contractCandidate);
         posts.push(candidate.post);
       });
@@ -84,7 +84,7 @@ export default function Election() {
       const postsSet = new Set(posts);
       const posts_ = Array.from(postsSet);
 
-      CompilerService.startElection(
+      ContractService.startElection(
         electionName,
         parseInt(electionEndTime),
         contractCandidates,
@@ -106,7 +106,7 @@ export default function Election() {
   };
 
   useEffect(() => {
-    CompilerService.getVotingEndTime()
+    ContractService.getVotingEndTime()
       .then((val) => {
         if (val) {
           const date = new Date();

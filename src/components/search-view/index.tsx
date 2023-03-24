@@ -20,17 +20,7 @@ export default function SearchView({ handleSearch }: ISearchView) {
         placeHolder={'Search by candidate_id, name...'}
         inputHandler={handleInput}
       />
-      {/* <div className="flex h-12 w-32">
-        <RoundedIconBtn
-          icon={<FiSearch size={20} />}
-          text={'Search'}
-          // loading={loading}
-          bgColor={'bg-primary '}
-          onClick={() => {
-            handleSearch(searchValue);
-          }}
-        />
-      </div> */}
+     
     </div>
   );
 }

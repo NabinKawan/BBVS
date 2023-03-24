@@ -51,28 +51,22 @@ export default function VotingResultCard({ candidate, handleEdit }: VotingResult
             <p className="font-medium text-base text-black">
               {candidate.first_name} {candidate.middle_name} {candidate.last_name}
             </p>
-            <div className="flex items-center">
-              <p className="font-medium text-sm text-[#686868]">{candidate.candidate_id}</p>
-
-              <div className="flex ml-2 sm:ml-0 sm:hidden w-fit rounded-xl bg-green-100 px-2 py-1 justify-center items-center">
-                <p className="font-medium text-xs text-green-500 pt-0.5 ">VOTED</p>
-              </div>
-            </div>
+            <p className="font-medium text-sm text-[#686868]">{candidate.candidate_id}</p>
           </div>
         )}
         <div className="flex space-x-8">
           {candidate && candidate.logo && (
             <img
-              className="hidden sm:block w-8 h-8"
+              className="hidden md:block h-8"
               src={`${environments.BBVS_API_URL}/${candidate.logo}`}
             />
           )}
           {!candidate ? (
-            <div className="hidden sm:flex w-fit rounded-xl bg-red-100 px-2 py-1 justify-center items-center">
+            <div className="flex w-fit rounded-xl bg-red-100 px-2 py-1 justify-center items-center">
               <p className="font-medium text-sm text-red-500 ">NOT VOTED</p>
             </div>
           ) : (
-            <div className="hidden sm:flex w-fit rounded-xl bg-green-100 px-2 py-1 justify-center items-center">
+            <div className="flex w-fit rounded-xl bg-green-100 px-2 py-1 justify-center items-center">
               <p className="font-medium text-sm text-green-500 ">VOTED</p>
             </div>
           )}

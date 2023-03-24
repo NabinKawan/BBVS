@@ -24,7 +24,7 @@ export default function Election() {
       text: 'We are navigating you to election result. This may take a while.',
       allowOutsideClick: false,
       allowEnterKey: false,
-      timer: 5000,
+      timer: 30000,
       showClass: {
         popup: 'animate__animated animate__fadeInDown',
       },
@@ -39,7 +39,7 @@ export default function Election() {
 
   // const votersRef = useRef({ votersPercent: 0, incVoters: 0 });
   useEffect(() => {
-    CompilerService.getVotingEndTime()
+    ContractService.getVotingEndTime()
       .then((val) => {
         if (val) {
           if (val !== endTime) {
@@ -54,6 +54,7 @@ export default function Election() {
         }
       })
       .catch((e) => {
+        debugger;
         toast.error(e.message, { autoClose: 2000 });
       });
     // if (votersPercent === 0) {

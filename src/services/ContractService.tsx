@@ -1,18 +1,12 @@
-import { BigNumber, Contract, ethers } from 'ethers';
-import ownerAbi from '../abi/owner_abi.json';
-import storageAbi from '../abi/storage_abi.json';
+import { utils, Contract, ethers, BigNumber, providers } from 'ethers';
 import electionAbi from '../abi/election_abi.json';
-import { OwnerContractAddrs, StorageContractAddrs } from '../models/constants';
-import { Address } from 'cluster';
+import { ElectionContractAddrs } from '../models/constants';
 
-import { CandidateDto, VoterDto } from '../models/dto/ServerOpDtos';
-import {
-  ContractCandidateDto,
-  ElectionResultDto,
-  ContractVoterDto,
-} from '../models/dto/ContractDtos';
+import { ContractCandidateDto, ContractVoterDto } from '../models/dto/ContractDtos';
 import { toast } from 'react-toastify';
-import environments from '../configs/environments';
+const InputDataDecoder = require('ethereum-input-data-decoder');
+
+const decoder = new InputDataDecoder(electionAbi);
 
 export default class ContractService {
   static getProvider() {
@@ -21,11 +15,7 @@ export default class ContractService {
   }
 
   static getContract(provider: ethers.providers.Provider | ethers.Signer) {
-    const contract = new ethers.Contract(
-      environments.ELECTION_CONTRACT_ADDRESS,
-      electionAbi,
-      provider,
-    );
+    const contract = new ethers.Contract(ElectionContractAddrs, electionAbi, provider);
     return contract;
   }
 
@@ -103,7 +93,6 @@ export default class ContractService {
     try {
       const provider = this.getProvider();
       const contract = this.getContract(provider);
-
       const votingEndTime: BigNumber = await contract.getVotingEndTime();
 
       return votingEndTime.toNumber();
@@ -187,6 +176,7 @@ export default class ContractService {
     voters: ContractVoterDto[],
     posts: string[],
   ) {
+    debugger;
     try {
       const contractService = new ContractService();
       const provider = this.getProvider();
@@ -200,7 +190,7 @@ export default class ContractService {
       debugger;
       const res = await contract.startElection(
         electionName,
-        endTimeSec,
+        endTimeSec * 60,
         candidateTuple,
         voterTuple,
         posts,
@@ -227,12 +217,12 @@ export default class ContractService {
       const signerAddress = await signer.getAddress();
       const contract = this.getContract(signer);
       const res = await contract.vote(voterId, candidateIds);
-
+      console.log(res);
       if (res) {
         toast.info('Transaction in progress', { autoClose: 2000 });
       }
-      const miningResult = provider.waitForTransaction(res.hash);
-      return miningResult;
+      const miningResult = await provider.waitForTransaction(res.hash);
+      return miningResult.transactionHash;
     } catch (e: any) {
       //@ts-ignore
       let errorMessage: string = e.message;
@@ -247,5 +237,20 @@ export default class ContractService {
         throw new Error(errorMessage[0].toUpperCase() + errorMessage.slice(1));
       }
     }
+  }
+
+  static async getTransaction(txHash: string): Promise<providers.TransactionResponse> {
+    const provider: ethers.providers.Provider = this.getProvider();
+    return await provider.getTransaction(txHash);
+  }
+
+  static async getBlock(blockNumber: number): Promise<providers.Block> {
+    const provider: ethers.providers.Provider = this.getProvider();
+    return await provider.getBlock(blockNumber);
+  }
+
+  static decodeData(data: string) {
+    const result = decoder.decodeData(data);
+    return result;
   }
 }

@@ -1,17 +1,18 @@
 import { providers } from 'ethers';
 import React, { useEffect, useRef, useState } from 'react';
 import TransactionView from '../components/transaction-view';
-import { BlockDto } from '../models/dto/BlockchainDtos';
+// import { BlockDto } from '../models/dto/BlockchainDtos';
 import BlockchainService from '../services/BlockchainService';
 import RoundedTextBtn from '../shared/button/RoundedTextBtn';
 import { TbDownload } from 'react-icons/tb';
 import { generateDownloadLink } from '../utils/transactionUtils';
 import Router from 'next/router';
+import ContractService from '../services/ContractService';
 
 export default function CheckVote() {
   const [searchText, setSearchText] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const [result, setResult] = useState<BlockDto | null>(null);
+  const [result, setResult] = useState<providers.TransactionResponse | null>(null);
   const [error, setError] = useState(false);
   const [downloadLink, setDownloadLink] = useState('');
 
@@ -19,22 +20,10 @@ export default function CheckVote() {
     if (searchText) {
       setLoading(true);
       setError(false);
-      BlockchainService.getTransaction(searchText)
+      ContractService.getTransaction(searchText)
         .then((val) => {
-          debugger;
           if (val) {
-            const formattedInputs = JSON.parse(val.tx.metadata.inputs);
-            const voter = formattedInputs.args[0];
-            const votes = JSON.parse(formattedInputs.args[1]);
-            const blockValue: BlockDto = {
-              block_hash: val.block_hash,
-              timestamp: val.timestamp,
-              prev_hash: val.prev_hash,
-              tx: { address: val.tx.metadata.address, inputs: { voter: voter, votes: votes } },
-            };
-            setResult({ ...blockValue });
-            const link = generateDownloadLink(blockValue);
-            setDownloadLink(link);
+            setResult({ ...val });
             setLoading(false);
           }
         })
@@ -98,7 +87,7 @@ export default function CheckVote() {
               </a>
             </div>
 
-            <TransactionView txData={result} />
+            <TransactionView tx={result} />
           </div>
         )}
       </div>

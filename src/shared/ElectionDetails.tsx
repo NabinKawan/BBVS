@@ -61,19 +61,19 @@ export default function ElectionDetails({
       // CompilerService.getTotalVotes().then((val) => {
       //   debugger;
       // });
-      CompilerService.getTotalVotes().then((val) => {
+      ContractService.getTotalVotes().then((val) => {
         if (val) {
           if (totalVotes !== val) setTotalVotes(val);
         }
       });
 
-      CompilerService.getVotersCount().then((val) => {
+      ContractService.getVotersCount().then((val) => {
         if (val) {
           if (totalVoters !== val) setTotalVoters(val);
         }
       });
 
-      CompilerService.getCandidatesCount().then((val) => {
+      ContractService.getCandidatesCount().then((val) => {
         if (val) {
           if (totalCandidates !== val) setTotalCandidates(val);
         }
@@ -92,7 +92,7 @@ export default function ElectionDetails({
       getDetails();
     }, 4000);
 
-    CompilerService.getElectionName()
+    ContractService.getElectionName()
       .then((val) => {
         if (val) {
           if (electionName !== val) setElectionName(val);
