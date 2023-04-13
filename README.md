@@ -1,8 +1,6 @@
 # BBVS
 
-
-https://user-images.githubusercontent.com/43606623/231673228-b891f550-c689-4309-b2bd-86e4629af523.mp4
-
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/43606623/231674377-83d60b00-ee54-454c-b8f6-166b0733af5d.gif)
 
 
 ## Project Description
