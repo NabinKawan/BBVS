@@ -9,11 +9,11 @@
 
 ![checkvote](https://user-images.githubusercontent.com/43606623/231675646-9bb9fc7e-76e2-44e2-806d-f2cee334b54d.png)
 
-![image](https://user-images.githubusercontent.com/43606623/231674727-de2bd99f-218e-4c43-b4f0-0bc89efa229d.png)
-
 ![election_session_voter](https://github.com/NabinKawan/BBVS/assets/43606623/de9a40e5-7c33-4381-bb69-4ec41112622b)
 
 ![election_result](https://github.com/NabinKawan/BBVS/assets/43606623/b089d2df-985d-4df8-afdb-9bc067d7af63)
+
+![image](https://user-images.githubusercontent.com/43606623/231674727-de2bd99f-218e-4c43-b4f0-0bc89efa229d.png)
 
 ## Project Description
 
