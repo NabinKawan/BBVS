@@ -1,4 +1,7 @@
 # BBVS
+- API Repo: https://github.com/NabinKawan/BBVS-api
+- Blockchain Repo: https://github.com/NabinKawan/SatyaTathya
+
 ![login_page](https://github.com/NabinKawan/BBVS/assets/43606623/8b05b858-454b-49e5-9f99-89ab0fe5d738)
 
 ![election_start](https://user-images.githubusercontent.com/43606623/231675502-8274f497-1545-457b-bb5a-409bbfd2d94c.png)
