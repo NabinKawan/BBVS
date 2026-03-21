@@ -7,13 +7,10 @@ const blockchainClient = (blockHash: string) => {
 
 export default class BlockchainService {
   static async getTransaction(txHash: any) {
-    debugger;
     try {
       const response = await blockchainClient(txHash);
-      debugger;
       if (response.status === 200) {
         const data = await response.json();
-        debugger;
         return data;
       }
     } catch (e: any) {

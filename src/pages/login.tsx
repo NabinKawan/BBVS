@@ -50,7 +50,6 @@ export default function Login() {
             const voterId = formValues.voter_id.toUpperCase();
             CompilerService.getVoterStatus(voterId)
               .then((val) => {
-                debugger;
                 if (!val) {
                   CachService.addDataIntoCache(CachNamesEnum.Voter, cacheData);
                   setTimeout(() => {

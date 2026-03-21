@@ -67,7 +67,6 @@ export default class ServerOp {
           },
         );
         if (response.status === 200) {
-          debugger;
           const img_url = await response.data;
           console.log(img_url);
           return `${img_url}`;

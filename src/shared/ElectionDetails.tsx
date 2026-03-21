@@ -59,7 +59,6 @@ export default function ElectionDetails({
   const getDetails = () => {
     try {
       // CompilerService.getTotalVotes().then((val) => {
-      //   debugger;
       // });
       CompilerService.getTotalVotes().then((val) => {
         if (val) {

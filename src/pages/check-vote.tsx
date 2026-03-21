@@ -21,7 +21,6 @@ export default function CheckVote() {
       setError(false);
       BlockchainService.getTransaction(searchText)
         .then((val) => {
-          debugger;
           if (val) {
             const formattedInputs = JSON.parse(val.tx.metadata.inputs);
             const voter = formattedInputs.args[0];
